@@ -34,13 +34,8 @@ func (r *mutationResolver) Login(ctx context.Context, username string, password 
 
 	user, err := FindUsername(ctx, username)
 
-	if err != nil || user == nil {
-		log.Println("Error Login: ", user)
-		return nil, errors.New("DIDNT FIND !")
-	}
-
-	if !ComparePassword(password, user.Password) {
-		return nil, errors.New("Password is not correct")
+	if err != nil || user == nil || !ComparePassword(password, user.Password) {
+		return nil, errors.New("error_password")
 	}
 
 	expiresAt := time.Now().Add(time.Hour * 1).Unix()
