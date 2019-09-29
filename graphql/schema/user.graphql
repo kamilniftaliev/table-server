@@ -1,0 +1,19 @@
+type User {
+  id: ID!
+  name: String!
+  username: String!
+  password: String!
+}
+
+type Token {
+  token: String!
+  expiresAt: Int!
+}
+
+type Query {
+  users: [User!]!
+}
+
+type Mutation {
+  login(username: String!, password: String!): Token!
+}
