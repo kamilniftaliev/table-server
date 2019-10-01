@@ -6,7 +6,8 @@ import (
 
 	"github.com/99designs/gqlgen/handler"
 	"github.com/go-chi/chi"
-	api "github.com/kamilniftaliev/table-server/api"
+
+	// api "github.com/kamilniftaliev/table-server/api"
 	"github.com/rs/cors"
 )
 
@@ -18,10 +19,10 @@ func main() {
 		AllowCredentials: true,
 	}).Handler)
 
-	router.Use(api.Middleware())
+	router.Use(Middleware())
 
 	router.Handle("/", handler.Playground("GraphQL playground", "/api"))
-	router.Handle("/api", handler.GraphQL(api.NewExecutableSchema(api.Config{Resolvers: &api.Resolver{}})))
+	router.Handle("/api", handler.GraphQL(NewExecutableSchema(Config{Resolvers: &Resolver{}})))
 
 	log.Printf("Serving at http://localhost:3333/")
 	log.Fatal(http.ListenAndServe(":3333", router))
