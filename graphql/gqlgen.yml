@@ -18,3 +18,7 @@ resolver:
   package: table
   filename: resolver.go
   type: Resolver
+
+models:
+  Table:
+    model: github.com/kamilniftaliev/table-server/graphql.Table

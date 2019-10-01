@@ -1,0 +1,4 @@
+type Table {
+  id: ID!
+  title: String!
+}

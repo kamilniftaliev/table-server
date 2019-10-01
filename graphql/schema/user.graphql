@@ -3,6 +3,7 @@ type User {
   name: String!
   username: String!
   password: String!
+  table: Table!
 }
 
 type Token {
@@ -11,7 +12,7 @@ type Token {
 }
 
 type Query {
-  users: [User!]!
+  user: User!
 }
 
 type Mutation {

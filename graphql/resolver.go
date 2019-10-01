@@ -38,7 +38,7 @@ func (r *mutationResolver) Login(ctx context.Context, username string, password 
 		return nil, errors.New("error_password")
 	}
 
-	expiresAt := time.Now().Add(time.Hour * 1).Unix()
+	expiresAt := time.Now().Add(time.Hour * 24).Unix()
 
 	token := &Token{
 		Token:     JwtCreate(user.Username, expiresAt),
@@ -50,40 +50,42 @@ func (r *mutationResolver) Login(ctx context.Context, username string, password 
 
 type queryResolver struct{ *Resolver }
 
-func (r *queryResolver) Users(ctx context.Context) ([]*User, error) {
-	var users []*User
+func (r *queryResolver) User(ctx context.Context) (*User, error) {
+	auth := GetAuthFromContext(ctx)
+	username, authErr := UsernameFromToken(auth.Token)
+
+	if authErr != nil {
+		return nil, authErr
+	}
+
 	usersCollection := DB.Collection("users")
 
-	auth := GetAuthFromContext(ctx)
-	log.Println("auth: ", auth)
-	cur, err := usersCollection.Find(
+	cur, curErr := usersCollection.Find(
 		ctx,
-		bson.D{},
+		bson.M{"username": username},
 	)
 
-	// Close the cursor once finished
-	defer cur.Close(ctx)
+	log.Println("cur::::", cur)
+	log.Println("curErr::::", curErr)
+
+	// var user *User
+
+	// err := cur.Decode(&user)
+
+	// jsonErr := json.Unmarshal([]byte(user.Tables), &user)
+
+	var posts []*User
+
+	err := cur.All(ctx, &posts)
+
+	// if jsonErr != nil {
+	// 	log.Fatal("jsonErr:::", jsonErr)
+	// }
 
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	for cur.Next(ctx) {
-		// create a value into which the single document can be decoded
-		var user *User
-
-		err := cur.Decode(&user)
-		if err != nil {
-			log.Fatal(err)
-		}
-
-		users = append(users, user)
-	}
-
-	if err := cur.Err(); err != nil {
-		log.Fatal(err)
-	}
-
-	return users, nil
+	return posts[0], nil
 
 }

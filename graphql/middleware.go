@@ -2,6 +2,7 @@ package table
 
 import (
 	"context"
+	"errors"
 	"net"
 	"net/http"
 	"strings"
@@ -31,9 +32,10 @@ func Middleware() func(http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			token := TokenFromHttpRequest(r)
 
-			username := UsernameFromToken(token)
+			username, _ := UsernameFromToken(token)
 
 			ip, _, _ := net.SplitHostPort(r.RemoteAddr)
+
 			userAuth := UserAuth{
 				Username:  username,
 				IPAddress: ip,
@@ -58,20 +60,20 @@ func TokenFromHttpRequest(r *http.Request) string {
 	return tokenString
 }
 
-func UsernameFromToken(tokenString string) string {
+func UsernameFromToken(tokenString string) (string, error) {
 	token, err := JwtDecode(tokenString)
 
 	if err != nil {
-		return "0"
+		return "", errors.New("access_denied")
 	}
 
 	if claims, ok := token.Claims.(*UserClaims); ok && token.Valid {
 		if claims == nil {
-			return "0"
+			return "", errors.New("access_denied")
 		}
-		return claims.Username
+		return claims.Username, nil
 	} else {
-		return "0"
+		return "", errors.New("access_denied")
 	}
 }
 
@@ -82,6 +84,7 @@ func ForContext(ctx context.Context) *UserAuth {
 	}
 	return raw.(*UserAuth)
 }
+
 func GetAuthFromContext(ctx context.Context) *UserAuth {
 	return ForContext(ctx)
 }

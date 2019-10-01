@@ -2,6 +2,11 @@
 
 package table
 
+type Table struct {
+	ID    string `json:"id"`
+	Title string `json:"title"`
+}
+
 type Token struct {
 	Token     string `json:"token"`
 	ExpiresAt int    `json:"expiresAt"`
@@ -12,4 +17,5 @@ type User struct {
 	Name     string `json:"name"`
 	Username string `json:"username"`
 	Password string `json:"password"`
+	Table    *Table `json:"table"`
 }

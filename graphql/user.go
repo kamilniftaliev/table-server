@@ -10,9 +10,7 @@ import (
 func FindUsername(ctx context.Context, username string) (*User, error) {
 	cur := DB.Collection("users").FindOne(
 		ctx,
-		bson.D{
-			bson.E{"username", username},
-		},
+		bson.M{"username": username},
 	)
 
 	err := cur.Err()
