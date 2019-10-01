@@ -1,4 +1,4 @@
-package main
+package api
 
 import (
 	"log"
@@ -6,7 +6,7 @@ import (
 
 	"github.com/99designs/gqlgen/handler"
 	"github.com/go-chi/chi"
-	api "github.com/kamilniftaliev/table-server/graphql"
+	api "github.com/kamilniftaliev/table-server/api"
 	"github.com/rs/cors"
 )
 

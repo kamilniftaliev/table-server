@@ -23,4 +23,4 @@ autobind: ["github.com/kamilniftaliev/table-server/api"]
 
 models:
   Table:
-    model: api.Table
+    model: github.com/kamilniftaliev/table-server.Table
