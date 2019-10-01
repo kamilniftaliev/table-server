@@ -15,10 +15,13 @@ model:
   package: table
 
 resolver:
-  package: table
   filename: resolver.go
+  package: table
   type: Resolver
+
+autobind:
+  - github.com/kamilniftaliev/table-server/blob/master/graphql/models
 
 models:
   Table:
-    model: github.com/kamilniftaliev/table-server/graphql.Table
+    model: github.com/kamilniftaliev/table-server/api.Table

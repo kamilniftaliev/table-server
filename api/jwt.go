@@ -1,4 +1,4 @@
-package table
+package api
 
 import "github.com/dgrijalva/jwt-go"
 
