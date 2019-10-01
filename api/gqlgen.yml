@@ -8,20 +8,19 @@ schema:
 
 exec:
   filename: schema.go
-  package: table
+  package: api
 
 model:
   filename: models.go
-  package: table
+  package: api
 
 resolver:
   filename: resolver.go
-  package: table
+  package: api
   type: Resolver
 
-autobind:
-  - github.com/kamilniftaliev/table-server/blob/master/graphql/models
+autobind: ["github.com/kamilniftaliev/table-server/api"]
 
 models:
   Table:
-    model: github.com/kamilniftaliev/table-server/api.Table
+    model: api.Table
