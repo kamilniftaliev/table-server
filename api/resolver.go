@@ -1,4 +1,4 @@
-package main
+package api
 
 import (
 	"context"
@@ -16,6 +16,7 @@ type Resolver struct{}
 func (r *Resolver) Mutation() MutationResolver {
 	return &mutationResolver{r}
 }
+
 func (r *Resolver) Query() QueryResolver {
 	return &queryResolver{r}
 }
@@ -35,7 +36,7 @@ func (r *mutationResolver) Login(ctx context.Context, username string, password 
 	user, err := FindUsername(ctx, username)
 
 	if err != nil || user == nil || !ComparePassword(password, user.Password) {
-		return nil, errors.New("error_password")
+		return nil, errors.New("errorPassword")
 	}
 
 	expiresAt := time.Now().Add(time.Hour * 24).Unix()
@@ -60,32 +61,16 @@ func (r *queryResolver) User(ctx context.Context) (*User, error) {
 
 	usersCollection := DB.Collection("users")
 
-	cur, curErr := usersCollection.Find(
+	var user *User
+
+	err := usersCollection.FindOne(
 		ctx,
 		bson.M{"username": username},
-	)
-
-	log.Println("cur::::", cur)
-	log.Println("curErr::::", curErr)
-
-	// var user *User
-
-	// err := cur.Decode(&user)
-
-	// jsonErr := json.Unmarshal([]byte(user.Tables), &user)
-
-	var posts []*User
-
-	err := cur.All(ctx, &posts)
-
-	// if jsonErr != nil {
-	// 	log.Fatal("jsonErr:::", jsonErr)
-	// }
+	).Decode(&user)
 
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	return posts[0], nil
-
+	return user, nil
 }

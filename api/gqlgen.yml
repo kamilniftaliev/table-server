@@ -19,8 +19,20 @@ resolver:
   package: api
   type: Resolver
 
-autobind: ["github.com/kamilniftaliev/table-server/api"]
+autobind: [
+  "github.com/kamilniftaliev/table-server/api",
+  # "github.com/mongodb/mongo-go-driver/bson/primitive"
+]
 
 models:
-  Table:
-    model: github.com/kamilniftaliev/table-server.Table
+  # Table:
+  #   model: api.Table
+
+  ID:
+    model:
+      - github.com/kamilniftaliev/table-server/api.ID
+
+  # IntID: # graphql type
+  #   model:
+  #     - github.com/99designs/gqlgen/graphql.IntID # go type
+      # - github.com/99designs/gqlgen/graphql.ID

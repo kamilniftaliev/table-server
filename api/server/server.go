@@ -1,4 +1,4 @@
-package main
+package api
 
 import (
 	"log"
@@ -6,7 +6,7 @@ import (
 	"os"
 
 	"github.com/99designs/gqlgen/handler"
-	"github.com/kamilniftaliev/table-server/graphql"
+	"github.com/kamilniftaliev/table-server/api"
 )
 
 const defaultPort = "8080"
