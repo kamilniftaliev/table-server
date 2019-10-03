@@ -1,8 +1,10 @@
 type Query {
   user: User!
 }
-# tables: [Table!]!
 
 type Mutation {
   login(username: String!, password: String!): Token!
+  createTable(title: String!): Table!
+  deleteTable(id: ID!): Table!
+  duplicateTable(id: ID!): Table!
 }

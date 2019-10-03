@@ -1,4 +1,4 @@
-package api
+package helpers
 
 import (
 	"context"
@@ -85,6 +85,14 @@ func ForContext(ctx context.Context) *UserAuth {
 	return raw.(*UserAuth)
 }
 
-func GetAuthFromContext(ctx context.Context) *UserAuth {
-	return ForContext(ctx)
+func GetAuthFromContext(ctx context.Context) (*UserAuth, error) {
+	auth := ForContext(ctx)
+
+	var err error
+
+	if len(auth.Username) == 0 {
+		err = errors.New("notAuthorized")
+	}
+
+	return auth, err
 }

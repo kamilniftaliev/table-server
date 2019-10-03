@@ -1,4 +1,7 @@
 type Table {
   id: ID!
   title: String!
+  slug: String!
+  created: String
+  lastEdited: String
 }

@@ -11,8 +11,8 @@ exec:
   package: api
 
 model:
-  filename: models.go
-  package: api
+  filename: models/generated.go
+  package: models
 
 resolver:
   filename: resolver.go
@@ -20,17 +20,16 @@ resolver:
   type: Resolver
 
 autobind: [
-  "github.com/kamilniftaliev/table-server/api",
-  # "github.com/mongodb/mongo-go-driver/bson/primitive"
+  "github.com/kamilniftaliev/table-server/api/models",
 ]
 
 models:
   # Table:
-  #   model: api.Table
+  #   model: models.Table
 
   ID:
     model:
-      - github.com/kamilniftaliev/table-server/api.ID
+      - github.com/kamilniftaliev/table-server/api/helpers.ID
 
   # IntID: # graphql type
   #   model:

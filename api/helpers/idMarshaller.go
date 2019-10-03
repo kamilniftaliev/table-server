@@ -1,10 +1,9 @@
-package api
+package helpers
 
 import (
 	// "fmt"
 
 	"io"
-	"log"
 	"strconv"
 
 	// "log"
@@ -22,20 +21,9 @@ func MarshalID(id primitive.ObjectID) graphql.Marshaler {
 
 // And the same for the unmarshaler
 func UnmarshalID(v interface{}) (primitive.ObjectID, error) {
-	// str, ok := v.(string)
+	str, _ := v.(string)
 
-	log.Println("AAAA:", v)
-
-	// if !ok {
-	// 	return primitive.ObjectIDFromHex("SALAM"), ok
-	// }
-
-	i, err := primitive.ObjectIDFromHex("5d94b4b30e9c3b268c59448f")
-
-	if err != nil {
-		return primitive.ObjectIDFromHex("5d94b4b30e9c3b268c59448f")
-		// return log.Println("err::", err), err
-	}
+	i, err := primitive.ObjectIDFromHex(str)
 
 	return i, err
 }

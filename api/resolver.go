@@ -2,11 +2,10 @@ package api
 
 import (
 	"context"
-	"errors"
-	"log"
-	"time"
 
-	"go.mongodb.org/mongo-driver/bson"
+	"github.com/kamilniftaliev/table-server/api/models"
+	"github.com/kamilniftaliev/table-server/api/resolvers"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 // THIS CODE IS A STARTING POINT ONLY. IT WILL NOT BE UPDATED WITH SCHEMA CHANGES.
@@ -23,54 +22,24 @@ func (r *Resolver) Query() QueryResolver {
 
 type mutationResolver struct{ *Resolver }
 
-func (r *mutationResolver) Login(ctx context.Context, username string, password string) (*Token, error) {
-	userAuth := GetAuthFromContext(ctx)
+func (r *mutationResolver) Login(ctx context.Context, username, password string) (*models.Token, error) {
+	return resolvers.FindUsername(ctx, username, password)
+}
 
-	if len(userAuth.Username) > 1 {
-		token := Token{
-			Token: userAuth.Token,
-		}
-		return &token, nil
-	}
+func (r *mutationResolver) CreateTable(ctx context.Context, title string) (*models.Table, error) {
+	return resolvers.CreateTable(ctx, title)
+}
 
-	user, err := FindUsername(ctx, username)
+func (r *mutationResolver) DeleteTable(ctx context.Context, id primitive.ObjectID) (*models.Table, error) {
+	return resolvers.DeleteTable(ctx, id)
+}
 
-	if err != nil || user == nil || !ComparePassword(password, user.Password) {
-		return nil, errors.New("errorPassword")
-	}
-
-	expiresAt := time.Now().Add(time.Hour * 24).Unix()
-
-	token := &Token{
-		Token:     JwtCreate(user.Username, expiresAt),
-		ExpiresAt: int(expiresAt),
-	}
-
-	return token, nil
+func (r *mutationResolver) DuplicateTable(ctx context.Context, id primitive.ObjectID) (*models.Table, error) {
+	return resolvers.DuplicateTable(ctx, id)
 }
 
 type queryResolver struct{ *Resolver }
 
-func (r *queryResolver) User(ctx context.Context) (*User, error) {
-	auth := GetAuthFromContext(ctx)
-	username, authErr := UsernameFromToken(auth.Token)
-
-	if authErr != nil {
-		return nil, authErr
-	}
-
-	usersCollection := DB.Collection("users")
-
-	var user *User
-
-	err := usersCollection.FindOne(
-		ctx,
-		bson.M{"username": username},
-	).Decode(&user)
-
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	return user, nil
+func (r *queryResolver) User(ctx context.Context) (*models.User, error) {
+	return resolvers.GetUser(ctx)
 }
