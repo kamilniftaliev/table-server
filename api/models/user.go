@@ -11,3 +11,11 @@ type User struct {
 	Password string             `json:"password"`
 	Tables   []*Table           `json:"tables"`
 }
+
+type Auth struct {
+	Username  string
+	Roles     []string
+	IPAddress string
+	Token     string
+	Error     error
+}

@@ -11,12 +11,12 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 )
 
-func FindUsername(ctx context.Context, username, password string) (*models.Token, error) {
-	userAuth, _ := helpers.GetAuthFromContext(ctx)
+func SignIn(ctx context.Context, username, password string) (*models.Token, error) {
+	auth := helpers.GetAuth(ctx)
 
-	if len(userAuth.Username) > 1 {
+	if len(auth.Username) > 1 {
 		token := models.Token{
-			Token: userAuth.Token,
+			Token: auth.Token,
 		}
 		return &token, nil
 	}
@@ -32,6 +32,7 @@ func FindUsername(ctx context.Context, username, password string) (*models.Token
 	}
 
 	expiresAt := time.Now().Add(time.Hour * 24).Unix()
+	// expiresAt := time.Now().Add(time.Second * 60).Unix()
 
 	token := &models.Token{
 		Token:     helpers.JwtCreate(user.Username, expiresAt),
@@ -42,10 +43,10 @@ func FindUsername(ctx context.Context, username, password string) (*models.Token
 }
 
 func GetUser(ctx context.Context) (*models.User, error) {
-	auth, authErr := helpers.GetAuthFromContext(ctx)
+	auth := helpers.GetAuth(ctx)
 
-	if authErr != nil {
-		return nil, authErr
+	if auth.Error != nil {
+		return nil, auth.Error
 	}
 
 	usersCollection := DB.Collection("users")
@@ -55,14 +56,6 @@ func GetUser(ctx context.Context) (*models.User, error) {
 	filter := bson.M{"username": auth.Username}
 
 	err := usersCollection.FindOne(ctx, filter).Decode(&user)
-
-	// user.ID.Timestamp()
-	// for i := 0; i < len(user.Tables); i++ {
-	// 	created := GetDatetimeFromId(user.Tables[i].ID)
-
-	// 	user.Tables[i].Created = created
-	// 	user.Tables[i].LastEdited = created
-	// }
 
 	if err != nil {
 		log.Fatal(err)

@@ -12,8 +12,8 @@ import (
 
 	"github.com/99designs/gqlgen/graphql"
 	"github.com/99designs/gqlgen/graphql/introspection"
-	"github.com/kamilniftaliev/table-server/api/helpers"
 	"github.com/kamilniftaliev/table-server/api/models"
+	"github.com/kamilniftaliev/table-server/api/types"
 	"github.com/vektah/gqlparser"
 	"github.com/vektah/gqlparser/ast"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -46,10 +46,11 @@ type DirectiveRoot struct {
 
 type ComplexityRoot struct {
 	Mutation struct {
-		CreateTable    func(childComplexity int, title string) int
+		CreateTable    func(childComplexity int, title string, slug string) int
 		DeleteTable    func(childComplexity int, id primitive.ObjectID) int
 		DuplicateTable func(childComplexity int, id primitive.ObjectID) int
-		Login          func(childComplexity int, username string, password string) int
+		SignIn         func(childComplexity int, username string, password string) int
+		UpdateTable    func(childComplexity int, title string, slug string, id primitive.ObjectID) int
 	}
 
 	Query struct {
@@ -57,11 +58,11 @@ type ComplexityRoot struct {
 	}
 
 	Table struct {
-		Created    func(childComplexity int) int
-		ID         func(childComplexity int) int
-		LastEdited func(childComplexity int) int
-		Slug       func(childComplexity int) int
-		Title      func(childComplexity int) int
+		Created      func(childComplexity int) int
+		ID           func(childComplexity int) int
+		LastModified func(childComplexity int) int
+		Slug         func(childComplexity int) int
+		Title        func(childComplexity int) int
 	}
 
 	Token struct {
@@ -79,8 +80,9 @@ type ComplexityRoot struct {
 }
 
 type MutationResolver interface {
-	Login(ctx context.Context, username string, password string) (*models.Token, error)
-	CreateTable(ctx context.Context, title string) (*models.Table, error)
+	SignIn(ctx context.Context, username string, password string) (*models.Token, error)
+	CreateTable(ctx context.Context, title string, slug string) (*models.Table, error)
+	UpdateTable(ctx context.Context, title string, slug string, id primitive.ObjectID) (*models.Table, error)
 	DeleteTable(ctx context.Context, id primitive.ObjectID) (*models.Table, error)
 	DuplicateTable(ctx context.Context, id primitive.ObjectID) (*models.Table, error)
 }
@@ -113,7 +115,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Mutation.CreateTable(childComplexity, args["title"].(string)), true
+		return e.complexity.Mutation.CreateTable(childComplexity, args["title"].(string), args["slug"].(string)), true
 
 	case "Mutation.deleteTable":
 		if e.complexity.Mutation.DeleteTable == nil {
@@ -139,17 +141,29 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Mutation.DuplicateTable(childComplexity, args["id"].(primitive.ObjectID)), true
 
-	case "Mutation.login":
-		if e.complexity.Mutation.Login == nil {
+	case "Mutation.signIn":
+		if e.complexity.Mutation.SignIn == nil {
 			break
 		}
 
-		args, err := ec.field_Mutation_login_args(context.TODO(), rawArgs)
+		args, err := ec.field_Mutation_signIn_args(context.TODO(), rawArgs)
 		if err != nil {
 			return 0, false
 		}
 
-		return e.complexity.Mutation.Login(childComplexity, args["username"].(string), args["password"].(string)), true
+		return e.complexity.Mutation.SignIn(childComplexity, args["username"].(string), args["password"].(string)), true
+
+	case "Mutation.updateTable":
+		if e.complexity.Mutation.UpdateTable == nil {
+			break
+		}
+
+		args, err := ec.field_Mutation_updateTable_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Mutation.UpdateTable(childComplexity, args["title"].(string), args["slug"].(string), args["id"].(primitive.ObjectID)), true
 
 	case "Query.user":
 		if e.complexity.Query.User == nil {
@@ -172,12 +186,12 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Table.ID(childComplexity), true
 
-	case "Table.lastEdited":
-		if e.complexity.Table.LastEdited == nil {
+	case "Table.lastModified":
+		if e.complexity.Table.LastModified == nil {
 			break
 		}
 
-		return e.complexity.Table.LastEdited(childComplexity), true
+		return e.complexity.Table.LastModified(childComplexity), true
 
 	case "Table.slug":
 		if e.complexity.Table.Slug == nil {
@@ -304,28 +318,30 @@ func (ec *executionContext) introspectType(name string) (*introspection.Type, er
 }
 
 var parsedSchema = gqlparser.MustLoadSchema(
-	&ast.Source{Name: "schema/main.graphql", Input: `type Query {
+	&ast.Source{Name: "schema/main.gql", Input: `type Query {
   user: User!
 }
 
 type Mutation {
-  login(username: String!, password: String!): Token!
-  createTable(title: String!): Table!
+  signIn(username: String!, password: String!): Token!
+
+  createTable(title: String!, slug: String!): Table!
+  updateTable(title: String!, slug: String!, id: ID!): Table!
   deleteTable(id: ID!): Table!
   duplicateTable(id: ID!): Table!
 }
 `},
-	&ast.Source{Name: "schema/table.graphql", Input: `type Table {
+	&ast.Source{Name: "schema/table.gql", Input: `scalar DateTime
+
+type Table {
   id: ID!
   title: String!
   slug: String!
-  created: String
-  lastEdited: String
+  created: DateTime!
+  lastModified: DateTime!
 }
 `},
-	&ast.Source{Name: "schema/user.graphql", Input: `# scalar ID
-
-type User {
+	&ast.Source{Name: "schema/user.gql", Input: `type User {
   id: ID!
   name: String!
   username: String!
@@ -355,6 +371,14 @@ func (ec *executionContext) field_Mutation_createTable_args(ctx context.Context,
 		}
 	}
 	args["title"] = arg0
+	var arg1 string
+	if tmp, ok := rawArgs["slug"]; ok {
+		arg1, err = ec.unmarshalNString2string(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["slug"] = arg1
 	return args, nil
 }
 
@@ -386,7 +410,7 @@ func (ec *executionContext) field_Mutation_duplicateTable_args(ctx context.Conte
 	return args, nil
 }
 
-func (ec *executionContext) field_Mutation_login_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+func (ec *executionContext) field_Mutation_signIn_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
 	var err error
 	args := map[string]interface{}{}
 	var arg0 string
@@ -405,6 +429,36 @@ func (ec *executionContext) field_Mutation_login_args(ctx context.Context, rawAr
 		}
 	}
 	args["password"] = arg1
+	return args, nil
+}
+
+func (ec *executionContext) field_Mutation_updateTable_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 string
+	if tmp, ok := rawArgs["title"]; ok {
+		arg0, err = ec.unmarshalNString2string(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["title"] = arg0
+	var arg1 string
+	if tmp, ok := rawArgs["slug"]; ok {
+		arg1, err = ec.unmarshalNString2string(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["slug"] = arg1
+	var arg2 primitive.ObjectID
+	if tmp, ok := rawArgs["id"]; ok {
+		arg2, err = ec.unmarshalNID2goᚗmongodbᚗorgᚋmongoᚑdriverᚋbsonᚋprimitiveᚐObjectID(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["id"] = arg2
 	return args, nil
 }
 
@@ -458,7 +512,7 @@ func (ec *executionContext) field___Type_fields_args(ctx context.Context, rawArg
 
 // region    **************************** field.gotpl *****************************
 
-func (ec *executionContext) _Mutation_login(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+func (ec *executionContext) _Mutation_signIn(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
 	ctx = ec.Tracer.StartFieldExecution(ctx, field)
 	defer func() {
 		if r := recover(); r != nil {
@@ -475,7 +529,7 @@ func (ec *executionContext) _Mutation_login(ctx context.Context, field graphql.C
 	}
 	ctx = graphql.WithResolverContext(ctx, rctx)
 	rawArgs := field.ArgumentMap(ec.Variables)
-	args, err := ec.field_Mutation_login_args(ctx, rawArgs)
+	args, err := ec.field_Mutation_signIn_args(ctx, rawArgs)
 	if err != nil {
 		ec.Error(ctx, err)
 		return graphql.Null
@@ -484,7 +538,7 @@ func (ec *executionContext) _Mutation_login(ctx context.Context, field graphql.C
 	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Mutation().Login(rctx, args["username"].(string), args["password"].(string))
+		return ec.resolvers.Mutation().SignIn(rctx, args["username"].(string), args["password"].(string))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -528,7 +582,51 @@ func (ec *executionContext) _Mutation_createTable(ctx context.Context, field gra
 	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Mutation().CreateTable(rctx, args["title"].(string))
+		return ec.resolvers.Mutation().CreateTable(rctx, args["title"].(string), args["slug"].(string))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !ec.HasError(rctx) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*models.Table)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalNTable2ᚖgithubᚗcomᚋkamilniftalievᚋtableᚑserverᚋapiᚋmodelsᚐTable(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Mutation_updateTable(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+		ec.Tracer.EndFieldExecution(ctx)
+	}()
+	rctx := &graphql.ResolverContext{
+		Object:   "Mutation",
+		Field:    field,
+		Args:     nil,
+		IsMethod: true,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	rawArgs := field.ArgumentMap(ec.Variables)
+	args, err := ec.field_Mutation_updateTable_args(ctx, rawArgs)
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	rctx.Args = args
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Mutation().UpdateTable(rctx, args["title"].(string), args["slug"].(string), args["id"].(primitive.ObjectID))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -883,15 +981,18 @@ func (ec *executionContext) _Table_created(ctx context.Context, field graphql.Co
 		return graphql.Null
 	}
 	if resTmp == nil {
+		if !ec.HasError(rctx) {
+			ec.Errorf(ctx, "must not be null")
+		}
 		return graphql.Null
 	}
-	res := resTmp.(string)
+	res := resTmp.(primitive.DateTime)
 	rctx.Result = res
 	ctx = ec.Tracer.StartFieldChildExecution(ctx)
-	return ec.marshalOString2string(ctx, field.Selections, res)
+	return ec.marshalNDateTime2goᚗmongodbᚗorgᚋmongoᚑdriverᚋbsonᚋprimitiveᚐDateTime(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Table_lastEdited(ctx context.Context, field graphql.CollectedField, obj *models.Table) (ret graphql.Marshaler) {
+func (ec *executionContext) _Table_lastModified(ctx context.Context, field graphql.CollectedField, obj *models.Table) (ret graphql.Marshaler) {
 	ctx = ec.Tracer.StartFieldExecution(ctx, field)
 	defer func() {
 		if r := recover(); r != nil {
@@ -910,19 +1011,22 @@ func (ec *executionContext) _Table_lastEdited(ctx context.Context, field graphql
 	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.LastEdited, nil
+		return obj.LastModified, nil
 	})
 	if err != nil {
 		ec.Error(ctx, err)
 		return graphql.Null
 	}
 	if resTmp == nil {
+		if !ec.HasError(rctx) {
+			ec.Errorf(ctx, "must not be null")
+		}
 		return graphql.Null
 	}
-	res := resTmp.(string)
+	res := resTmp.(primitive.DateTime)
 	rctx.Result = res
 	ctx = ec.Tracer.StartFieldChildExecution(ctx)
-	return ec.marshalOString2string(ctx, field.Selections, res)
+	return ec.marshalNDateTime2goᚗmongodbᚗorgᚋmongoᚑdriverᚋbsonᚋprimitiveᚐDateTime(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Token_token(ctx context.Context, field graphql.CollectedField, obj *models.Token) (ret graphql.Marshaler) {
@@ -2358,13 +2462,18 @@ func (ec *executionContext) _Mutation(ctx context.Context, sel ast.SelectionSet)
 		switch field.Name {
 		case "__typename":
 			out.Values[i] = graphql.MarshalString("Mutation")
-		case "login":
-			out.Values[i] = ec._Mutation_login(ctx, field)
+		case "signIn":
+			out.Values[i] = ec._Mutation_signIn(ctx, field)
 			if out.Values[i] == graphql.Null {
 				invalids++
 			}
 		case "createTable":
 			out.Values[i] = ec._Mutation_createTable(ctx, field)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "updateTable":
+			out.Values[i] = ec._Mutation_updateTable(ctx, field)
 			if out.Values[i] == graphql.Null {
 				invalids++
 			}
@@ -2461,8 +2570,14 @@ func (ec *executionContext) _Table(ctx context.Context, sel ast.SelectionSet, ob
 			}
 		case "created":
 			out.Values[i] = ec._Table_created(ctx, field, obj)
-		case "lastEdited":
-			out.Values[i] = ec._Table_lastEdited(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "lastModified":
+			out.Values[i] = ec._Table_lastModified(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}
@@ -2812,12 +2927,26 @@ func (ec *executionContext) marshalNBoolean2bool(ctx context.Context, sel ast.Se
 	return res
 }
 
+func (ec *executionContext) unmarshalNDateTime2goᚗmongodbᚗorgᚋmongoᚑdriverᚋbsonᚋprimitiveᚐDateTime(ctx context.Context, v interface{}) (primitive.DateTime, error) {
+	return types.UnmarshalDateTime(v)
+}
+
+func (ec *executionContext) marshalNDateTime2goᚗmongodbᚗorgᚋmongoᚑdriverᚋbsonᚋprimitiveᚐDateTime(ctx context.Context, sel ast.SelectionSet, v primitive.DateTime) graphql.Marshaler {
+	res := types.MarshalDateTime(v)
+	if res == graphql.Null {
+		if !ec.HasError(graphql.GetResolverContext(ctx)) {
+			ec.Errorf(ctx, "must not be null")
+		}
+	}
+	return res
+}
+
 func (ec *executionContext) unmarshalNID2goᚗmongodbᚗorgᚋmongoᚑdriverᚋbsonᚋprimitiveᚐObjectID(ctx context.Context, v interface{}) (primitive.ObjectID, error) {
-	return helpers.UnmarshalID(v)
+	return types.UnmarshalID(v)
 }
 
 func (ec *executionContext) marshalNID2goᚗmongodbᚗorgᚋmongoᚑdriverᚋbsonᚋprimitiveᚐObjectID(ctx context.Context, sel ast.SelectionSet, v primitive.ObjectID) graphql.Marshaler {
-	res := helpers.MarshalID(v)
+	res := types.MarshalID(v)
 	if res == graphql.Null {
 		if !ec.HasError(graphql.GetResolverContext(ctx)) {
 			ec.Errorf(ctx, "must not be null")

@@ -1,10 +1,5 @@
-# .gqlgen.yml example
-#
-# Refer to https://gqlgen.com/config/
-# for detailed .gqlgen.yml documentation.
-
 schema:
-  - schema/**/*.graphql
+  - schema/**/*.gql
 
 exec:
   filename: schema.go
@@ -19,19 +14,13 @@ resolver:
   package: api
   type: Resolver
 
-autobind: [
-  "github.com/kamilniftaliev/table-server/api/models",
-]
+autobind:
+  - github.com/kamilniftaliev/table-server/api/models # gqlgen reads it in model generation stage
+  - github.com/kamilniftaliev/table-server/api/types # for own below usages
 
 models:
-  # Table:
-  #   model: models.Table
+  DateTime:
+    model: types.DateTime
 
   ID:
-    model:
-      - github.com/kamilniftaliev/table-server/api/helpers.ID
-
-  # IntID: # graphql type
-  #   model:
-  #     - github.com/99designs/gqlgen/graphql.IntID # go type
-      # - github.com/99designs/gqlgen/graphql.ID
+    model: types.ID

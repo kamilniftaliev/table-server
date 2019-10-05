@@ -1,4 +1,4 @@
-package helpers
+package types
 
 import (
 	// "fmt"
@@ -11,6 +11,8 @@ import (
 	"github.com/99designs/gqlgen/graphql"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
+
+var ID *primitive.ObjectID
 
 // Lets redefine the base ID type to use an id from an external library
 func MarshalID(id primitive.ObjectID) graphql.Marshaler {

@@ -2,6 +2,7 @@ package resolvers
 
 import (
 	"context"
+	"time"
 
 	"github.com/kamilniftaliev/table-server/api/helpers"
 	"github.com/kamilniftaliev/table-server/api/models"
@@ -9,28 +10,29 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
-func GetDatetimeFromId(id primitive.ObjectID) string {
-	return id.Timestamp().Format("02.01.2006 15:04")
+func GetDatetimeFromId(id primitive.ObjectID) primitive.DateTime {
+	return primitive.NewDateTimeFromTime(id.Timestamp())
 }
 
-func CreateTable(ctx context.Context, title string) (*models.Table, error) {
-	userAuth, noAuth := helpers.GetAuthFromContext(ctx)
+func CreateTable(ctx context.Context, title, slug string) (*models.Table, error) {
+	auth := helpers.GetAuth(ctx)
 
-	if noAuth != nil {
-		return nil, noAuth
+	if auth.Error != nil {
+		return nil, auth.Error
 	}
 
 	id := primitive.NewObjectID()
 	dateTime := GetDatetimeFromId(id)
 
 	table := models.Table{
-		ID:         id,
-		Title:      title,
-		Created:    dateTime,
-		LastEdited: dateTime,
+		ID:           id,
+		Title:        title,
+		Slug:         slug,
+		Created:      dateTime,
+		LastModified: dateTime,
 	}
 
-	filter := bson.M{"username": userAuth.Username}
+	filter := bson.M{"username": auth.Username}
 	update := bson.M{"$push": bson.M{"tables": table}}
 
 	_, err := DB.Collection("users").UpdateOne(ctx, filter, update)
@@ -42,18 +44,58 @@ func CreateTable(ctx context.Context, title string) (*models.Table, error) {
 	return &table, nil
 }
 
-func DeleteTable(ctx context.Context, id primitive.ObjectID) (*models.Table, error) {
-	userAuth, noAuth := helpers.GetAuthFromContext(ctx)
+func UpdateTable(ctx context.Context, title, slug string, id primitive.ObjectID) (*models.Table, error) {
+	auth := helpers.GetAuth(ctx)
 
-	if noAuth != nil {
-		return nil, noAuth
+	if auth.Error != nil {
+		return nil, auth.Error
+	}
+
+	dateTime := GetDatetimeFromId(id)
+	curTime := primitive.NewDateTimeFromTime(time.Now())
+
+	table := models.Table{
+		ID:           id,
+		Title:        title,
+		Slug:         slug,
+		Created:      dateTime,
+		LastModified: curTime,
+	}
+
+	filter := bson.M{
+		"username":   auth.Username,
+		"tables._id": id,
+	}
+
+	update := bson.M{
+		"$set": bson.D{
+			{"tables.$.title", title},
+			{"tables.$.slug", slug},
+			{"tables.$.lastModified", curTime},
+		},
+	}
+
+	_, err := DB.Collection("users").UpdateOne(ctx, filter, update)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &table, nil
+}
+
+func DeleteTable(ctx context.Context, id primitive.ObjectID) (*models.Table, error) {
+	auth := helpers.GetAuth(ctx)
+
+	if auth.Error != nil {
+		return nil, auth.Error
 	}
 
 	table := &models.Table{
 		ID: id,
 	}
 
-	filter := bson.M{"username": userAuth.Username}
+	filter := bson.M{"username": auth.Username}
 
 	update := bson.D{
 		{"$pull", bson.D{
@@ -83,31 +125,31 @@ func findTableById(tables []*models.Table, id primitive.ObjectID) *models.Table 
 }
 
 func DuplicateTable(ctx context.Context, id primitive.ObjectID) (*models.Table, error) {
-	userAuth, noAuth := helpers.GetAuthFromContext(ctx)
+	auth := helpers.GetAuth(ctx)
 
-	if noAuth != nil {
-		return nil, noAuth
+	if auth.Error != nil {
+		return nil, auth.Error
 	}
 
 	usersCollection := DB.Collection("users")
 
 	var user *models.User
 
-	filter := bson.M{"username": userAuth.Username}
+	filter := bson.M{"username": auth.Username}
 
 	usersCollection.FindOne(ctx, filter).Decode(&user)
 
 	originalTable := findTableById(user.Tables, id)
 
-	newTitle := originalTable.Title + " Copy"
-	newId := primitive.NewObjectID()
-	dateTime := GetDatetimeFromId(newId)
+	newTitle := originalTable.Title + "(Kopya)"
+	newID := primitive.NewObjectID()
+	dateTime := GetDatetimeFromId(newID)
 
 	newTable := models.Table{
-		ID:         newId,
-		Title:      newTitle,
-		Created:    dateTime,
-		LastEdited: dateTime,
+		ID:           newID,
+		Title:        newTitle,
+		Created:      dateTime,
+		LastModified: dateTime,
 	}
 
 	update := bson.M{"$push": bson.M{"tables": newTable}}

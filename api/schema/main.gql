@@ -1,0 +1,12 @@
+type Query {
+  user: User!
+}
+
+type Mutation {
+  signIn(username: String!, password: String!): Token!
+
+  createTable(title: String!, slug: String!): Table!
+  updateTable(title: String!, slug: String!, id: ID!): Table!
+  deleteTable(id: ID!): Table!
+  duplicateTable(id: ID!): Table!
+}

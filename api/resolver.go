@@ -22,12 +22,16 @@ func (r *Resolver) Query() QueryResolver {
 
 type mutationResolver struct{ *Resolver }
 
-func (r *mutationResolver) Login(ctx context.Context, username, password string) (*models.Token, error) {
-	return resolvers.FindUsername(ctx, username, password)
+func (r *mutationResolver) SignIn(ctx context.Context, username, password string) (*models.Token, error) {
+	return resolvers.SignIn(ctx, username, password)
 }
 
-func (r *mutationResolver) CreateTable(ctx context.Context, title string) (*models.Table, error) {
-	return resolvers.CreateTable(ctx, title)
+func (r *mutationResolver) CreateTable(ctx context.Context, title, slug string) (*models.Table, error) {
+	return resolvers.CreateTable(ctx, title, slug)
+}
+
+func (r *mutationResolver) UpdateTable(ctx context.Context, title, slug string, id primitive.ObjectID) (*models.Table, error) {
+	return resolvers.UpdateTable(ctx, title, slug, id)
 }
 
 func (r *mutationResolver) DeleteTable(ctx context.Context, id primitive.ObjectID) (*models.Table, error) {
