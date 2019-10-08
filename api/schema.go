@@ -54,7 +54,8 @@ type ComplexityRoot struct {
 	}
 
 	Query struct {
-		User func(childComplexity int) int
+		Table func(childComplexity int, slug string) int
+		User  func(childComplexity int) int
 	}
 
 	Table struct {
@@ -88,6 +89,7 @@ type MutationResolver interface {
 }
 type QueryResolver interface {
 	User(ctx context.Context) (*models.User, error)
+	Table(ctx context.Context, slug string) (*models.Table, error)
 }
 
 type executableSchema struct {
@@ -164,6 +166,18 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Mutation.UpdateTable(childComplexity, args["title"].(string), args["slug"].(string), args["id"].(primitive.ObjectID)), true
+
+	case "Query.table":
+		if e.complexity.Query.Table == nil {
+			break
+		}
+
+		args, err := ec.field_Query_table_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Query.Table(childComplexity, args["slug"].(string)), true
 
 	case "Query.user":
 		if e.complexity.Query.User == nil {
@@ -320,6 +334,7 @@ func (ec *executionContext) introspectType(name string) (*introspection.Type, er
 var parsedSchema = gqlparser.MustLoadSchema(
 	&ast.Source{Name: "schema/main.gql", Input: `type Query {
   user: User!
+  table(slug: String!): Table
 }
 
 type Mutation {
@@ -473,6 +488,20 @@ func (ec *executionContext) field_Query___type_args(ctx context.Context, rawArgs
 		}
 	}
 	args["name"] = arg0
+	return args, nil
+}
+
+func (ec *executionContext) field_Query_table_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 string
+	if tmp, ok := rawArgs["slug"]; ok {
+		arg0, err = ec.unmarshalNString2string(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["slug"] = arg0
 	return args, nil
 }
 
@@ -767,6 +796,47 @@ func (ec *executionContext) _Query_user(ctx context.Context, field graphql.Colle
 	rctx.Result = res
 	ctx = ec.Tracer.StartFieldChildExecution(ctx)
 	return ec.marshalNUser2ᚖgithubᚗcomᚋkamilniftalievᚋtableᚑserverᚋapiᚋmodelsᚐUser(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Query_table(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+		ec.Tracer.EndFieldExecution(ctx)
+	}()
+	rctx := &graphql.ResolverContext{
+		Object:   "Query",
+		Field:    field,
+		Args:     nil,
+		IsMethod: true,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	rawArgs := field.ArgumentMap(ec.Variables)
+	args, err := ec.field_Query_table_args(ctx, rawArgs)
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	rctx.Args = args
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Query().Table(rctx, args["slug"].(string))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*models.Table)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalOTable2ᚖgithubᚗcomᚋkamilniftalievᚋtableᚑserverᚋapiᚋmodelsᚐTable(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Query___type(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
@@ -2525,6 +2595,17 @@ func (ec *executionContext) _Query(ctx context.Context, sel ast.SelectionSet) gr
 				if res == graphql.Null {
 					atomic.AddUint32(&invalids, 1)
 				}
+				return res
+			})
+		case "table":
+			field := field
+			out.Concurrently(i, func() (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Query_table(ctx, field)
 				return res
 			})
 		case "__type":

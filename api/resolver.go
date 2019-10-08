@@ -16,6 +16,10 @@ func (r *Resolver) Mutation() MutationResolver {
 	return &mutationResolver{r}
 }
 
+func (r *queryResolver) Table(ctx context.Context, slug string) (*models.Table, error) {
+	return resolvers.Table(ctx, slug)
+}
+
 func (r *Resolver) Query() QueryResolver {
 	return &queryResolver{r}
 }

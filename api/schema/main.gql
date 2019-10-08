@@ -1,5 +1,6 @@
 type Query {
   user: User!
+  table(slug: String!): Table
 }
 
 type Mutation {

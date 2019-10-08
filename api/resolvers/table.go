@@ -2,6 +2,7 @@ package resolvers
 
 import (
 	"context"
+	"log"
 	"time"
 
 	"github.com/kamilniftaliev/table-server/api/helpers"
@@ -23,6 +24,8 @@ func CreateTable(ctx context.Context, title, slug string) (*models.Table, error)
 
 	id := primitive.NewObjectID()
 	dateTime := GetDatetimeFromId(id)
+
+	log.Println("title: ", len(title))
 
 	table := models.Table{
 		ID:           id,
@@ -82,6 +85,29 @@ func UpdateTable(ctx context.Context, title, slug string, id primitive.ObjectID)
 	}
 
 	return &table, nil
+}
+
+func Table(ctx context.Context, slug string) (*models.Table, error) {
+	auth := helpers.GetAuth(ctx)
+
+	if auth.Error != nil {
+		return nil, auth.Error
+	}
+
+	var user *models.User
+
+	filter := bson.M{
+		"username":    auth.Username,
+		"tables.slug": slug,
+	}
+
+	err := DB.Collection("users").FindOne(ctx, filter).Decode(&user)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return user.Tables[0], nil
 }
 
 func DeleteTable(ctx context.Context, id primitive.ObjectID) (*models.Table, error) {
