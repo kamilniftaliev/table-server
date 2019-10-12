@@ -57,6 +57,10 @@ func GetUser(ctx context.Context) (*models.User, error) {
 
 	err := usersCollection.FindOne(ctx, filter).Decode(&user)
 
+	for i := 0; i < len(user.Tables); i++ {
+		user.Tables[i].SubjectsCount = len(user.Tables[i].Subjects)
+	}
+
 	if err != nil {
 		log.Fatal(err)
 	}

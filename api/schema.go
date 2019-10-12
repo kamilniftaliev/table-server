@@ -45,25 +45,47 @@ type DirectiveRoot struct {
 }
 
 type ComplexityRoot struct {
+	Class struct {
+		ID          func(childComplexity int) int
+		IsDivisible func(childComplexity int) int
+		Title       func(childComplexity int) int
+	}
+
 	Mutation struct {
+		CreateClass    func(childComplexity int, title string, isDivisible bool, tableID primitive.ObjectID) int
+		CreateSubject  func(childComplexity int, title string, isDivisible bool, tableID primitive.ObjectID) int
 		CreateTable    func(childComplexity int, title string, slug string) int
+		DeleteClass    func(childComplexity int, id primitive.ObjectID, tableID primitive.ObjectID) int
+		DeleteSubject  func(childComplexity int, id primitive.ObjectID, tableID primitive.ObjectID) int
 		DeleteTable    func(childComplexity int, id primitive.ObjectID) int
 		DuplicateTable func(childComplexity int, id primitive.ObjectID) int
 		SignIn         func(childComplexity int, username string, password string) int
+		UpdateClass    func(childComplexity int, id primitive.ObjectID, title string, isDivisible bool, tableID primitive.ObjectID) int
+		UpdateSubject  func(childComplexity int, id primitive.ObjectID, title string, isDivisible bool, tableID primitive.ObjectID) int
 		UpdateTable    func(childComplexity int, title string, slug string, id primitive.ObjectID) int
 	}
 
 	Query struct {
-		Table func(childComplexity int, slug string) int
-		User  func(childComplexity int) int
+		Classes  func(childComplexity int, tableID primitive.ObjectID) int
+		Subjects func(childComplexity int, tableID primitive.ObjectID) int
+		Table    func(childComplexity int, slug string) int
+		User     func(childComplexity int) int
+	}
+
+	Subject struct {
+		ID          func(childComplexity int) int
+		IsDivisible func(childComplexity int) int
+		Title       func(childComplexity int) int
 	}
 
 	Table struct {
-		Created      func(childComplexity int) int
-		ID           func(childComplexity int) int
-		LastModified func(childComplexity int) int
-		Slug         func(childComplexity int) int
-		Title        func(childComplexity int) int
+		Created       func(childComplexity int) int
+		ID            func(childComplexity int) int
+		LastModified  func(childComplexity int) int
+		Slug          func(childComplexity int) int
+		Subjects      func(childComplexity int) int
+		SubjectsCount func(childComplexity int) int
+		Title         func(childComplexity int) int
 	}
 
 	Token struct {
@@ -86,10 +108,18 @@ type MutationResolver interface {
 	UpdateTable(ctx context.Context, title string, slug string, id primitive.ObjectID) (*models.Table, error)
 	DeleteTable(ctx context.Context, id primitive.ObjectID) (*models.Table, error)
 	DuplicateTable(ctx context.Context, id primitive.ObjectID) (*models.Table, error)
+	CreateSubject(ctx context.Context, title string, isDivisible bool, tableID primitive.ObjectID) (*models.Subject, error)
+	UpdateSubject(ctx context.Context, id primitive.ObjectID, title string, isDivisible bool, tableID primitive.ObjectID) (*models.Subject, error)
+	DeleteSubject(ctx context.Context, id primitive.ObjectID, tableID primitive.ObjectID) (*models.Subject, error)
+	CreateClass(ctx context.Context, title string, isDivisible bool, tableID primitive.ObjectID) (*models.Class, error)
+	UpdateClass(ctx context.Context, id primitive.ObjectID, title string, isDivisible bool, tableID primitive.ObjectID) (*models.Class, error)
+	DeleteClass(ctx context.Context, id primitive.ObjectID, tableID primitive.ObjectID) (*models.Class, error)
 }
 type QueryResolver interface {
 	User(ctx context.Context) (*models.User, error)
 	Table(ctx context.Context, slug string) (*models.Table, error)
+	Subjects(ctx context.Context, tableID primitive.ObjectID) ([]*models.Subject, error)
+	Classes(ctx context.Context, tableID primitive.ObjectID) ([]*models.Class, error)
 }
 
 type executableSchema struct {
@@ -107,6 +137,51 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 	_ = ec
 	switch typeName + "." + field {
 
+	case "Class.id":
+		if e.complexity.Class.ID == nil {
+			break
+		}
+
+		return e.complexity.Class.ID(childComplexity), true
+
+	case "Class.isDivisible":
+		if e.complexity.Class.IsDivisible == nil {
+			break
+		}
+
+		return e.complexity.Class.IsDivisible(childComplexity), true
+
+	case "Class.title":
+		if e.complexity.Class.Title == nil {
+			break
+		}
+
+		return e.complexity.Class.Title(childComplexity), true
+
+	case "Mutation.createClass":
+		if e.complexity.Mutation.CreateClass == nil {
+			break
+		}
+
+		args, err := ec.field_Mutation_createClass_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Mutation.CreateClass(childComplexity, args["title"].(string), args["isDivisible"].(bool), args["tableId"].(primitive.ObjectID)), true
+
+	case "Mutation.createSubject":
+		if e.complexity.Mutation.CreateSubject == nil {
+			break
+		}
+
+		args, err := ec.field_Mutation_createSubject_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Mutation.CreateSubject(childComplexity, args["title"].(string), args["isDivisible"].(bool), args["tableId"].(primitive.ObjectID)), true
+
 	case "Mutation.createTable":
 		if e.complexity.Mutation.CreateTable == nil {
 			break
@@ -118,6 +193,30 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Mutation.CreateTable(childComplexity, args["title"].(string), args["slug"].(string)), true
+
+	case "Mutation.deleteClass":
+		if e.complexity.Mutation.DeleteClass == nil {
+			break
+		}
+
+		args, err := ec.field_Mutation_deleteClass_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Mutation.DeleteClass(childComplexity, args["id"].(primitive.ObjectID), args["tableId"].(primitive.ObjectID)), true
+
+	case "Mutation.deleteSubject":
+		if e.complexity.Mutation.DeleteSubject == nil {
+			break
+		}
+
+		args, err := ec.field_Mutation_deleteSubject_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Mutation.DeleteSubject(childComplexity, args["id"].(primitive.ObjectID), args["tableId"].(primitive.ObjectID)), true
 
 	case "Mutation.deleteTable":
 		if e.complexity.Mutation.DeleteTable == nil {
@@ -155,6 +254,30 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Mutation.SignIn(childComplexity, args["username"].(string), args["password"].(string)), true
 
+	case "Mutation.updateClass":
+		if e.complexity.Mutation.UpdateClass == nil {
+			break
+		}
+
+		args, err := ec.field_Mutation_updateClass_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Mutation.UpdateClass(childComplexity, args["id"].(primitive.ObjectID), args["title"].(string), args["isDivisible"].(bool), args["tableId"].(primitive.ObjectID)), true
+
+	case "Mutation.updateSubject":
+		if e.complexity.Mutation.UpdateSubject == nil {
+			break
+		}
+
+		args, err := ec.field_Mutation_updateSubject_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Mutation.UpdateSubject(childComplexity, args["id"].(primitive.ObjectID), args["title"].(string), args["isDivisible"].(bool), args["tableId"].(primitive.ObjectID)), true
+
 	case "Mutation.updateTable":
 		if e.complexity.Mutation.UpdateTable == nil {
 			break
@@ -166,6 +289,30 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Mutation.UpdateTable(childComplexity, args["title"].(string), args["slug"].(string), args["id"].(primitive.ObjectID)), true
+
+	case "Query.classes":
+		if e.complexity.Query.Classes == nil {
+			break
+		}
+
+		args, err := ec.field_Query_classes_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Query.Classes(childComplexity, args["tableId"].(primitive.ObjectID)), true
+
+	case "Query.subjects":
+		if e.complexity.Query.Subjects == nil {
+			break
+		}
+
+		args, err := ec.field_Query_subjects_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Query.Subjects(childComplexity, args["tableId"].(primitive.ObjectID)), true
 
 	case "Query.table":
 		if e.complexity.Query.Table == nil {
@@ -185,6 +332,27 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Query.User(childComplexity), true
+
+	case "Subject.id":
+		if e.complexity.Subject.ID == nil {
+			break
+		}
+
+		return e.complexity.Subject.ID(childComplexity), true
+
+	case "Subject.isDivisible":
+		if e.complexity.Subject.IsDivisible == nil {
+			break
+		}
+
+		return e.complexity.Subject.IsDivisible(childComplexity), true
+
+	case "Subject.title":
+		if e.complexity.Subject.Title == nil {
+			break
+		}
+
+		return e.complexity.Subject.Title(childComplexity), true
 
 	case "Table.created":
 		if e.complexity.Table.Created == nil {
@@ -213,6 +381,20 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Table.Slug(childComplexity), true
+
+	case "Table.subjects":
+		if e.complexity.Table.Subjects == nil {
+			break
+		}
+
+		return e.complexity.Table.Subjects(childComplexity), true
+
+	case "Table.subjectsCount":
+		if e.complexity.Table.SubjectsCount == nil {
+			break
+		}
+
+		return e.complexity.Table.SubjectsCount(childComplexity), true
 
 	case "Table.title":
 		if e.complexity.Table.Title == nil {
@@ -332,9 +514,17 @@ func (ec *executionContext) introspectType(name string) (*introspection.Type, er
 }
 
 var parsedSchema = gqlparser.MustLoadSchema(
+	&ast.Source{Name: "schema/class.gql", Input: `type Class {
+  id: ID!
+  title: String!
+  isDivisible: Boolean!
+}
+`},
 	&ast.Source{Name: "schema/main.gql", Input: `type Query {
   user: User!
   table(slug: String!): Table
+  subjects(tableId: ID!): [Subject]
+  classes(tableId: ID!): [Class]
 }
 
 type Mutation {
@@ -344,6 +534,30 @@ type Mutation {
   updateTable(title: String!, slug: String!, id: ID!): Table!
   deleteTable(id: ID!): Table!
   duplicateTable(id: ID!): Table!
+
+  createSubject(title: String!, isDivisible: Boolean!, tableId: ID!): Subject!
+  updateSubject(
+    id: ID!
+    title: String!
+    isDivisible: Boolean!
+    tableId: ID!
+  ): Subject!
+  deleteSubject(id: ID!, tableId: ID!): Subject!
+
+  createClass(title: String!, isDivisible: Boolean!, tableId: ID!): Class!
+  updateClass(
+    id: ID!
+    title: String!
+    isDivisible: Boolean!
+    tableId: ID!
+  ): Class!
+  deleteClass(id: ID!, tableId: ID!): Class!
+}
+`},
+	&ast.Source{Name: "schema/subject.gql", Input: `type Subject {
+  id: ID!
+  title: String!
+  isDivisible: Boolean!
 }
 `},
 	&ast.Source{Name: "schema/table.gql", Input: `scalar DateTime
@@ -354,6 +568,8 @@ type Table {
   slug: String!
   created: DateTime!
   lastModified: DateTime!
+  subjects: [Subject]
+  subjectsCount: Int
 }
 `},
 	&ast.Source{Name: "schema/user.gql", Input: `type User {
@@ -375,6 +591,66 @@ type Token {
 
 // region    ***************************** args.gotpl *****************************
 
+func (ec *executionContext) field_Mutation_createClass_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 string
+	if tmp, ok := rawArgs["title"]; ok {
+		arg0, err = ec.unmarshalNString2string(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["title"] = arg0
+	var arg1 bool
+	if tmp, ok := rawArgs["isDivisible"]; ok {
+		arg1, err = ec.unmarshalNBoolean2bool(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["isDivisible"] = arg1
+	var arg2 primitive.ObjectID
+	if tmp, ok := rawArgs["tableId"]; ok {
+		arg2, err = ec.unmarshalNID2goᚗmongodbᚗorgᚋmongoᚑdriverᚋbsonᚋprimitiveᚐObjectID(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["tableId"] = arg2
+	return args, nil
+}
+
+func (ec *executionContext) field_Mutation_createSubject_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 string
+	if tmp, ok := rawArgs["title"]; ok {
+		arg0, err = ec.unmarshalNString2string(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["title"] = arg0
+	var arg1 bool
+	if tmp, ok := rawArgs["isDivisible"]; ok {
+		arg1, err = ec.unmarshalNBoolean2bool(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["isDivisible"] = arg1
+	var arg2 primitive.ObjectID
+	if tmp, ok := rawArgs["tableId"]; ok {
+		arg2, err = ec.unmarshalNID2goᚗmongodbᚗorgᚋmongoᚑdriverᚋbsonᚋprimitiveᚐObjectID(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["tableId"] = arg2
+	return args, nil
+}
+
 func (ec *executionContext) field_Mutation_createTable_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
 	var err error
 	args := map[string]interface{}{}
@@ -394,6 +670,50 @@ func (ec *executionContext) field_Mutation_createTable_args(ctx context.Context,
 		}
 	}
 	args["slug"] = arg1
+	return args, nil
+}
+
+func (ec *executionContext) field_Mutation_deleteClass_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 primitive.ObjectID
+	if tmp, ok := rawArgs["id"]; ok {
+		arg0, err = ec.unmarshalNID2goᚗmongodbᚗorgᚋmongoᚑdriverᚋbsonᚋprimitiveᚐObjectID(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["id"] = arg0
+	var arg1 primitive.ObjectID
+	if tmp, ok := rawArgs["tableId"]; ok {
+		arg1, err = ec.unmarshalNID2goᚗmongodbᚗorgᚋmongoᚑdriverᚋbsonᚋprimitiveᚐObjectID(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["tableId"] = arg1
+	return args, nil
+}
+
+func (ec *executionContext) field_Mutation_deleteSubject_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 primitive.ObjectID
+	if tmp, ok := rawArgs["id"]; ok {
+		arg0, err = ec.unmarshalNID2goᚗmongodbᚗorgᚋmongoᚑdriverᚋbsonᚋprimitiveᚐObjectID(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["id"] = arg0
+	var arg1 primitive.ObjectID
+	if tmp, ok := rawArgs["tableId"]; ok {
+		arg1, err = ec.unmarshalNID2goᚗmongodbᚗorgᚋmongoᚑdriverᚋbsonᚋprimitiveᚐObjectID(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["tableId"] = arg1
 	return args, nil
 }
 
@@ -447,6 +767,82 @@ func (ec *executionContext) field_Mutation_signIn_args(ctx context.Context, rawA
 	return args, nil
 }
 
+func (ec *executionContext) field_Mutation_updateClass_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 primitive.ObjectID
+	if tmp, ok := rawArgs["id"]; ok {
+		arg0, err = ec.unmarshalNID2goᚗmongodbᚗorgᚋmongoᚑdriverᚋbsonᚋprimitiveᚐObjectID(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["id"] = arg0
+	var arg1 string
+	if tmp, ok := rawArgs["title"]; ok {
+		arg1, err = ec.unmarshalNString2string(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["title"] = arg1
+	var arg2 bool
+	if tmp, ok := rawArgs["isDivisible"]; ok {
+		arg2, err = ec.unmarshalNBoolean2bool(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["isDivisible"] = arg2
+	var arg3 primitive.ObjectID
+	if tmp, ok := rawArgs["tableId"]; ok {
+		arg3, err = ec.unmarshalNID2goᚗmongodbᚗorgᚋmongoᚑdriverᚋbsonᚋprimitiveᚐObjectID(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["tableId"] = arg3
+	return args, nil
+}
+
+func (ec *executionContext) field_Mutation_updateSubject_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 primitive.ObjectID
+	if tmp, ok := rawArgs["id"]; ok {
+		arg0, err = ec.unmarshalNID2goᚗmongodbᚗorgᚋmongoᚑdriverᚋbsonᚋprimitiveᚐObjectID(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["id"] = arg0
+	var arg1 string
+	if tmp, ok := rawArgs["title"]; ok {
+		arg1, err = ec.unmarshalNString2string(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["title"] = arg1
+	var arg2 bool
+	if tmp, ok := rawArgs["isDivisible"]; ok {
+		arg2, err = ec.unmarshalNBoolean2bool(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["isDivisible"] = arg2
+	var arg3 primitive.ObjectID
+	if tmp, ok := rawArgs["tableId"]; ok {
+		arg3, err = ec.unmarshalNID2goᚗmongodbᚗorgᚋmongoᚑdriverᚋbsonᚋprimitiveᚐObjectID(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["tableId"] = arg3
+	return args, nil
+}
+
 func (ec *executionContext) field_Mutation_updateTable_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
 	var err error
 	args := map[string]interface{}{}
@@ -488,6 +884,34 @@ func (ec *executionContext) field_Query___type_args(ctx context.Context, rawArgs
 		}
 	}
 	args["name"] = arg0
+	return args, nil
+}
+
+func (ec *executionContext) field_Query_classes_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 primitive.ObjectID
+	if tmp, ok := rawArgs["tableId"]; ok {
+		arg0, err = ec.unmarshalNID2goᚗmongodbᚗorgᚋmongoᚑdriverᚋbsonᚋprimitiveᚐObjectID(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["tableId"] = arg0
+	return args, nil
+}
+
+func (ec *executionContext) field_Query_subjects_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 primitive.ObjectID
+	if tmp, ok := rawArgs["tableId"]; ok {
+		arg0, err = ec.unmarshalNID2goᚗmongodbᚗorgᚋmongoᚑdriverᚋbsonᚋprimitiveᚐObjectID(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["tableId"] = arg0
 	return args, nil
 }
 
@@ -540,6 +964,117 @@ func (ec *executionContext) field___Type_fields_args(ctx context.Context, rawArg
 // endregion ************************** directives.gotpl **************************
 
 // region    **************************** field.gotpl *****************************
+
+func (ec *executionContext) _Class_id(ctx context.Context, field graphql.CollectedField, obj *models.Class) (ret graphql.Marshaler) {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+		ec.Tracer.EndFieldExecution(ctx)
+	}()
+	rctx := &graphql.ResolverContext{
+		Object:   "Class",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.ID, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !ec.HasError(rctx) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(primitive.ObjectID)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalNID2goᚗmongodbᚗorgᚋmongoᚑdriverᚋbsonᚋprimitiveᚐObjectID(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Class_title(ctx context.Context, field graphql.CollectedField, obj *models.Class) (ret graphql.Marshaler) {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+		ec.Tracer.EndFieldExecution(ctx)
+	}()
+	rctx := &graphql.ResolverContext{
+		Object:   "Class",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Title, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !ec.HasError(rctx) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Class_isDivisible(ctx context.Context, field graphql.CollectedField, obj *models.Class) (ret graphql.Marshaler) {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+		ec.Tracer.EndFieldExecution(ctx)
+	}()
+	rctx := &graphql.ResolverContext{
+		Object:   "Class",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.IsDivisible, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !ec.HasError(rctx) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(bool)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalNBoolean2bool(ctx, field.Selections, res)
+}
 
 func (ec *executionContext) _Mutation_signIn(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
 	ctx = ec.Tracer.StartFieldExecution(ctx, field)
@@ -761,6 +1296,270 @@ func (ec *executionContext) _Mutation_duplicateTable(ctx context.Context, field 
 	return ec.marshalNTable2ᚖgithubᚗcomᚋkamilniftalievᚋtableᚑserverᚋapiᚋmodelsᚐTable(ctx, field.Selections, res)
 }
 
+func (ec *executionContext) _Mutation_createSubject(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+		ec.Tracer.EndFieldExecution(ctx)
+	}()
+	rctx := &graphql.ResolverContext{
+		Object:   "Mutation",
+		Field:    field,
+		Args:     nil,
+		IsMethod: true,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	rawArgs := field.ArgumentMap(ec.Variables)
+	args, err := ec.field_Mutation_createSubject_args(ctx, rawArgs)
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	rctx.Args = args
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Mutation().CreateSubject(rctx, args["title"].(string), args["isDivisible"].(bool), args["tableId"].(primitive.ObjectID))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !ec.HasError(rctx) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*models.Subject)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalNSubject2ᚖgithubᚗcomᚋkamilniftalievᚋtableᚑserverᚋapiᚋmodelsᚐSubject(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Mutation_updateSubject(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+		ec.Tracer.EndFieldExecution(ctx)
+	}()
+	rctx := &graphql.ResolverContext{
+		Object:   "Mutation",
+		Field:    field,
+		Args:     nil,
+		IsMethod: true,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	rawArgs := field.ArgumentMap(ec.Variables)
+	args, err := ec.field_Mutation_updateSubject_args(ctx, rawArgs)
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	rctx.Args = args
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Mutation().UpdateSubject(rctx, args["id"].(primitive.ObjectID), args["title"].(string), args["isDivisible"].(bool), args["tableId"].(primitive.ObjectID))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !ec.HasError(rctx) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*models.Subject)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalNSubject2ᚖgithubᚗcomᚋkamilniftalievᚋtableᚑserverᚋapiᚋmodelsᚐSubject(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Mutation_deleteSubject(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+		ec.Tracer.EndFieldExecution(ctx)
+	}()
+	rctx := &graphql.ResolverContext{
+		Object:   "Mutation",
+		Field:    field,
+		Args:     nil,
+		IsMethod: true,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	rawArgs := field.ArgumentMap(ec.Variables)
+	args, err := ec.field_Mutation_deleteSubject_args(ctx, rawArgs)
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	rctx.Args = args
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Mutation().DeleteSubject(rctx, args["id"].(primitive.ObjectID), args["tableId"].(primitive.ObjectID))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !ec.HasError(rctx) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*models.Subject)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalNSubject2ᚖgithubᚗcomᚋkamilniftalievᚋtableᚑserverᚋapiᚋmodelsᚐSubject(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Mutation_createClass(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+		ec.Tracer.EndFieldExecution(ctx)
+	}()
+	rctx := &graphql.ResolverContext{
+		Object:   "Mutation",
+		Field:    field,
+		Args:     nil,
+		IsMethod: true,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	rawArgs := field.ArgumentMap(ec.Variables)
+	args, err := ec.field_Mutation_createClass_args(ctx, rawArgs)
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	rctx.Args = args
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Mutation().CreateClass(rctx, args["title"].(string), args["isDivisible"].(bool), args["tableId"].(primitive.ObjectID))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !ec.HasError(rctx) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*models.Class)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalNClass2ᚖgithubᚗcomᚋkamilniftalievᚋtableᚑserverᚋapiᚋmodelsᚐClass(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Mutation_updateClass(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+		ec.Tracer.EndFieldExecution(ctx)
+	}()
+	rctx := &graphql.ResolverContext{
+		Object:   "Mutation",
+		Field:    field,
+		Args:     nil,
+		IsMethod: true,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	rawArgs := field.ArgumentMap(ec.Variables)
+	args, err := ec.field_Mutation_updateClass_args(ctx, rawArgs)
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	rctx.Args = args
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Mutation().UpdateClass(rctx, args["id"].(primitive.ObjectID), args["title"].(string), args["isDivisible"].(bool), args["tableId"].(primitive.ObjectID))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !ec.HasError(rctx) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*models.Class)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalNClass2ᚖgithubᚗcomᚋkamilniftalievᚋtableᚑserverᚋapiᚋmodelsᚐClass(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Mutation_deleteClass(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+		ec.Tracer.EndFieldExecution(ctx)
+	}()
+	rctx := &graphql.ResolverContext{
+		Object:   "Mutation",
+		Field:    field,
+		Args:     nil,
+		IsMethod: true,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	rawArgs := field.ArgumentMap(ec.Variables)
+	args, err := ec.field_Mutation_deleteClass_args(ctx, rawArgs)
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	rctx.Args = args
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Mutation().DeleteClass(rctx, args["id"].(primitive.ObjectID), args["tableId"].(primitive.ObjectID))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !ec.HasError(rctx) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*models.Class)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalNClass2ᚖgithubᚗcomᚋkamilniftalievᚋtableᚑserverᚋapiᚋmodelsᚐClass(ctx, field.Selections, res)
+}
+
 func (ec *executionContext) _Query_user(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
 	ctx = ec.Tracer.StartFieldExecution(ctx, field)
 	defer func() {
@@ -839,6 +1638,88 @@ func (ec *executionContext) _Query_table(ctx context.Context, field graphql.Coll
 	return ec.marshalOTable2ᚖgithubᚗcomᚋkamilniftalievᚋtableᚑserverᚋapiᚋmodelsᚐTable(ctx, field.Selections, res)
 }
 
+func (ec *executionContext) _Query_subjects(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+		ec.Tracer.EndFieldExecution(ctx)
+	}()
+	rctx := &graphql.ResolverContext{
+		Object:   "Query",
+		Field:    field,
+		Args:     nil,
+		IsMethod: true,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	rawArgs := field.ArgumentMap(ec.Variables)
+	args, err := ec.field_Query_subjects_args(ctx, rawArgs)
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	rctx.Args = args
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Query().Subjects(rctx, args["tableId"].(primitive.ObjectID))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.([]*models.Subject)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalOSubject2ᚕᚖgithubᚗcomᚋkamilniftalievᚋtableᚑserverᚋapiᚋmodelsᚐSubject(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Query_classes(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+		ec.Tracer.EndFieldExecution(ctx)
+	}()
+	rctx := &graphql.ResolverContext{
+		Object:   "Query",
+		Field:    field,
+		Args:     nil,
+		IsMethod: true,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	rawArgs := field.ArgumentMap(ec.Variables)
+	args, err := ec.field_Query_classes_args(ctx, rawArgs)
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	rctx.Args = args
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Query().Classes(rctx, args["tableId"].(primitive.ObjectID))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.([]*models.Class)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalOClass2ᚕᚖgithubᚗcomᚋkamilniftalievᚋtableᚑserverᚋapiᚋmodelsᚐClass(ctx, field.Selections, res)
+}
+
 func (ec *executionContext) _Query___type(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
 	ctx = ec.Tracer.StartFieldExecution(ctx, field)
 	defer func() {
@@ -912,6 +1793,117 @@ func (ec *executionContext) _Query___schema(ctx context.Context, field graphql.C
 	rctx.Result = res
 	ctx = ec.Tracer.StartFieldChildExecution(ctx)
 	return ec.marshalO__Schema2ᚖgithubᚗcomᚋ99designsᚋgqlgenᚋgraphqlᚋintrospectionᚐSchema(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Subject_id(ctx context.Context, field graphql.CollectedField, obj *models.Subject) (ret graphql.Marshaler) {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+		ec.Tracer.EndFieldExecution(ctx)
+	}()
+	rctx := &graphql.ResolverContext{
+		Object:   "Subject",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.ID, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !ec.HasError(rctx) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(primitive.ObjectID)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalNID2goᚗmongodbᚗorgᚋmongoᚑdriverᚋbsonᚋprimitiveᚐObjectID(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Subject_title(ctx context.Context, field graphql.CollectedField, obj *models.Subject) (ret graphql.Marshaler) {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+		ec.Tracer.EndFieldExecution(ctx)
+	}()
+	rctx := &graphql.ResolverContext{
+		Object:   "Subject",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Title, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !ec.HasError(rctx) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Subject_isDivisible(ctx context.Context, field graphql.CollectedField, obj *models.Subject) (ret graphql.Marshaler) {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+		ec.Tracer.EndFieldExecution(ctx)
+	}()
+	rctx := &graphql.ResolverContext{
+		Object:   "Subject",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.IsDivisible, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !ec.HasError(rctx) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(bool)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalNBoolean2bool(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Table_id(ctx context.Context, field graphql.CollectedField, obj *models.Table) (ret graphql.Marshaler) {
@@ -1097,6 +2089,74 @@ func (ec *executionContext) _Table_lastModified(ctx context.Context, field graph
 	rctx.Result = res
 	ctx = ec.Tracer.StartFieldChildExecution(ctx)
 	return ec.marshalNDateTime2goᚗmongodbᚗorgᚋmongoᚑdriverᚋbsonᚋprimitiveᚐDateTime(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Table_subjects(ctx context.Context, field graphql.CollectedField, obj *models.Table) (ret graphql.Marshaler) {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+		ec.Tracer.EndFieldExecution(ctx)
+	}()
+	rctx := &graphql.ResolverContext{
+		Object:   "Table",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Subjects, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.([]*models.Subject)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalOSubject2ᚕᚖgithubᚗcomᚋkamilniftalievᚋtableᚑserverᚋapiᚋmodelsᚐSubject(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Table_subjectsCount(ctx context.Context, field graphql.CollectedField, obj *models.Table) (ret graphql.Marshaler) {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+		ec.Tracer.EndFieldExecution(ctx)
+	}()
+	rctx := &graphql.ResolverContext{
+		Object:   "Table",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.SubjectsCount, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalOInt2int(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Token_token(ctx context.Context, field graphql.CollectedField, obj *models.Token) (ret graphql.Marshaler) {
@@ -2517,6 +3577,43 @@ func (ec *executionContext) ___Type_ofType(ctx context.Context, field graphql.Co
 
 // region    **************************** object.gotpl ****************************
 
+var classImplementors = []string{"Class"}
+
+func (ec *executionContext) _Class(ctx context.Context, sel ast.SelectionSet, obj *models.Class) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.RequestContext, sel, classImplementors)
+
+	out := graphql.NewFieldSet(fields)
+	var invalids uint32
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("Class")
+		case "id":
+			out.Values[i] = ec._Class_id(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "title":
+			out.Values[i] = ec._Class_title(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "isDivisible":
+			out.Values[i] = ec._Class_isDivisible(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch()
+	if invalids > 0 {
+		return graphql.Null
+	}
+	return out
+}
+
 var mutationImplementors = []string{"Mutation"}
 
 func (ec *executionContext) _Mutation(ctx context.Context, sel ast.SelectionSet) graphql.Marshaler {
@@ -2554,6 +3651,36 @@ func (ec *executionContext) _Mutation(ctx context.Context, sel ast.SelectionSet)
 			}
 		case "duplicateTable":
 			out.Values[i] = ec._Mutation_duplicateTable(ctx, field)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "createSubject":
+			out.Values[i] = ec._Mutation_createSubject(ctx, field)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "updateSubject":
+			out.Values[i] = ec._Mutation_updateSubject(ctx, field)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "deleteSubject":
+			out.Values[i] = ec._Mutation_deleteSubject(ctx, field)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "createClass":
+			out.Values[i] = ec._Mutation_createClass(ctx, field)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "updateClass":
+			out.Values[i] = ec._Mutation_updateClass(ctx, field)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "deleteClass":
+			out.Values[i] = ec._Mutation_deleteClass(ctx, field)
 			if out.Values[i] == graphql.Null {
 				invalids++
 			}
@@ -2608,10 +3735,69 @@ func (ec *executionContext) _Query(ctx context.Context, sel ast.SelectionSet) gr
 				res = ec._Query_table(ctx, field)
 				return res
 			})
+		case "subjects":
+			field := field
+			out.Concurrently(i, func() (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Query_subjects(ctx, field)
+				return res
+			})
+		case "classes":
+			field := field
+			out.Concurrently(i, func() (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Query_classes(ctx, field)
+				return res
+			})
 		case "__type":
 			out.Values[i] = ec._Query___type(ctx, field)
 		case "__schema":
 			out.Values[i] = ec._Query___schema(ctx, field)
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch()
+	if invalids > 0 {
+		return graphql.Null
+	}
+	return out
+}
+
+var subjectImplementors = []string{"Subject"}
+
+func (ec *executionContext) _Subject(ctx context.Context, sel ast.SelectionSet, obj *models.Subject) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.RequestContext, sel, subjectImplementors)
+
+	out := graphql.NewFieldSet(fields)
+	var invalids uint32
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("Subject")
+		case "id":
+			out.Values[i] = ec._Subject_id(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "title":
+			out.Values[i] = ec._Subject_title(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "isDivisible":
+			out.Values[i] = ec._Subject_isDivisible(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}
@@ -2659,6 +3845,10 @@ func (ec *executionContext) _Table(ctx context.Context, sel ast.SelectionSet, ob
 			if out.Values[i] == graphql.Null {
 				invalids++
 			}
+		case "subjects":
+			out.Values[i] = ec._Table_subjects(ctx, field, obj)
+		case "subjectsCount":
+			out.Values[i] = ec._Table_subjectsCount(ctx, field, obj)
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}
@@ -3008,6 +4198,20 @@ func (ec *executionContext) marshalNBoolean2bool(ctx context.Context, sel ast.Se
 	return res
 }
 
+func (ec *executionContext) marshalNClass2githubᚗcomᚋkamilniftalievᚋtableᚑserverᚋapiᚋmodelsᚐClass(ctx context.Context, sel ast.SelectionSet, v models.Class) graphql.Marshaler {
+	return ec._Class(ctx, sel, &v)
+}
+
+func (ec *executionContext) marshalNClass2ᚖgithubᚗcomᚋkamilniftalievᚋtableᚑserverᚋapiᚋmodelsᚐClass(ctx context.Context, sel ast.SelectionSet, v *models.Class) graphql.Marshaler {
+	if v == nil {
+		if !ec.HasError(graphql.GetResolverContext(ctx)) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	return ec._Class(ctx, sel, v)
+}
+
 func (ec *executionContext) unmarshalNDateTime2goᚗmongodbᚗorgᚋmongoᚑdriverᚋbsonᚋprimitiveᚐDateTime(ctx context.Context, v interface{}) (primitive.DateTime, error) {
 	return types.UnmarshalDateTime(v)
 }
@@ -3062,6 +4266,20 @@ func (ec *executionContext) marshalNString2string(ctx context.Context, sel ast.S
 		}
 	}
 	return res
+}
+
+func (ec *executionContext) marshalNSubject2githubᚗcomᚋkamilniftalievᚋtableᚑserverᚋapiᚋmodelsᚐSubject(ctx context.Context, sel ast.SelectionSet, v models.Subject) graphql.Marshaler {
+	return ec._Subject(ctx, sel, &v)
+}
+
+func (ec *executionContext) marshalNSubject2ᚖgithubᚗcomᚋkamilniftalievᚋtableᚑserverᚋapiᚋmodelsᚐSubject(ctx context.Context, sel ast.SelectionSet, v *models.Subject) graphql.Marshaler {
+	if v == nil {
+		if !ec.HasError(graphql.GetResolverContext(ctx)) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	return ec._Subject(ctx, sel, v)
 }
 
 func (ec *executionContext) marshalNTable2githubᚗcomᚋkamilniftalievᚋtableᚑserverᚋapiᚋmodelsᚐTable(ctx context.Context, sel ast.SelectionSet, v models.Table) graphql.Marshaler {
@@ -3392,6 +4610,65 @@ func (ec *executionContext) marshalOBoolean2ᚖbool(ctx context.Context, sel ast
 	return ec.marshalOBoolean2bool(ctx, sel, *v)
 }
 
+func (ec *executionContext) marshalOClass2githubᚗcomᚋkamilniftalievᚋtableᚑserverᚋapiᚋmodelsᚐClass(ctx context.Context, sel ast.SelectionSet, v models.Class) graphql.Marshaler {
+	return ec._Class(ctx, sel, &v)
+}
+
+func (ec *executionContext) marshalOClass2ᚕᚖgithubᚗcomᚋkamilniftalievᚋtableᚑserverᚋapiᚋmodelsᚐClass(ctx context.Context, sel ast.SelectionSet, v []*models.Class) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	ret := make(graphql.Array, len(v))
+	var wg sync.WaitGroup
+	isLen1 := len(v) == 1
+	if !isLen1 {
+		wg.Add(len(v))
+	}
+	for i := range v {
+		i := i
+		rctx := &graphql.ResolverContext{
+			Index:  &i,
+			Result: &v[i],
+		}
+		ctx := graphql.WithResolverContext(ctx, rctx)
+		f := func(i int) {
+			defer func() {
+				if r := recover(); r != nil {
+					ec.Error(ctx, ec.Recover(ctx, r))
+					ret = nil
+				}
+			}()
+			if !isLen1 {
+				defer wg.Done()
+			}
+			ret[i] = ec.marshalOClass2ᚖgithubᚗcomᚋkamilniftalievᚋtableᚑserverᚋapiᚋmodelsᚐClass(ctx, sel, v[i])
+		}
+		if isLen1 {
+			f(i)
+		} else {
+			go f(i)
+		}
+
+	}
+	wg.Wait()
+	return ret
+}
+
+func (ec *executionContext) marshalOClass2ᚖgithubᚗcomᚋkamilniftalievᚋtableᚑserverᚋapiᚋmodelsᚐClass(ctx context.Context, sel ast.SelectionSet, v *models.Class) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	return ec._Class(ctx, sel, v)
+}
+
+func (ec *executionContext) unmarshalOInt2int(ctx context.Context, v interface{}) (int, error) {
+	return graphql.UnmarshalInt(v)
+}
+
+func (ec *executionContext) marshalOInt2int(ctx context.Context, sel ast.SelectionSet, v int) graphql.Marshaler {
+	return graphql.MarshalInt(v)
+}
+
 func (ec *executionContext) unmarshalOString2string(ctx context.Context, v interface{}) (string, error) {
 	return graphql.UnmarshalString(v)
 }
@@ -3413,6 +4690,57 @@ func (ec *executionContext) marshalOString2ᚖstring(ctx context.Context, sel as
 		return graphql.Null
 	}
 	return ec.marshalOString2string(ctx, sel, *v)
+}
+
+func (ec *executionContext) marshalOSubject2githubᚗcomᚋkamilniftalievᚋtableᚑserverᚋapiᚋmodelsᚐSubject(ctx context.Context, sel ast.SelectionSet, v models.Subject) graphql.Marshaler {
+	return ec._Subject(ctx, sel, &v)
+}
+
+func (ec *executionContext) marshalOSubject2ᚕᚖgithubᚗcomᚋkamilniftalievᚋtableᚑserverᚋapiᚋmodelsᚐSubject(ctx context.Context, sel ast.SelectionSet, v []*models.Subject) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	ret := make(graphql.Array, len(v))
+	var wg sync.WaitGroup
+	isLen1 := len(v) == 1
+	if !isLen1 {
+		wg.Add(len(v))
+	}
+	for i := range v {
+		i := i
+		rctx := &graphql.ResolverContext{
+			Index:  &i,
+			Result: &v[i],
+		}
+		ctx := graphql.WithResolverContext(ctx, rctx)
+		f := func(i int) {
+			defer func() {
+				if r := recover(); r != nil {
+					ec.Error(ctx, ec.Recover(ctx, r))
+					ret = nil
+				}
+			}()
+			if !isLen1 {
+				defer wg.Done()
+			}
+			ret[i] = ec.marshalOSubject2ᚖgithubᚗcomᚋkamilniftalievᚋtableᚑserverᚋapiᚋmodelsᚐSubject(ctx, sel, v[i])
+		}
+		if isLen1 {
+			f(i)
+		} else {
+			go f(i)
+		}
+
+	}
+	wg.Wait()
+	return ret
+}
+
+func (ec *executionContext) marshalOSubject2ᚖgithubᚗcomᚋkamilniftalievᚋtableᚑserverᚋapiᚋmodelsᚐSubject(ctx context.Context, sel ast.SelectionSet, v *models.Subject) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	return ec._Subject(ctx, sel, v)
 }
 
 func (ec *executionContext) marshalOTable2githubᚗcomᚋkamilniftalievᚋtableᚑserverᚋapiᚋmodelsᚐTable(ctx context.Context, sel ast.SelectionSet, v models.Table) graphql.Marshaler {

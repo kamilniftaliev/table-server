@@ -1,6 +1,8 @@
 type Query {
   user: User!
   table(slug: String!): Table
+  subjects(tableId: ID!): [Subject]
+  classes(tableId: ID!): [Class]
 }
 
 type Mutation {
@@ -10,4 +12,22 @@ type Mutation {
   updateTable(title: String!, slug: String!, id: ID!): Table!
   deleteTable(id: ID!): Table!
   duplicateTable(id: ID!): Table!
+
+  createSubject(title: String!, isDivisible: Boolean!, tableId: ID!): Subject!
+  updateSubject(
+    id: ID!
+    title: String!
+    isDivisible: Boolean!
+    tableId: ID!
+  ): Subject!
+  deleteSubject(id: ID!, tableId: ID!): Subject!
+
+  createClass(title: String!, isDivisible: Boolean!, tableId: ID!): Class!
+  updateClass(
+    id: ID!
+    title: String!
+    isDivisible: Boolean!
+    tableId: ID!
+  ): Class!
+  deleteClass(id: ID!, tableId: ID!): Class!
 }

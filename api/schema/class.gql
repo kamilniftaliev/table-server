@@ -1,0 +1,5 @@
+type Class {
+  id: ID!
+  title: String!
+  isDivisible: Boolean!
+}
