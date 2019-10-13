@@ -16,10 +16,6 @@ func (r *Resolver) Mutation() MutationResolver {
 	return &mutationResolver{r}
 }
 
-func (r *queryResolver) Table(ctx context.Context, slug string) (*models.Table, error) {
-	return resolvers.Table(ctx, slug)
-}
-
 func (r *Resolver) Query() QueryResolver {
 	return &queryResolver{r}
 }
@@ -95,7 +91,47 @@ func (r *mutationResolver) DeleteClass(ctx context.Context, id primitive.ObjectI
 	return resolvers.DeleteClass(ctx, id, tableID)
 }
 
+// TEACHER RESOLVERS
+func (r *mutationResolver) CreateTeacher(
+	ctx context.Context,
+	name string,
+	tableID primitive.ObjectID,
+	slug string,
+) (*models.Teacher, error) {
+	return resolvers.CreateTeacher(ctx, name, tableID, slug)
+}
+
+func (r *mutationResolver) UpdateTeacher(
+	ctx context.Context,
+	id primitive.ObjectID,
+	name string,
+	tableID primitive.ObjectID,
+	slug string,
+) (*models.Teacher, error) {
+	return resolvers.UpdateTeacher(ctx, id, name, tableID, slug)
+}
+
+func (r *mutationResolver) UpdateWorkload(
+	ctx context.Context,
+	tableID primitive.ObjectID,
+	teacherID primitive.ObjectID,
+	subjectID primitive.ObjectID,
+	classID primitive.ObjectID,
+	hours int,
+	prevHours int,
+) (*models.Workload, error) {
+	return resolvers.UpdateWorkload(ctx, tableID, teacherID, subjectID, classID, hours, prevHours)
+}
+
+func (r *mutationResolver) DeleteTeacher(ctx context.Context, id primitive.ObjectID, tableID primitive.ObjectID) (*models.Teacher, error) {
+	return resolvers.DeleteTeacher(ctx, id, tableID)
+}
+
 type queryResolver struct{ *Resolver }
+
+func (r *queryResolver) Table(ctx context.Context, slug string) (*models.Table, error) {
+	return resolvers.Table(ctx, slug)
+}
 
 func (r *queryResolver) User(ctx context.Context) (*models.User, error) {
 	return resolvers.GetUser(ctx)
@@ -107,4 +143,8 @@ func (r *queryResolver) Subjects(ctx context.Context, tableID primitive.ObjectID
 
 func (r *queryResolver) Classes(ctx context.Context, tableID primitive.ObjectID) ([]*models.Class, error) {
 	return resolvers.Classes(ctx, tableID)
+}
+
+func (r *queryResolver) Teachers(ctx context.Context, tableID primitive.ObjectID) ([]*models.Teacher, error) {
+	return resolvers.Teachers(ctx, tableID)
 }

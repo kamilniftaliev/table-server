@@ -1,0 +1,13 @@
+type Workload {
+  subjectId: ID!
+  classId: ID!
+  hours: Int
+}
+
+type Teacher {
+  id: ID!
+  name: String!
+  slug: String!
+  workload: [Workload]
+  workloadAmount: Int
+}

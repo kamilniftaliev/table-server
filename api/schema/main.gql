@@ -3,6 +3,7 @@ type Query {
   table(slug: String!): Table
   subjects(tableId: ID!): [Subject]
   classes(tableId: ID!): [Class]
+  teachers(tableId: ID!): [Teacher]
 }
 
 type Mutation {
@@ -30,4 +31,16 @@ type Mutation {
     tableId: ID!
   ): Class!
   deleteClass(id: ID!, tableId: ID!): Class!
+
+  createTeacher(name: String!, tableId: ID!, slug: String!): Teacher!
+  updateTeacher(id: ID!, name: String!, tableId: ID!, slug: String!): Teacher!
+  updateWorkload(
+    tableId: ID!
+    teacherId: ID!
+    subjectId: ID!
+    classId: ID!
+    hours: Int!
+    prevHours: Int!
+  ): Workload!
+  deleteTeacher(id: ID!, tableId: ID!): Teacher!
 }

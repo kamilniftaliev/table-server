@@ -2,6 +2,7 @@ package resolvers
 
 import (
 	"context"
+	"time"
 
 	"github.com/kamilniftaliev/table-server/api/helpers"
 	"github.com/kamilniftaliev/table-server/api/models"
@@ -53,7 +54,10 @@ func CreateSubject(ctx context.Context, title string, isDivisible bool, tableID 
 		"tables._id": tableID,
 	}
 
-	update := bson.M{"$push": bson.M{"tables.$.subjects": subject}}
+	update := bson.M{
+		"$push": bson.M{"tables.$.subjects": subject},
+		"$set":  bson.M{"tables.$.lastModified": primitive.NewDateTimeFromTime(time.Now())},
+	}
 
 	_, err := DB.Collection("users").UpdateOne(ctx, filter, update)
 
@@ -92,6 +96,7 @@ func UpdateSubject(
 		"$set": bson.D{
 			{"tables.$.subjects.$[subject].title", title},
 			{"tables.$.subjects.$[subject].isdivisible", isDivisible},
+			{"tables.$.lastModified", primitive.NewDateTimeFromTime(time.Now())},
 		},
 	}
 
@@ -126,12 +131,13 @@ func DeleteSubject(ctx context.Context, id primitive.ObjectID, tableID primitive
 		"tables._id": tableID,
 	}
 
-	update := bson.D{
-		{"$pull", bson.D{
-			{"tables.$.subjects", bson.D{
-				{"_id", id},
-			}},
-		}},
+	update := bson.M{
+		"$pull": bson.M{
+			"tables.$.subjects": bson.M{"_id": id},
+		},
+		"$set": bson.M{
+			"tables.$.lastModified": primitive.NewDateTimeFromTime(time.Now()),
+		},
 	}
 
 	_, err := DB.Collection("users").UpdateOne(ctx, filter, update)

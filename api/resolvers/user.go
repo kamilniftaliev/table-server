@@ -59,6 +59,8 @@ func GetUser(ctx context.Context) (*models.User, error) {
 
 	for i := 0; i < len(user.Tables); i++ {
 		user.Tables[i].SubjectsCount = len(user.Tables[i].Subjects)
+		user.Tables[i].TeachersCount = len(user.Tables[i].Teachers)
+		user.Tables[i].ClassesCount = len(user.Tables[i].Classes)
 	}
 
 	if err != nil {

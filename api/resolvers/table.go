@@ -2,7 +2,6 @@ package resolvers
 
 import (
 	"context"
-	"log"
 	"time"
 
 	"github.com/kamilniftaliev/table-server/api/helpers"
@@ -25,14 +24,15 @@ func CreateTable(ctx context.Context, title, slug string) (*models.Table, error)
 	id := primitive.NewObjectID()
 	dateTime := GetDatetimeFromId(id)
 
-	log.Println("title: ", len(title))
-
 	table := models.Table{
 		ID:           id,
 		Title:        title,
 		Slug:         slug,
 		Created:      dateTime,
 		LastModified: dateTime,
+		Subjects:     []*models.Subject{},
+		Classes:      []*models.Class{},
+		Teachers:     []*models.Teacher{},
 	}
 
 	filter := bson.M{"username": auth.Username}
@@ -167,13 +167,17 @@ func DuplicateTable(ctx context.Context, id primitive.ObjectID) (*models.Table, 
 
 	originalTable := findTableById(user.Tables, id)
 
-	newTitle := originalTable.Title + "(Kopya)"
+	newTitle := originalTable.Title + " (Copy)"
 	newID := primitive.NewObjectID()
 	dateTime := GetDatetimeFromId(newID)
 
 	newTable := models.Table{
 		ID:           newID,
 		Title:        newTitle,
+		Slug:         originalTable.Slug + "_copy",
+		Subjects:     originalTable.Subjects,
+		Teachers:     originalTable.Teachers,
+		Classes:      originalTable.Classes,
 		Created:      dateTime,
 		LastModified: dateTime,
 	}

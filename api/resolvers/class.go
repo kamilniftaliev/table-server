@@ -2,6 +2,7 @@ package resolvers
 
 import (
 	"context"
+	"time"
 
 	"github.com/kamilniftaliev/table-server/api/helpers"
 	"github.com/kamilniftaliev/table-server/api/models"
@@ -53,7 +54,10 @@ func CreateClass(ctx context.Context, title string, isDivisible bool, tableID pr
 		"tables._id": tableID,
 	}
 
-	update := bson.M{"$push": bson.M{"tables.$.classes": class}}
+	update := bson.M{
+		"$push": bson.M{"tables.$.classes": class},
+		"$set":  bson.M{"tables.$.lastModified": primitive.NewDateTimeFromTime(time.Now())},
+	}
 
 	_, err := DB.Collection("users").UpdateOne(ctx, filter, update)
 
@@ -92,6 +96,7 @@ func UpdateClass(
 		"$set": bson.D{
 			{"tables.$.classes.$[class].title", title},
 			{"tables.$.classes.$[class].isdivisible", isDivisible},
+			{"tables.$.lastModified", primitive.NewDateTimeFromTime(time.Now())},
 		},
 	}
 
@@ -126,12 +131,13 @@ func DeleteClass(ctx context.Context, id primitive.ObjectID, tableID primitive.O
 		"tables._id": tableID,
 	}
 
-	update := bson.D{
-		{"$pull", bson.D{
-			{"tables.$.classes", bson.D{
-				{"_id", id},
-			}},
-		}},
+	update := bson.M{
+		"$pull": bson.M{
+			"tables.$.classes": bson.M{"_id": id},
+		},
+		"$set": bson.M{
+			"tables.$.lastModified": primitive.NewDateTimeFromTime(time.Now()),
+		},
 	}
 
 	_, err := DB.Collection("users").UpdateOne(ctx, filter, update)

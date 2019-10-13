@@ -8,4 +8,8 @@ type Table {
   lastModified: DateTime!
   subjects: [Subject]
   subjectsCount: Int
+  teachers: [Teacher]
+  teachersCount: Int
+  classes: [Class]
+  classesCount: Int
 }
