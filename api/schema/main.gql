@@ -42,5 +42,14 @@ type Mutation {
     hours: Int!
     prevHours: Int!
   ): Workload!
+
+  updateWorkhour(
+    tableId: ID!
+    teacherId: ID!
+    day: String!
+    hour: String!
+    value: Boolean!
+  ): Workhour!
+
   deleteTeacher(id: ID!, tableId: ID!): Teacher!
 }

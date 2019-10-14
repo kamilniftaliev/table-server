@@ -1,3 +1,9 @@
+type Workhour {
+  day: String!
+  hour: String!
+  value: Boolean
+}
+
 type Workload {
   subjectId: ID!
   classId: ID!
@@ -10,4 +16,6 @@ type Teacher {
   slug: String!
   workload: [Workload]
   workloadAmount: Int
+  workhours: [[Boolean]]
+  workhoursAmount: Int
 }

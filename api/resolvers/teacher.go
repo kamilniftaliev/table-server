@@ -53,11 +53,30 @@ func CreateTeacher(ctx context.Context, name string, tableID primitive.ObjectID,
 
 	id := primitive.NewObjectID()
 
+	// var workhours [][]bool
+	// for i := 0; i < 10; i++ {
+	// 	arr := append(workhours, [10]bool{})
+	// 	for j := 0; j < 10; j++ {
+	// 		arr[i][j] = true
+	// 	}
+	// }
+	workhours := [][]bool{
+		{true, true, true, true, true, true, true, true, true, true},
+		{true, true, true, true, true, true, true, true, true, true},
+		{true, true, true, true, true, true, true, true, true, true},
+		{true, true, true, true, true, true, true, true, true, true},
+		{true, true, true, true, true, true, true, true, true, true},
+		{true, true, true, true, true, true, true, true, true, true},
+		{true, true, true, true, true, true, true, true, true, true},
+		{true, true, true, true, true, true, true, true, true, true},
+	}
+
 	teacher := models.Teacher{
-		ID:       id,
-		Name:     name,
-		Slug:     slug,
-		Workload: []*models.Workload{},
+		ID:        id,
+		Name:      name,
+		Slug:      slug,
+		Workload:  []*models.Workload{},
+		Workhours: workhours,
 	}
 
 	filter := bson.M{
@@ -66,8 +85,8 @@ func CreateTeacher(ctx context.Context, name string, tableID primitive.ObjectID,
 	}
 
 	update := bson.M{
-		"$push": bson.M{"tables.0.teachers": teacher},
-		"$set":  bson.M{"tables.0.lastModified": primitive.NewDateTimeFromTime(time.Now())},
+		"$push": bson.M{"tables.$.teachers": teacher},
+		"$set":  bson.M{"tables.$.lastModified": primitive.NewDateTimeFromTime(time.Now())},
 	}
 
 	_, err := DB.Collection("users").UpdateOne(ctx, filter, update)
@@ -176,6 +195,53 @@ func UpdateWorkload(
 	}
 
 	return &workload, nil
+}
+
+func UpdateWorkhour(
+	ctx context.Context,
+	tableID primitive.ObjectID,
+	teacherID primitive.ObjectID,
+	day string,
+	hour string,
+	value bool,
+) (*models.Workhour, error) {
+	auth := helpers.GetAuth(ctx)
+
+	if auth.Error != nil {
+		return nil, auth.Error
+	}
+
+	workhour := models.Workhour{
+		Day:   &day,
+		Hour:  &hour,
+		Value: &value,
+	}
+
+	filter := bson.M{
+		"username":   auth.Username,
+		"tables._id": tableID,
+	}
+
+	update := bson.M{
+		"$set": bson.M{"tables.$.teachers.$[teacher].workhours." + day + "." + hour: value},
+	}
+
+	arrayFilters := options.ArrayFilters{
+		Filters: []interface{}{
+			bson.M{"teacher._id": teacherID},
+		},
+	}
+
+	updateOptions := &options.UpdateOptions{}
+	updateOptions.SetArrayFilters(arrayFilters)
+
+	_, err := DB.Collection("users").UpdateOne(ctx, filter, update, updateOptions)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &workhour, nil
 }
 
 func DeleteTeacher(ctx context.Context, id primitive.ObjectID, tableID primitive.ObjectID) (*models.Teacher, error) {
