@@ -27,15 +27,9 @@ func Teachers(ctx context.Context, tableID primitive.ObjectID) ([]*models.Teache
 
 	err := DB.Collection("users").FindOne(ctx, filter).Decode(&user)
 
-	for i := 0; i < len(user.Tables[0].Teachers); i++ {
-		workload := user.Tables[0].Teachers[i].Workload
-		totalHours := 0
+	// teachers := &user.Tables[0].Teachers
 
-		for j := 0; j < len(workload); j++ {
-			totalHours += *workload[j].Hours
-		}
-		user.Tables[0].Teachers[i].WorkloadAmount = totalHours
-	}
+	helpers.SetWorkloadAmountForTeachers(user.Tables[0].Teachers)
 
 	if err != nil {
 		return nil, err

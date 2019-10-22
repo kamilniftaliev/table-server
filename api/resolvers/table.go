@@ -103,6 +103,8 @@ func Table(ctx context.Context, slug string) (*models.Table, error) {
 
 	err := DB.Collection("users").FindOne(ctx, filter).Decode(&user)
 
+	helpers.SetWorkloadAmountForTeachers(user.Tables[0].Teachers)
+
 	if err != nil {
 		return nil, err
 	}
