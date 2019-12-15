@@ -103,13 +103,21 @@ func Table(ctx context.Context, slug string) (*models.Table, error) {
 
 	err := DB.Collection("users").FindOne(ctx, filter).Decode(&user)
 
-	helpers.SetWorkloadAmountForTeachers(user.Tables[0].Teachers)
+	tableIndex := 0
+
+	for i := 0; i < len(user.Tables); i++ {
+		if user.Tables[i].Slug == slug {
+			tableIndex = i
+		}
+	}
+
+	helpers.SetWorkloadAmountForTeachers(user.Tables[tableIndex].Teachers)
 
 	if err != nil {
 		return nil, err
 	}
 
-	return user.Tables[0], nil
+	return user.Tables[tableIndex], nil
 }
 
 func DeleteTable(ctx context.Context, id primitive.ObjectID) (*models.Table, error) {

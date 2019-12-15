@@ -27,11 +27,19 @@ func Subjects(ctx context.Context, tableID primitive.ObjectID) ([]*models.Subjec
 
 	err := DB.Collection("users").FindOne(ctx, filter).Decode(&user)
 
+	tableIndex := 0
+
+	for i := 0; i < len(user.Tables); i++ {
+		if user.Tables[i].ID == tableID {
+			tableIndex = i
+		}
+	}
+
 	if err != nil {
 		return nil, err
 	}
 
-	return user.Tables[0].Subjects, nil
+	return user.Tables[tableIndex].Subjects, nil
 }
 
 func CreateSubject(ctx context.Context, title string, isDivisible bool, tableID primitive.ObjectID) (*models.Subject, error) {

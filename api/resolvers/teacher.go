@@ -27,15 +27,21 @@ func Teachers(ctx context.Context, tableID primitive.ObjectID) ([]*models.Teache
 
 	err := DB.Collection("users").FindOne(ctx, filter).Decode(&user)
 
-	// teachers := &user.Tables[0].Teachers
+	tableIndex := 0
 
-	helpers.SetWorkloadAmountForTeachers(user.Tables[0].Teachers)
+	for i := 0; i < len(user.Tables); i++ {
+		if user.Tables[i].ID == tableID {
+			tableIndex = i
+		}
+	}
+
+	helpers.SetWorkloadAmountForTeachers(user.Tables[tableIndex].Teachers)
 
 	if err != nil {
 		return nil, err
 	}
 
-	return user.Tables[0].Teachers, nil
+	return user.Tables[tableIndex].Teachers, nil
 }
 
 func CreateTeacher(ctx context.Context, name string, tableID primitive.ObjectID, slug string) (*models.Teacher, error) {
@@ -167,17 +173,19 @@ func UpdateWorkload(
 	}
 
 	addNewHours := bson.M{
-		"$addToSet": bson.M{"tables.$.teachers.$[teacher].workload": workload},
+		"$addToSet": bson.M{"tables.$[table].teachers.$[teacher].workload": workload},
 	}
 	deleteOldHours := bson.M{
-		"$pull": bson.M{"tables.$.teachers.$[teacher].workload": oldWorkload},
+		"$pull": bson.M{"tables.$[table].teachers.$[teacher].workload": oldWorkload},
 	}
 
 	arrayFilters := options.ArrayFilters{
 		Filters: []interface{}{
+			bson.M{"table._id": tableID},
 			bson.M{"teacher._id": teacherID},
 		},
 	}
+
 	updateOptions := &options.UpdateOptions{}
 	updateOptions.SetArrayFilters(arrayFilters)
 
