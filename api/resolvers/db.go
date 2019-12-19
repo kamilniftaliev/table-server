@@ -24,7 +24,7 @@ func getMongoURI(isLocalhost bool) string {
 }
 
 // Client - MongoDB client for Database actions
-var Client, _ = mongo.Connect(RequestContext, options.Client().ApplyURI("mongodb://"+getMongoURI(IsLocalhost)+"/table"))
+var Client, DBErr = mongo.Connect(RequestContext, options.Client().ApplyURI("mongodb://"+getMongoURI(IsLocalhost)+"/table"))
 
 // DB - Selected database for accessing data
 var DB = Client.Database("table")

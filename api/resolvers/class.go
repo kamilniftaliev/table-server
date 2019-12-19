@@ -42,7 +42,7 @@ func Classes(ctx context.Context, tableID primitive.ObjectID) ([]*models.Class, 
 	return user.Tables[tableIndex].Classes, nil
 }
 
-func CreateClass(ctx context.Context, title string, isDivisible bool, tableID primitive.ObjectID) (*models.Class, error) {
+func CreateClass(ctx context.Context, title string, shift int, tableID primitive.ObjectID) (*models.Class, error) {
 	auth := helpers.GetAuth(ctx)
 
 	if auth.Error != nil {
@@ -52,9 +52,9 @@ func CreateClass(ctx context.Context, title string, isDivisible bool, tableID pr
 	id := primitive.NewObjectID()
 
 	class := models.Class{
-		ID:          id,
-		Title:       title,
-		IsDivisible: isDivisible,
+		ID:    id,
+		Title: title,
+		Shift: shift,
 	}
 
 	filter := bson.M{
@@ -80,7 +80,7 @@ func UpdateClass(
 	ctx context.Context,
 	id primitive.ObjectID,
 	title string,
-	isDivisible bool,
+	shift int,
 	tableID primitive.ObjectID,
 ) (*models.Class, error) {
 	auth := helpers.GetAuth(ctx)
@@ -90,9 +90,9 @@ func UpdateClass(
 	}
 
 	class := models.Class{
-		ID:          id,
-		Title:       title,
-		IsDivisible: isDivisible,
+		ID:    id,
+		Title: title,
+		Shift: shift,
 	}
 
 	filter := bson.M{
@@ -103,7 +103,7 @@ func UpdateClass(
 	update := bson.M{
 		"$set": bson.D{
 			{"tables.$.classes.$[class].title", title},
-			{"tables.$.classes.$[class].isdivisible", isDivisible},
+			{"tables.$.classes.$[class].shift", shift},
 			{"tables.$.lastModified", primitive.NewDateTimeFromTime(time.Now())},
 		},
 	}

@@ -42,7 +42,7 @@ func Subjects(ctx context.Context, tableID primitive.ObjectID) ([]*models.Subjec
 	return user.Tables[tableIndex].Subjects, nil
 }
 
-func CreateSubject(ctx context.Context, title string, isDivisible bool, tableID primitive.ObjectID) (*models.Subject, error) {
+func CreateSubject(ctx context.Context, title string, tableID primitive.ObjectID) (*models.Subject, error) {
 	auth := helpers.GetAuth(ctx)
 
 	if auth.Error != nil {
@@ -52,9 +52,8 @@ func CreateSubject(ctx context.Context, title string, isDivisible bool, tableID 
 	id := primitive.NewObjectID()
 
 	subject := models.Subject{
-		ID:          id,
-		Title:       title,
-		IsDivisible: isDivisible,
+		ID:    id,
+		Title: title,
 	}
 
 	filter := bson.M{
@@ -80,7 +79,6 @@ func UpdateSubject(
 	ctx context.Context,
 	id primitive.ObjectID,
 	title string,
-	isDivisible bool,
 	tableID primitive.ObjectID,
 ) (*models.Subject, error) {
 	auth := helpers.GetAuth(ctx)
@@ -90,9 +88,8 @@ func UpdateSubject(
 	}
 
 	subject := models.Subject{
-		ID:          id,
-		Title:       title,
-		IsDivisible: isDivisible,
+		ID:    id,
+		Title: title,
 	}
 
 	filter := bson.M{
@@ -103,7 +100,6 @@ func UpdateSubject(
 	update := bson.M{
 		"$set": bson.D{
 			{"tables.$.subjects.$[subject].title", title},
-			{"tables.$.subjects.$[subject].isdivisible", isDivisible},
 			{"tables.$.lastModified", primitive.NewDateTimeFromTime(time.Now())},
 		},
 	}

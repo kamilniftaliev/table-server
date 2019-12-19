@@ -61,14 +61,14 @@ func CreateTeacher(ctx context.Context, name string, tableID primitive.ObjectID,
 	// 	}
 	// }
 	workhours := [][]bool{
-		{true, true, true, true, true, true, true, true, true, true},
-		{true, true, true, true, true, true, true, true, true, true},
-		{true, true, true, true, true, true, true, true, true, true},
-		{true, true, true, true, true, true, true, true, true, true},
-		{true, true, true, true, true, true, true, true, true, true},
-		{true, true, true, true, true, true, true, true, true, true},
-		{true, true, true, true, true, true, true, true, true, true},
-		{true, true, true, true, true, true, true, true, true, true},
+		{true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true},
+		{true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true},
+		{true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true},
+		{true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true},
+		{true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true},
+		{true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true},
+		{true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true},
+		{true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true},
 	}
 
 	teacher := models.Teacher{

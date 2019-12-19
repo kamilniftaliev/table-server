@@ -2,7 +2,6 @@ package resolvers
 
 import (
 	"context"
-	"errors"
 	"log"
 	"time"
 
@@ -24,11 +23,11 @@ func SignIn(ctx context.Context, username, password string) (*models.Token, erro
 	var user models.User
 
 	filter := bson.M{"username": username}
-	response := DB.Collection("users").FindOne(ctx, filter).Decode(&user)
+	err := DB.Collection("users").FindOne(ctx, filter).Decode(&user)
 
 	// If didn't find any user
-	if response != nil || !helpers.ComparePassword(password, user.Password) {
-		return nil, errors.New("errorPassword")
+	if err != nil || !helpers.ComparePassword(password, user.Password) {
+		return nil, err //errors.New("errorPassword")
 	}
 
 	expiresAt := time.Now().Add(time.Hour * 24).Unix()
@@ -57,10 +56,14 @@ func GetUser(ctx context.Context) (*models.User, error) {
 
 	err := usersCollection.FindOne(ctx, filter).Decode(&user)
 
-	for i := 0; i < len(user.Tables); i++ {
-		user.Tables[i].SubjectsCount = len(user.Tables[i].Subjects)
-		user.Tables[i].TeachersCount = len(user.Tables[i].Teachers)
-		user.Tables[i].ClassesCount = len(user.Tables[i].Classes)
+	// log.Println(user.Tables)
+
+	if len(user.Tables) > 0 {
+		for i := 0; i < len(user.Tables); i++ {
+			user.Tables[i].SubjectsCount = len(user.Tables[i].Subjects)
+			user.Tables[i].TeachersCount = len(user.Tables[i].Teachers)
+			user.Tables[i].ClassesCount = len(user.Tables[i].Classes)
+		}
 	}
 
 	if err != nil {

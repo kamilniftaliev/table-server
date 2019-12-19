@@ -1,5 +1,5 @@
 type Class {
   id: ID!
   title: String!
-  isDivisible: Boolean!
+  shift: Int!
 }

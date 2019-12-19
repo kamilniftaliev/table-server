@@ -15,12 +15,11 @@ type Workload struct {
 }
 
 type Teacher struct {
-	ID             primitive.ObjectID `json:"id" bson:"_id"`
-	Name           string             `json:"name"`
-	Slug           string             `json:"slug"`
-	Workload       []*Workload        `json:"workload"`
-	WorkloadAmount int                `json:"workloadAmount" bson:"workloadAmount,omitempty"`
-	// Workhours       [10][10]bool       `json:"workhours"`
-	Workhours       [][]bool `json:"workhours"`
-	WorkhoursAmount int      `json:"workhoursAmount" bson:"workhoursAmount,omitempty"`
+	ID              primitive.ObjectID `json:"id" bson:"_id"`
+	Name            string             `json:"name"`
+	Slug            string             `json:"slug"`
+	Workload        []*Workload        `json:"workload"`
+	WorkloadAmount  int                `json:"workloadAmount" bson:"workloadAmount,omitempty"`
+	Workhours       [][]bool           `json:"workhours"`
+	WorkhoursAmount int                `json:"workhoursAmount" bson:"workhoursAmount,omitempty"`
 }

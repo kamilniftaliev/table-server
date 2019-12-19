@@ -1,5 +1,4 @@
 type Subject {
   id: ID!
   title: String!
-  isDivisible: Boolean!
 }

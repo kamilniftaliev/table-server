@@ -47,20 +47,18 @@ func (r *mutationResolver) DuplicateTable(ctx context.Context, id primitive.Obje
 func (r *mutationResolver) CreateSubject(
 	ctx context.Context,
 	title string,
-	isDivisible bool,
 	tableID primitive.ObjectID,
 ) (*models.Subject, error) {
-	return resolvers.CreateSubject(ctx, title, isDivisible, tableID)
+	return resolvers.CreateSubject(ctx, title, tableID)
 }
 
 func (r *mutationResolver) UpdateSubject(
 	ctx context.Context,
 	id primitive.ObjectID,
 	title string,
-	isDivisible bool,
 	tableID primitive.ObjectID,
 ) (*models.Subject, error) {
-	return resolvers.UpdateSubject(ctx, id, title, isDivisible, tableID)
+	return resolvers.UpdateSubject(ctx, id, title, tableID)
 }
 
 func (r *mutationResolver) DeleteSubject(ctx context.Context, id primitive.ObjectID, tableID primitive.ObjectID) (*models.Subject, error) {
@@ -71,20 +69,20 @@ func (r *mutationResolver) DeleteSubject(ctx context.Context, id primitive.Objec
 func (r *mutationResolver) CreateClass(
 	ctx context.Context,
 	title string,
-	isDivisible bool,
+	shift int,
 	tableID primitive.ObjectID,
 ) (*models.Class, error) {
-	return resolvers.CreateClass(ctx, title, isDivisible, tableID)
+	return resolvers.CreateClass(ctx, title, shift, tableID)
 }
 
 func (r *mutationResolver) UpdateClass(
 	ctx context.Context,
 	id primitive.ObjectID,
 	title string,
-	isDivisible bool,
+	shift int,
 	tableID primitive.ObjectID,
 ) (*models.Class, error) {
-	return resolvers.UpdateClass(ctx, id, title, isDivisible, tableID)
+	return resolvers.UpdateClass(ctx, id, title, shift, tableID)
 }
 
 func (r *mutationResolver) DeleteClass(ctx context.Context, id primitive.ObjectID, tableID primitive.ObjectID) (*models.Class, error) {

@@ -46,14 +46,14 @@ type DirectiveRoot struct {
 
 type ComplexityRoot struct {
 	Class struct {
-		ID          func(childComplexity int) int
-		IsDivisible func(childComplexity int) int
-		Title       func(childComplexity int) int
+		ID    func(childComplexity int) int
+		Shift func(childComplexity int) int
+		Title func(childComplexity int) int
 	}
 
 	Mutation struct {
-		CreateClass    func(childComplexity int, title string, isDivisible bool, tableID primitive.ObjectID) int
-		CreateSubject  func(childComplexity int, title string, isDivisible bool, tableID primitive.ObjectID) int
+		CreateClass    func(childComplexity int, title string, shift int, tableID primitive.ObjectID) int
+		CreateSubject  func(childComplexity int, title string, tableID primitive.ObjectID) int
 		CreateTable    func(childComplexity int, title string, slug string) int
 		CreateTeacher  func(childComplexity int, name string, tableID primitive.ObjectID, slug string) int
 		DeleteClass    func(childComplexity int, id primitive.ObjectID, tableID primitive.ObjectID) int
@@ -62,8 +62,8 @@ type ComplexityRoot struct {
 		DeleteTeacher  func(childComplexity int, id primitive.ObjectID, tableID primitive.ObjectID) int
 		DuplicateTable func(childComplexity int, id primitive.ObjectID) int
 		SignIn         func(childComplexity int, username string, password string) int
-		UpdateClass    func(childComplexity int, id primitive.ObjectID, title string, isDivisible bool, tableID primitive.ObjectID) int
-		UpdateSubject  func(childComplexity int, id primitive.ObjectID, title string, isDivisible bool, tableID primitive.ObjectID) int
+		UpdateClass    func(childComplexity int, id primitive.ObjectID, title string, shift int, tableID primitive.ObjectID) int
+		UpdateSubject  func(childComplexity int, id primitive.ObjectID, title string, tableID primitive.ObjectID) int
 		UpdateTable    func(childComplexity int, title string, slug string, id primitive.ObjectID) int
 		UpdateTeacher  func(childComplexity int, id primitive.ObjectID, name string, tableID primitive.ObjectID, slug string) int
 		UpdateWorkhour func(childComplexity int, tableID primitive.ObjectID, teacherID primitive.ObjectID, day string, hour string, value bool) int
@@ -79,9 +79,8 @@ type ComplexityRoot struct {
 	}
 
 	Subject struct {
-		ID          func(childComplexity int) int
-		IsDivisible func(childComplexity int) int
-		Title       func(childComplexity int) int
+		ID    func(childComplexity int) int
+		Title func(childComplexity int) int
 	}
 
 	Table struct {
@@ -140,11 +139,11 @@ type MutationResolver interface {
 	UpdateTable(ctx context.Context, title string, slug string, id primitive.ObjectID) (*models.Table, error)
 	DeleteTable(ctx context.Context, id primitive.ObjectID) (*models.Table, error)
 	DuplicateTable(ctx context.Context, id primitive.ObjectID) (*models.Table, error)
-	CreateSubject(ctx context.Context, title string, isDivisible bool, tableID primitive.ObjectID) (*models.Subject, error)
-	UpdateSubject(ctx context.Context, id primitive.ObjectID, title string, isDivisible bool, tableID primitive.ObjectID) (*models.Subject, error)
+	CreateSubject(ctx context.Context, title string, tableID primitive.ObjectID) (*models.Subject, error)
+	UpdateSubject(ctx context.Context, id primitive.ObjectID, title string, tableID primitive.ObjectID) (*models.Subject, error)
 	DeleteSubject(ctx context.Context, id primitive.ObjectID, tableID primitive.ObjectID) (*models.Subject, error)
-	CreateClass(ctx context.Context, title string, isDivisible bool, tableID primitive.ObjectID) (*models.Class, error)
-	UpdateClass(ctx context.Context, id primitive.ObjectID, title string, isDivisible bool, tableID primitive.ObjectID) (*models.Class, error)
+	CreateClass(ctx context.Context, title string, shift int, tableID primitive.ObjectID) (*models.Class, error)
+	UpdateClass(ctx context.Context, id primitive.ObjectID, title string, shift int, tableID primitive.ObjectID) (*models.Class, error)
 	DeleteClass(ctx context.Context, id primitive.ObjectID, tableID primitive.ObjectID) (*models.Class, error)
 	CreateTeacher(ctx context.Context, name string, tableID primitive.ObjectID, slug string) (*models.Teacher, error)
 	UpdateTeacher(ctx context.Context, id primitive.ObjectID, name string, tableID primitive.ObjectID, slug string) (*models.Teacher, error)
@@ -182,12 +181,12 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Class.ID(childComplexity), true
 
-	case "Class.isDivisible":
-		if e.complexity.Class.IsDivisible == nil {
+	case "Class.shift":
+		if e.complexity.Class.Shift == nil {
 			break
 		}
 
-		return e.complexity.Class.IsDivisible(childComplexity), true
+		return e.complexity.Class.Shift(childComplexity), true
 
 	case "Class.title":
 		if e.complexity.Class.Title == nil {
@@ -206,7 +205,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Mutation.CreateClass(childComplexity, args["title"].(string), args["isDivisible"].(bool), args["tableId"].(primitive.ObjectID)), true
+		return e.complexity.Mutation.CreateClass(childComplexity, args["title"].(string), args["shift"].(int), args["tableId"].(primitive.ObjectID)), true
 
 	case "Mutation.createSubject":
 		if e.complexity.Mutation.CreateSubject == nil {
@@ -218,7 +217,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Mutation.CreateSubject(childComplexity, args["title"].(string), args["isDivisible"].(bool), args["tableId"].(primitive.ObjectID)), true
+		return e.complexity.Mutation.CreateSubject(childComplexity, args["title"].(string), args["tableId"].(primitive.ObjectID)), true
 
 	case "Mutation.createTable":
 		if e.complexity.Mutation.CreateTable == nil {
@@ -326,7 +325,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Mutation.UpdateClass(childComplexity, args["id"].(primitive.ObjectID), args["title"].(string), args["isDivisible"].(bool), args["tableId"].(primitive.ObjectID)), true
+		return e.complexity.Mutation.UpdateClass(childComplexity, args["id"].(primitive.ObjectID), args["title"].(string), args["shift"].(int), args["tableId"].(primitive.ObjectID)), true
 
 	case "Mutation.updateSubject":
 		if e.complexity.Mutation.UpdateSubject == nil {
@@ -338,7 +337,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Mutation.UpdateSubject(childComplexity, args["id"].(primitive.ObjectID), args["title"].(string), args["isDivisible"].(bool), args["tableId"].(primitive.ObjectID)), true
+		return e.complexity.Mutation.UpdateSubject(childComplexity, args["id"].(primitive.ObjectID), args["title"].(string), args["tableId"].(primitive.ObjectID)), true
 
 	case "Mutation.updateTable":
 		if e.complexity.Mutation.UpdateTable == nil {
@@ -449,13 +448,6 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Subject.ID(childComplexity), true
-
-	case "Subject.isDivisible":
-		if e.complexity.Subject.IsDivisible == nil {
-			break
-		}
-
-		return e.complexity.Subject.IsDivisible(childComplexity), true
 
 	case "Subject.title":
 		if e.complexity.Subject.Title == nil {
@@ -746,7 +738,7 @@ var parsedSchema = gqlparser.MustLoadSchema(
 	&ast.Source{Name: "schema/class.gql", Input: `type Class {
   id: ID!
   title: String!
-  isDivisible: Boolean!
+  shift: Int!
 }
 `},
 	&ast.Source{Name: "schema/main.gql", Input: `type Query {
@@ -765,22 +757,12 @@ type Mutation {
   deleteTable(id: ID!): Table!
   duplicateTable(id: ID!): Table!
 
-  createSubject(title: String!, isDivisible: Boolean!, tableId: ID!): Subject!
-  updateSubject(
-    id: ID!
-    title: String!
-    isDivisible: Boolean!
-    tableId: ID!
-  ): Subject!
+  createSubject(title: String!, tableId: ID!): Subject!
+  updateSubject(id: ID!, title: String!, tableId: ID!): Subject!
   deleteSubject(id: ID!, tableId: ID!): Subject!
 
-  createClass(title: String!, isDivisible: Boolean!, tableId: ID!): Class!
-  updateClass(
-    id: ID!
-    title: String!
-    isDivisible: Boolean!
-    tableId: ID!
-  ): Class!
+  createClass(title: String!, shift: Int!, tableId: ID!): Class!
+  updateClass(id: ID!, title: String!, shift: Int!, tableId: ID!): Class!
   deleteClass(id: ID!, tableId: ID!): Class!
 
   createTeacher(name: String!, tableId: ID!, slug: String!): Teacher!
@@ -808,7 +790,6 @@ type Mutation {
 	&ast.Source{Name: "schema/subject.gql", Input: `type Subject {
   id: ID!
   title: String!
-  isDivisible: Boolean!
 }
 `},
 	&ast.Source{Name: "schema/table.gql", Input: `scalar DateTime
@@ -879,14 +860,14 @@ func (ec *executionContext) field_Mutation_createClass_args(ctx context.Context,
 		}
 	}
 	args["title"] = arg0
-	var arg1 bool
-	if tmp, ok := rawArgs["isDivisible"]; ok {
-		arg1, err = ec.unmarshalNBoolean2bool(ctx, tmp)
+	var arg1 int
+	if tmp, ok := rawArgs["shift"]; ok {
+		arg1, err = ec.unmarshalNInt2int(ctx, tmp)
 		if err != nil {
 			return nil, err
 		}
 	}
-	args["isDivisible"] = arg1
+	args["shift"] = arg1
 	var arg2 primitive.ObjectID
 	if tmp, ok := rawArgs["tableId"]; ok {
 		arg2, err = ec.unmarshalNID2goᚗmongodbᚗorgᚋmongoᚑdriverᚋbsonᚋprimitiveᚐObjectID(ctx, tmp)
@@ -909,22 +890,14 @@ func (ec *executionContext) field_Mutation_createSubject_args(ctx context.Contex
 		}
 	}
 	args["title"] = arg0
-	var arg1 bool
-	if tmp, ok := rawArgs["isDivisible"]; ok {
-		arg1, err = ec.unmarshalNBoolean2bool(ctx, tmp)
-		if err != nil {
-			return nil, err
-		}
-	}
-	args["isDivisible"] = arg1
-	var arg2 primitive.ObjectID
+	var arg1 primitive.ObjectID
 	if tmp, ok := rawArgs["tableId"]; ok {
-		arg2, err = ec.unmarshalNID2goᚗmongodbᚗorgᚋmongoᚑdriverᚋbsonᚋprimitiveᚐObjectID(ctx, tmp)
+		arg1, err = ec.unmarshalNID2goᚗmongodbᚗorgᚋmongoᚑdriverᚋbsonᚋprimitiveᚐObjectID(ctx, tmp)
 		if err != nil {
 			return nil, err
 		}
 	}
-	args["tableId"] = arg2
+	args["tableId"] = arg1
 	return args, nil
 }
 
@@ -1115,14 +1088,14 @@ func (ec *executionContext) field_Mutation_updateClass_args(ctx context.Context,
 		}
 	}
 	args["title"] = arg1
-	var arg2 bool
-	if tmp, ok := rawArgs["isDivisible"]; ok {
-		arg2, err = ec.unmarshalNBoolean2bool(ctx, tmp)
+	var arg2 int
+	if tmp, ok := rawArgs["shift"]; ok {
+		arg2, err = ec.unmarshalNInt2int(ctx, tmp)
 		if err != nil {
 			return nil, err
 		}
 	}
-	args["isDivisible"] = arg2
+	args["shift"] = arg2
 	var arg3 primitive.ObjectID
 	if tmp, ok := rawArgs["tableId"]; ok {
 		arg3, err = ec.unmarshalNID2goᚗmongodbᚗorgᚋmongoᚑdriverᚋbsonᚋprimitiveᚐObjectID(ctx, tmp)
@@ -1153,22 +1126,14 @@ func (ec *executionContext) field_Mutation_updateSubject_args(ctx context.Contex
 		}
 	}
 	args["title"] = arg1
-	var arg2 bool
-	if tmp, ok := rawArgs["isDivisible"]; ok {
-		arg2, err = ec.unmarshalNBoolean2bool(ctx, tmp)
-		if err != nil {
-			return nil, err
-		}
-	}
-	args["isDivisible"] = arg2
-	var arg3 primitive.ObjectID
+	var arg2 primitive.ObjectID
 	if tmp, ok := rawArgs["tableId"]; ok {
-		arg3, err = ec.unmarshalNID2goᚗmongodbᚗorgᚋmongoᚑdriverᚋbsonᚋprimitiveᚐObjectID(ctx, tmp)
+		arg2, err = ec.unmarshalNID2goᚗmongodbᚗorgᚋmongoᚑdriverᚋbsonᚋprimitiveᚐObjectID(ctx, tmp)
 		if err != nil {
 			return nil, err
 		}
 	}
-	args["tableId"] = arg3
+	args["tableId"] = arg2
 	return args, nil
 }
 
@@ -1520,7 +1485,7 @@ func (ec *executionContext) _Class_title(ctx context.Context, field graphql.Coll
 	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Class_isDivisible(ctx context.Context, field graphql.CollectedField, obj *models.Class) (ret graphql.Marshaler) {
+func (ec *executionContext) _Class_shift(ctx context.Context, field graphql.CollectedField, obj *models.Class) (ret graphql.Marshaler) {
 	ctx = ec.Tracer.StartFieldExecution(ctx, field)
 	defer func() {
 		if r := recover(); r != nil {
@@ -1539,7 +1504,7 @@ func (ec *executionContext) _Class_isDivisible(ctx context.Context, field graphq
 	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.IsDivisible, nil
+		return obj.Shift, nil
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -1551,10 +1516,10 @@ func (ec *executionContext) _Class_isDivisible(ctx context.Context, field graphq
 		}
 		return graphql.Null
 	}
-	res := resTmp.(bool)
+	res := resTmp.(int)
 	rctx.Result = res
 	ctx = ec.Tracer.StartFieldChildExecution(ctx)
-	return ec.marshalNBoolean2bool(ctx, field.Selections, res)
+	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Mutation_signIn(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
@@ -1803,7 +1768,7 @@ func (ec *executionContext) _Mutation_createSubject(ctx context.Context, field g
 	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Mutation().CreateSubject(rctx, args["title"].(string), args["isDivisible"].(bool), args["tableId"].(primitive.ObjectID))
+		return ec.resolvers.Mutation().CreateSubject(rctx, args["title"].(string), args["tableId"].(primitive.ObjectID))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -1847,7 +1812,7 @@ func (ec *executionContext) _Mutation_updateSubject(ctx context.Context, field g
 	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Mutation().UpdateSubject(rctx, args["id"].(primitive.ObjectID), args["title"].(string), args["isDivisible"].(bool), args["tableId"].(primitive.ObjectID))
+		return ec.resolvers.Mutation().UpdateSubject(rctx, args["id"].(primitive.ObjectID), args["title"].(string), args["tableId"].(primitive.ObjectID))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -1935,7 +1900,7 @@ func (ec *executionContext) _Mutation_createClass(ctx context.Context, field gra
 	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Mutation().CreateClass(rctx, args["title"].(string), args["isDivisible"].(bool), args["tableId"].(primitive.ObjectID))
+		return ec.resolvers.Mutation().CreateClass(rctx, args["title"].(string), args["shift"].(int), args["tableId"].(primitive.ObjectID))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -1979,7 +1944,7 @@ func (ec *executionContext) _Mutation_updateClass(ctx context.Context, field gra
 	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Mutation().UpdateClass(rctx, args["id"].(primitive.ObjectID), args["title"].(string), args["isDivisible"].(bool), args["tableId"].(primitive.ObjectID))
+		return ec.resolvers.Mutation().UpdateClass(rctx, args["id"].(primitive.ObjectID), args["title"].(string), args["shift"].(int), args["tableId"].(primitive.ObjectID))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -2609,43 +2574,6 @@ func (ec *executionContext) _Subject_title(ctx context.Context, field graphql.Co
 	rctx.Result = res
 	ctx = ec.Tracer.StartFieldChildExecution(ctx)
 	return ec.marshalNString2string(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) _Subject_isDivisible(ctx context.Context, field graphql.CollectedField, obj *models.Subject) (ret graphql.Marshaler) {
-	ctx = ec.Tracer.StartFieldExecution(ctx, field)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-		ec.Tracer.EndFieldExecution(ctx)
-	}()
-	rctx := &graphql.ResolverContext{
-		Object:   "Subject",
-		Field:    field,
-		Args:     nil,
-		IsMethod: false,
-	}
-	ctx = graphql.WithResolverContext(ctx, rctx)
-	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.IsDivisible, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		if !ec.HasError(rctx) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	res := resTmp.(bool)
-	rctx.Result = res
-	ctx = ec.Tracer.StartFieldChildExecution(ctx)
-	return ec.marshalNBoolean2bool(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Table_id(ctx context.Context, field graphql.CollectedField, obj *models.Table) (ret graphql.Marshaler) {
@@ -4939,8 +4867,8 @@ func (ec *executionContext) _Class(ctx context.Context, sel ast.SelectionSet, ob
 			if out.Values[i] == graphql.Null {
 				invalids++
 			}
-		case "isDivisible":
-			out.Values[i] = ec._Class_isDivisible(ctx, field, obj)
+		case "shift":
+			out.Values[i] = ec._Class_shift(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				invalids++
 			}
@@ -5167,11 +5095,6 @@ func (ec *executionContext) _Subject(ctx context.Context, sel ast.SelectionSet, 
 			}
 		case "title":
 			out.Values[i] = ec._Subject_title(ctx, field, obj)
-			if out.Values[i] == graphql.Null {
-				invalids++
-			}
-		case "isDivisible":
-			out.Values[i] = ec._Subject_isDivisible(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				invalids++
 			}
