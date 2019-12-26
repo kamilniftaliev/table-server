@@ -18,31 +18,27 @@ func Classes(ctx context.Context, tableID primitive.ObjectID) ([]*models.Class, 
 		return nil, auth.Error
 	}
 
-	var user *models.User
+	var table *models.Table
 
-	filter := bson.M{
-		"username":   auth.Username,
-		"tables._id": tableID,
-	}
+	filter := bson.M{"_id": tableID}
 
-	err := DB.Collection("users").FindOne(ctx, filter).Decode(&user)
-
-	tableIndex := 0
-
-	for i := 0; i < len(user.Tables); i++ {
-		if user.Tables[i].ID == tableID {
-			tableIndex = i
-		}
-	}
+	err := DB.Collection("tables").FindOne(ctx, filter).Decode(&table)
 
 	if err != nil {
 		return nil, err
 	}
 
-	return user.Tables[tableIndex].Classes, nil
+	return table.Classes, nil
 }
 
-func CreateClass(ctx context.Context, title string, shift int, tableID primitive.ObjectID) (*models.Class, error) {
+func CreateClass(
+	ctx context.Context,
+	number,
+	shift int,
+	letter,
+	sector string,
+	tableID primitive.ObjectID,
+) (*models.Class, error) {
 	auth := helpers.GetAuth(ctx)
 
 	if auth.Error != nil {
@@ -52,13 +48,14 @@ func CreateClass(ctx context.Context, title string, shift int, tableID primitive
 	id := primitive.NewObjectID()
 
 	class := models.Class{
-		ID:    id,
-		Title: title,
-		Shift: shift,
+		ID:     id,
+		Number: number,
+		Letter: letter,
+		Shift:  shift,
 	}
 
 	filter := bson.M{
-		"username":   auth.Username,
+		"username":   auth.UserID,
 		"tables._id": tableID,
 	}
 
@@ -79,8 +76,10 @@ func CreateClass(ctx context.Context, title string, shift int, tableID primitive
 func UpdateClass(
 	ctx context.Context,
 	id primitive.ObjectID,
-	title string,
+	number,
 	shift int,
+	letter,
+	sector string,
 	tableID primitive.ObjectID,
 ) (*models.Class, error) {
 	auth := helpers.GetAuth(ctx)
@@ -90,19 +89,22 @@ func UpdateClass(
 	}
 
 	class := models.Class{
-		ID:    id,
-		Title: title,
-		Shift: shift,
+		ID:     id,
+		Number: number,
+		Letter: letter,
+		Shift:  shift,
+		Sector: sector,
 	}
 
 	filter := bson.M{
-		"username":   auth.Username,
+		"username":   auth.UserID,
 		"tables._id": tableID,
 	}
 
 	update := bson.M{
 		"$set": bson.D{
-			{"tables.$.classes.$[class].title", title},
+			{"tables.$.classes.$[class].number", number},
+			{"tables.$.classes.$[class].letter", letter},
 			{"tables.$.classes.$[class].shift", shift},
 			{"tables.$.lastModified", primitive.NewDateTimeFromTime(time.Now())},
 		},
@@ -135,7 +137,7 @@ func DeleteClass(ctx context.Context, id primitive.ObjectID, tableID primitive.O
 	}
 
 	filter := bson.M{
-		"username":   auth.Username,
+		"username":   auth.UserID,
 		"tables._id": tableID,
 	}
 

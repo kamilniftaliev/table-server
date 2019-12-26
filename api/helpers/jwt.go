@@ -1,6 +1,9 @@
 package helpers
 
-import "github.com/dgrijalva/jwt-go"
+import (
+	"github.com/dgrijalva/jwt-go"
+	"go.mongodb.org/mongo-driver/bson/primitive"
+)
 
 var mySigningKey = []byte("table.az")
 
@@ -10,7 +13,7 @@ func JwtDecode(token string) (*jwt.Token, error) {
 	})
 }
 
-func JwtCreate(userID string, expiresAt int64) string {
+func JwtCreate(userID primitive.ObjectID, expiresAt int64) string {
 	claims := UserClaims{
 		userID,
 		jwt.StandardClaims{
@@ -20,5 +23,6 @@ func JwtCreate(userID string, expiresAt int64) string {
 	}
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	ss, _ := token.SignedString(mySigningKey)
+
 	return ss
 }

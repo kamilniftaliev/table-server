@@ -23,7 +23,9 @@ func main() {
 	router.Use(helpers.Middleware())
 
 	router.Handle("/", handler.Playground("GraphQL playground", "/api"))
-	router.Handle("/api", handler.GraphQL(api.NewExecutableSchema(api.Config{Resolvers: &api.Resolver{}})))
+	router.Handle("/api", handler.GraphQL(api.NewExecutableSchema(api.Config{
+		Resolvers: &api.Resolver{},
+	})))
 
 	log.Printf("Serving at http://localhost:3333/")
 	log.Fatal(http.ListenAndServe(":3333", router))

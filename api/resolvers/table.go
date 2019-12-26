@@ -2,6 +2,7 @@ package resolvers
 
 import (
 	"context"
+	"log"
 	"time"
 
 	"github.com/kamilniftaliev/table-server/api/helpers"
@@ -30,12 +31,12 @@ func CreateTable(ctx context.Context, title, slug string) (*models.Table, error)
 		Slug:         slug,
 		Created:      dateTime,
 		LastModified: dateTime,
-		Subjects:     []*models.Subject{},
-		Classes:      []*models.Class{},
-		Teachers:     []*models.Teacher{},
+		// Subjects:     []*models.Subject{},
+		Classes:  []*models.Class{},
+		Teachers: []*models.Teacher{},
 	}
 
-	filter := bson.M{"username": auth.Username}
+	filter := bson.M{"username": auth.UserID}
 	update := bson.M{"$push": bson.M{"tables": table}}
 
 	_, err := DB.Collection("users").UpdateOne(ctx, filter, update)
@@ -66,7 +67,7 @@ func UpdateTable(ctx context.Context, title, slug string, id primitive.ObjectID)
 	}
 
 	filter := bson.M{
-		"username":   auth.Username,
+		"username":   auth.UserID,
 		"tables._id": id,
 	}
 
@@ -94,30 +95,47 @@ func Table(ctx context.Context, slug string) (*models.Table, error) {
 		return nil, auth.Error
 	}
 
-	var user *models.User
+	// var table *models.Table
+	var tables []*models.Table
 
-	filter := bson.M{
-		"username":    auth.Username,
-		"tables.slug": slug,
+	pipeline := []bson.M{
+		bson.M{"$match": bson.M{
+			"userId": auth.UserID,
+			"slug":   slug,
+		}},
+		bson.M{"$lookup": bson.M{
+			"from":         "teachers",
+			"localField":   "_id",
+			"foreignField": "tableId",
+			"as":           "teachers",
+		}},
+		bson.M{"$lookup": bson.M{
+			"from":         "classes",
+			"localField":   "_id",
+			"foreignField": "tableId",
+			"as":           "classes",
+		}},
 	}
 
-	err := DB.Collection("users").FindOne(ctx, filter).Decode(&user)
+	cursor, err := DB.Collection("tables").Aggregate(ctx, pipeline)
 
-	tableIndex := 0
+	// var results []bson.M
 
-	for i := 0; i < len(user.Tables); i++ {
-		if user.Tables[i].Slug == slug {
-			tableIndex = i
-		}
+	if err = cursor.All(ctx, &tables); err != nil {
+		log.Fatal(err)
 	}
+	// for _, result := range results {
+	// 	fmt.Println(result)
+	// }
 
-	helpers.SetWorkloadAmountForTeachers(user.Tables[tableIndex].Teachers)
+	// results.All(ctx, &tables)
 
-	if err != nil {
+	if len(tables) == 0 {
 		return nil, err
 	}
 
-	return user.Tables[tableIndex], nil
+	// log.Println(tables[0].Title)
+	return tables[0], nil
 }
 
 func DeleteTable(ctx context.Context, id primitive.ObjectID) (*models.Table, error) {
@@ -131,7 +149,7 @@ func DeleteTable(ctx context.Context, id primitive.ObjectID) (*models.Table, err
 		ID: id,
 	}
 
-	filter := bson.M{"username": auth.Username}
+	filter := bson.M{"username": auth.UserID}
 
 	update := bson.D{
 		{"$pull", bson.D{
@@ -171,7 +189,7 @@ func DuplicateTable(ctx context.Context, id primitive.ObjectID) (*models.Table, 
 
 	var user *models.User
 
-	filter := bson.M{"username": auth.Username}
+	filter := bson.M{"username": auth.UserID}
 
 	usersCollection.FindOne(ctx, filter).Decode(&user)
 
@@ -182,10 +200,10 @@ func DuplicateTable(ctx context.Context, id primitive.ObjectID) (*models.Table, 
 	dateTime := GetDatetimeFromId(newID)
 
 	newTable := models.Table{
-		ID:           newID,
-		Title:        newTitle,
-		Slug:         originalTable.Slug + "_copy",
-		Subjects:     originalTable.Subjects,
+		ID:    newID,
+		Title: newTitle,
+		Slug:  originalTable.Slug + "_copy",
+		// Subjects:     originalTable.Subjects,
 		Teachers:     originalTable.Teachers,
 		Classes:      originalTable.Classes,
 		Created:      dateTime,

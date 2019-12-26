@@ -6,7 +6,7 @@ type Table {
   slug: String!
   created: DateTime!
   lastModified: DateTime!
-  subjects: [Subject]
+  # subjects: [Subject]
   subjectsCount: Int
   teachers: [Teacher]
   teachersCount: Int

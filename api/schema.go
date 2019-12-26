@@ -46,24 +46,23 @@ type DirectiveRoot struct {
 
 type ComplexityRoot struct {
 	Class struct {
-		ID    func(childComplexity int) int
-		Shift func(childComplexity int) int
-		Title func(childComplexity int) int
+		ID     func(childComplexity int) int
+		Letter func(childComplexity int) int
+		Number func(childComplexity int) int
+		Sector func(childComplexity int) int
+		Shift  func(childComplexity int) int
 	}
 
 	Mutation struct {
-		CreateClass    func(childComplexity int, title string, shift int, tableID primitive.ObjectID) int
-		CreateSubject  func(childComplexity int, title string, tableID primitive.ObjectID) int
+		CreateClass    func(childComplexity int, number int, shift int, letter string, sector string, tableID primitive.ObjectID) int
 		CreateTable    func(childComplexity int, title string, slug string) int
 		CreateTeacher  func(childComplexity int, name string, tableID primitive.ObjectID, slug string) int
 		DeleteClass    func(childComplexity int, id primitive.ObjectID, tableID primitive.ObjectID) int
-		DeleteSubject  func(childComplexity int, id primitive.ObjectID, tableID primitive.ObjectID) int
 		DeleteTable    func(childComplexity int, id primitive.ObjectID) int
 		DeleteTeacher  func(childComplexity int, id primitive.ObjectID, tableID primitive.ObjectID) int
 		DuplicateTable func(childComplexity int, id primitive.ObjectID) int
 		SignIn         func(childComplexity int, username string, password string) int
-		UpdateClass    func(childComplexity int, id primitive.ObjectID, title string, shift int, tableID primitive.ObjectID) int
-		UpdateSubject  func(childComplexity int, id primitive.ObjectID, title string, tableID primitive.ObjectID) int
+		UpdateClass    func(childComplexity int, id primitive.ObjectID, number int, shift int, letter string, sector string, tableID primitive.ObjectID) int
 		UpdateTable    func(childComplexity int, title string, slug string, id primitive.ObjectID) int
 		UpdateTeacher  func(childComplexity int, id primitive.ObjectID, name string, tableID primitive.ObjectID, slug string) int
 		UpdateWorkhour func(childComplexity int, tableID primitive.ObjectID, teacherID primitive.ObjectID, day string, hour string, value bool) int
@@ -72,7 +71,6 @@ type ComplexityRoot struct {
 
 	Query struct {
 		Classes  func(childComplexity int, tableID primitive.ObjectID) int
-		Subjects func(childComplexity int, tableID primitive.ObjectID) int
 		Table    func(childComplexity int, slug string) int
 		Teachers func(childComplexity int, tableID primitive.ObjectID) int
 		User     func(childComplexity int) int
@@ -90,7 +88,6 @@ type ComplexityRoot struct {
 		ID            func(childComplexity int) int
 		LastModified  func(childComplexity int) int
 		Slug          func(childComplexity int) int
-		Subjects      func(childComplexity int) int
 		SubjectsCount func(childComplexity int) int
 		Teachers      func(childComplexity int) int
 		TeachersCount func(childComplexity int) int
@@ -139,11 +136,8 @@ type MutationResolver interface {
 	UpdateTable(ctx context.Context, title string, slug string, id primitive.ObjectID) (*models.Table, error)
 	DeleteTable(ctx context.Context, id primitive.ObjectID) (*models.Table, error)
 	DuplicateTable(ctx context.Context, id primitive.ObjectID) (*models.Table, error)
-	CreateSubject(ctx context.Context, title string, tableID primitive.ObjectID) (*models.Subject, error)
-	UpdateSubject(ctx context.Context, id primitive.ObjectID, title string, tableID primitive.ObjectID) (*models.Subject, error)
-	DeleteSubject(ctx context.Context, id primitive.ObjectID, tableID primitive.ObjectID) (*models.Subject, error)
-	CreateClass(ctx context.Context, title string, shift int, tableID primitive.ObjectID) (*models.Class, error)
-	UpdateClass(ctx context.Context, id primitive.ObjectID, title string, shift int, tableID primitive.ObjectID) (*models.Class, error)
+	CreateClass(ctx context.Context, number int, shift int, letter string, sector string, tableID primitive.ObjectID) (*models.Class, error)
+	UpdateClass(ctx context.Context, id primitive.ObjectID, number int, shift int, letter string, sector string, tableID primitive.ObjectID) (*models.Class, error)
 	DeleteClass(ctx context.Context, id primitive.ObjectID, tableID primitive.ObjectID) (*models.Class, error)
 	CreateTeacher(ctx context.Context, name string, tableID primitive.ObjectID, slug string) (*models.Teacher, error)
 	UpdateTeacher(ctx context.Context, id primitive.ObjectID, name string, tableID primitive.ObjectID, slug string) (*models.Teacher, error)
@@ -154,7 +148,6 @@ type MutationResolver interface {
 type QueryResolver interface {
 	User(ctx context.Context) (*models.User, error)
 	Table(ctx context.Context, slug string) (*models.Table, error)
-	Subjects(ctx context.Context, tableID primitive.ObjectID) ([]*models.Subject, error)
 	Classes(ctx context.Context, tableID primitive.ObjectID) ([]*models.Class, error)
 	Teachers(ctx context.Context, tableID primitive.ObjectID) ([]*models.Teacher, error)
 }
@@ -181,19 +174,33 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Class.ID(childComplexity), true
 
+	case "Class.letter":
+		if e.complexity.Class.Letter == nil {
+			break
+		}
+
+		return e.complexity.Class.Letter(childComplexity), true
+
+	case "Class.number":
+		if e.complexity.Class.Number == nil {
+			break
+		}
+
+		return e.complexity.Class.Number(childComplexity), true
+
+	case "Class.sector":
+		if e.complexity.Class.Sector == nil {
+			break
+		}
+
+		return e.complexity.Class.Sector(childComplexity), true
+
 	case "Class.shift":
 		if e.complexity.Class.Shift == nil {
 			break
 		}
 
 		return e.complexity.Class.Shift(childComplexity), true
-
-	case "Class.title":
-		if e.complexity.Class.Title == nil {
-			break
-		}
-
-		return e.complexity.Class.Title(childComplexity), true
 
 	case "Mutation.createClass":
 		if e.complexity.Mutation.CreateClass == nil {
@@ -205,19 +212,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Mutation.CreateClass(childComplexity, args["title"].(string), args["shift"].(int), args["tableId"].(primitive.ObjectID)), true
-
-	case "Mutation.createSubject":
-		if e.complexity.Mutation.CreateSubject == nil {
-			break
-		}
-
-		args, err := ec.field_Mutation_createSubject_args(context.TODO(), rawArgs)
-		if err != nil {
-			return 0, false
-		}
-
-		return e.complexity.Mutation.CreateSubject(childComplexity, args["title"].(string), args["tableId"].(primitive.ObjectID)), true
+		return e.complexity.Mutation.CreateClass(childComplexity, args["number"].(int), args["shift"].(int), args["letter"].(string), args["sector"].(string), args["tableId"].(primitive.ObjectID)), true
 
 	case "Mutation.createTable":
 		if e.complexity.Mutation.CreateTable == nil {
@@ -254,18 +249,6 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Mutation.DeleteClass(childComplexity, args["id"].(primitive.ObjectID), args["tableId"].(primitive.ObjectID)), true
-
-	case "Mutation.deleteSubject":
-		if e.complexity.Mutation.DeleteSubject == nil {
-			break
-		}
-
-		args, err := ec.field_Mutation_deleteSubject_args(context.TODO(), rawArgs)
-		if err != nil {
-			return 0, false
-		}
-
-		return e.complexity.Mutation.DeleteSubject(childComplexity, args["id"].(primitive.ObjectID), args["tableId"].(primitive.ObjectID)), true
 
 	case "Mutation.deleteTable":
 		if e.complexity.Mutation.DeleteTable == nil {
@@ -325,19 +308,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Mutation.UpdateClass(childComplexity, args["id"].(primitive.ObjectID), args["title"].(string), args["shift"].(int), args["tableId"].(primitive.ObjectID)), true
-
-	case "Mutation.updateSubject":
-		if e.complexity.Mutation.UpdateSubject == nil {
-			break
-		}
-
-		args, err := ec.field_Mutation_updateSubject_args(context.TODO(), rawArgs)
-		if err != nil {
-			return 0, false
-		}
-
-		return e.complexity.Mutation.UpdateSubject(childComplexity, args["id"].(primitive.ObjectID), args["title"].(string), args["tableId"].(primitive.ObjectID)), true
+		return e.complexity.Mutation.UpdateClass(childComplexity, args["id"].(primitive.ObjectID), args["number"].(int), args["shift"].(int), args["letter"].(string), args["sector"].(string), args["tableId"].(primitive.ObjectID)), true
 
 	case "Mutation.updateTable":
 		if e.complexity.Mutation.UpdateTable == nil {
@@ -398,18 +369,6 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Query.Classes(childComplexity, args["tableId"].(primitive.ObjectID)), true
-
-	case "Query.subjects":
-		if e.complexity.Query.Subjects == nil {
-			break
-		}
-
-		args, err := ec.field_Query_subjects_args(context.TODO(), rawArgs)
-		if err != nil {
-			return 0, false
-		}
-
-		return e.complexity.Query.Subjects(childComplexity, args["tableId"].(primitive.ObjectID)), true
 
 	case "Query.table":
 		if e.complexity.Query.Table == nil {
@@ -497,13 +456,6 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Table.Slug(childComplexity), true
-
-	case "Table.subjects":
-		if e.complexity.Table.Subjects == nil {
-			break
-		}
-
-		return e.complexity.Table.Subjects(childComplexity), true
 
 	case "Table.subjectsCount":
 		if e.complexity.Table.SubjectsCount == nil {
@@ -737,14 +689,16 @@ func (ec *executionContext) introspectType(name string) (*introspection.Type, er
 var parsedSchema = gqlparser.MustLoadSchema(
 	&ast.Source{Name: "schema/class.gql", Input: `type Class {
   id: ID!
-  title: String!
+  number: Int!
+  letter: String!
+  sector: String!
   shift: Int!
 }
 `},
 	&ast.Source{Name: "schema/main.gql", Input: `type Query {
   user: User!
   table(slug: String!): Table
-  subjects(tableId: ID!): [Subject]
+  # subjects(tableId: ID!): [Subject]
   classes(tableId: ID!): [Class]
   teachers(tableId: ID!): [Teacher]
 }
@@ -757,12 +711,25 @@ type Mutation {
   deleteTable(id: ID!): Table!
   duplicateTable(id: ID!): Table!
 
-  createSubject(title: String!, tableId: ID!): Subject!
-  updateSubject(id: ID!, title: String!, tableId: ID!): Subject!
-  deleteSubject(id: ID!, tableId: ID!): Subject!
+  # createSubject(title: String!, tableId: ID!): Subject!
+  # updateSubject(id: ID!, title: String!, tableId: ID!): Subject!
+  # deleteSubject(id: ID!, tableId: ID!): Subject!
 
-  createClass(title: String!, shift: Int!, tableId: ID!): Class!
-  updateClass(id: ID!, title: String!, shift: Int!, tableId: ID!): Class!
+  createClass(
+    number: Int!
+    shift: Int!
+    letter: String!
+    sector: String!
+    tableId: ID!
+  ): Class!
+  updateClass(
+    id: ID!
+    number: Int!
+    shift: Int!
+    letter: String!
+    sector: String!
+    tableId: ID!
+  ): Class!
   deleteClass(id: ID!, tableId: ID!): Class!
 
   createTeacher(name: String!, tableId: ID!, slug: String!): Teacher!
@@ -800,7 +767,7 @@ type Table {
   slug: String!
   created: DateTime!
   lastModified: DateTime!
-  subjects: [Subject]
+  # subjects: [Subject]
   subjectsCount: Int
   teachers: [Teacher]
   teachersCount: Int
@@ -852,14 +819,14 @@ type Token {
 func (ec *executionContext) field_Mutation_createClass_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
 	var err error
 	args := map[string]interface{}{}
-	var arg0 string
-	if tmp, ok := rawArgs["title"]; ok {
-		arg0, err = ec.unmarshalNString2string(ctx, tmp)
+	var arg0 int
+	if tmp, ok := rawArgs["number"]; ok {
+		arg0, err = ec.unmarshalNInt2int(ctx, tmp)
 		if err != nil {
 			return nil, err
 		}
 	}
-	args["title"] = arg0
+	args["number"] = arg0
 	var arg1 int
 	if tmp, ok := rawArgs["shift"]; ok {
 		arg1, err = ec.unmarshalNInt2int(ctx, tmp)
@@ -868,36 +835,30 @@ func (ec *executionContext) field_Mutation_createClass_args(ctx context.Context,
 		}
 	}
 	args["shift"] = arg1
-	var arg2 primitive.ObjectID
+	var arg2 string
+	if tmp, ok := rawArgs["letter"]; ok {
+		arg2, err = ec.unmarshalNString2string(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["letter"] = arg2
+	var arg3 string
+	if tmp, ok := rawArgs["sector"]; ok {
+		arg3, err = ec.unmarshalNString2string(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["sector"] = arg3
+	var arg4 primitive.ObjectID
 	if tmp, ok := rawArgs["tableId"]; ok {
-		arg2, err = ec.unmarshalNID2goᚗmongodbᚗorgᚋmongoᚑdriverᚋbsonᚋprimitiveᚐObjectID(ctx, tmp)
+		arg4, err = ec.unmarshalNID2goᚗmongodbᚗorgᚋmongoᚑdriverᚋbsonᚋprimitiveᚐObjectID(ctx, tmp)
 		if err != nil {
 			return nil, err
 		}
 	}
-	args["tableId"] = arg2
-	return args, nil
-}
-
-func (ec *executionContext) field_Mutation_createSubject_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
-	var err error
-	args := map[string]interface{}{}
-	var arg0 string
-	if tmp, ok := rawArgs["title"]; ok {
-		arg0, err = ec.unmarshalNString2string(ctx, tmp)
-		if err != nil {
-			return nil, err
-		}
-	}
-	args["title"] = arg0
-	var arg1 primitive.ObjectID
-	if tmp, ok := rawArgs["tableId"]; ok {
-		arg1, err = ec.unmarshalNID2goᚗmongodbᚗorgᚋmongoᚑdriverᚋbsonᚋprimitiveᚐObjectID(ctx, tmp)
-		if err != nil {
-			return nil, err
-		}
-	}
-	args["tableId"] = arg1
+	args["tableId"] = arg4
 	return args, nil
 }
 
@@ -954,28 +915,6 @@ func (ec *executionContext) field_Mutation_createTeacher_args(ctx context.Contex
 }
 
 func (ec *executionContext) field_Mutation_deleteClass_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
-	var err error
-	args := map[string]interface{}{}
-	var arg0 primitive.ObjectID
-	if tmp, ok := rawArgs["id"]; ok {
-		arg0, err = ec.unmarshalNID2goᚗmongodbᚗorgᚋmongoᚑdriverᚋbsonᚋprimitiveᚐObjectID(ctx, tmp)
-		if err != nil {
-			return nil, err
-		}
-	}
-	args["id"] = arg0
-	var arg1 primitive.ObjectID
-	if tmp, ok := rawArgs["tableId"]; ok {
-		arg1, err = ec.unmarshalNID2goᚗmongodbᚗorgᚋmongoᚑdriverᚋbsonᚋprimitiveᚐObjectID(ctx, tmp)
-		if err != nil {
-			return nil, err
-		}
-	}
-	args["tableId"] = arg1
-	return args, nil
-}
-
-func (ec *executionContext) field_Mutation_deleteSubject_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
 	var err error
 	args := map[string]interface{}{}
 	var arg0 primitive.ObjectID
@@ -1080,14 +1019,14 @@ func (ec *executionContext) field_Mutation_updateClass_args(ctx context.Context,
 		}
 	}
 	args["id"] = arg0
-	var arg1 string
-	if tmp, ok := rawArgs["title"]; ok {
-		arg1, err = ec.unmarshalNString2string(ctx, tmp)
+	var arg1 int
+	if tmp, ok := rawArgs["number"]; ok {
+		arg1, err = ec.unmarshalNInt2int(ctx, tmp)
 		if err != nil {
 			return nil, err
 		}
 	}
-	args["title"] = arg1
+	args["number"] = arg1
 	var arg2 int
 	if tmp, ok := rawArgs["shift"]; ok {
 		arg2, err = ec.unmarshalNInt2int(ctx, tmp)
@@ -1096,44 +1035,30 @@ func (ec *executionContext) field_Mutation_updateClass_args(ctx context.Context,
 		}
 	}
 	args["shift"] = arg2
-	var arg3 primitive.ObjectID
+	var arg3 string
+	if tmp, ok := rawArgs["letter"]; ok {
+		arg3, err = ec.unmarshalNString2string(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["letter"] = arg3
+	var arg4 string
+	if tmp, ok := rawArgs["sector"]; ok {
+		arg4, err = ec.unmarshalNString2string(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["sector"] = arg4
+	var arg5 primitive.ObjectID
 	if tmp, ok := rawArgs["tableId"]; ok {
-		arg3, err = ec.unmarshalNID2goᚗmongodbᚗorgᚋmongoᚑdriverᚋbsonᚋprimitiveᚐObjectID(ctx, tmp)
+		arg5, err = ec.unmarshalNID2goᚗmongodbᚗorgᚋmongoᚑdriverᚋbsonᚋprimitiveᚐObjectID(ctx, tmp)
 		if err != nil {
 			return nil, err
 		}
 	}
-	args["tableId"] = arg3
-	return args, nil
-}
-
-func (ec *executionContext) field_Mutation_updateSubject_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
-	var err error
-	args := map[string]interface{}{}
-	var arg0 primitive.ObjectID
-	if tmp, ok := rawArgs["id"]; ok {
-		arg0, err = ec.unmarshalNID2goᚗmongodbᚗorgᚋmongoᚑdriverᚋbsonᚋprimitiveᚐObjectID(ctx, tmp)
-		if err != nil {
-			return nil, err
-		}
-	}
-	args["id"] = arg0
-	var arg1 string
-	if tmp, ok := rawArgs["title"]; ok {
-		arg1, err = ec.unmarshalNString2string(ctx, tmp)
-		if err != nil {
-			return nil, err
-		}
-	}
-	args["title"] = arg1
-	var arg2 primitive.ObjectID
-	if tmp, ok := rawArgs["tableId"]; ok {
-		arg2, err = ec.unmarshalNID2goᚗmongodbᚗorgᚋmongoᚑdriverᚋbsonᚋprimitiveᚐObjectID(ctx, tmp)
-		if err != nil {
-			return nil, err
-		}
-	}
-	args["tableId"] = arg2
+	args["tableId"] = arg5
 	return args, nil
 }
 
@@ -1333,20 +1258,6 @@ func (ec *executionContext) field_Query_classes_args(ctx context.Context, rawArg
 	return args, nil
 }
 
-func (ec *executionContext) field_Query_subjects_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
-	var err error
-	args := map[string]interface{}{}
-	var arg0 primitive.ObjectID
-	if tmp, ok := rawArgs["tableId"]; ok {
-		arg0, err = ec.unmarshalNID2goᚗmongodbᚗorgᚋmongoᚑdriverᚋbsonᚋprimitiveᚐObjectID(ctx, tmp)
-		if err != nil {
-			return nil, err
-		}
-	}
-	args["tableId"] = arg0
-	return args, nil
-}
-
 func (ec *executionContext) field_Query_table_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
 	var err error
 	args := map[string]interface{}{}
@@ -1448,7 +1359,7 @@ func (ec *executionContext) _Class_id(ctx context.Context, field graphql.Collect
 	return ec.marshalNID2goᚗmongodbᚗorgᚋmongoᚑdriverᚋbsonᚋprimitiveᚐObjectID(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Class_title(ctx context.Context, field graphql.CollectedField, obj *models.Class) (ret graphql.Marshaler) {
+func (ec *executionContext) _Class_number(ctx context.Context, field graphql.CollectedField, obj *models.Class) (ret graphql.Marshaler) {
 	ctx = ec.Tracer.StartFieldExecution(ctx, field)
 	defer func() {
 		if r := recover(); r != nil {
@@ -1467,7 +1378,81 @@ func (ec *executionContext) _Class_title(ctx context.Context, field graphql.Coll
 	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.Title, nil
+		return obj.Number, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !ec.HasError(rctx) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Class_letter(ctx context.Context, field graphql.CollectedField, obj *models.Class) (ret graphql.Marshaler) {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+		ec.Tracer.EndFieldExecution(ctx)
+	}()
+	rctx := &graphql.ResolverContext{
+		Object:   "Class",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Letter, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !ec.HasError(rctx) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Class_sector(ctx context.Context, field graphql.CollectedField, obj *models.Class) (ret graphql.Marshaler) {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+		ec.Tracer.EndFieldExecution(ctx)
+	}()
+	rctx := &graphql.ResolverContext{
+		Object:   "Class",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Sector, nil
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -1742,138 +1727,6 @@ func (ec *executionContext) _Mutation_duplicateTable(ctx context.Context, field 
 	return ec.marshalNTable2ᚖgithubᚗcomᚋkamilniftalievᚋtableᚑserverᚋapiᚋmodelsᚐTable(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Mutation_createSubject(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
-	ctx = ec.Tracer.StartFieldExecution(ctx, field)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-		ec.Tracer.EndFieldExecution(ctx)
-	}()
-	rctx := &graphql.ResolverContext{
-		Object:   "Mutation",
-		Field:    field,
-		Args:     nil,
-		IsMethod: true,
-	}
-	ctx = graphql.WithResolverContext(ctx, rctx)
-	rawArgs := field.ArgumentMap(ec.Variables)
-	args, err := ec.field_Mutation_createSubject_args(ctx, rawArgs)
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	rctx.Args = args
-	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Mutation().CreateSubject(rctx, args["title"].(string), args["tableId"].(primitive.ObjectID))
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		if !ec.HasError(rctx) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	res := resTmp.(*models.Subject)
-	rctx.Result = res
-	ctx = ec.Tracer.StartFieldChildExecution(ctx)
-	return ec.marshalNSubject2ᚖgithubᚗcomᚋkamilniftalievᚋtableᚑserverᚋapiᚋmodelsᚐSubject(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) _Mutation_updateSubject(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
-	ctx = ec.Tracer.StartFieldExecution(ctx, field)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-		ec.Tracer.EndFieldExecution(ctx)
-	}()
-	rctx := &graphql.ResolverContext{
-		Object:   "Mutation",
-		Field:    field,
-		Args:     nil,
-		IsMethod: true,
-	}
-	ctx = graphql.WithResolverContext(ctx, rctx)
-	rawArgs := field.ArgumentMap(ec.Variables)
-	args, err := ec.field_Mutation_updateSubject_args(ctx, rawArgs)
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	rctx.Args = args
-	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Mutation().UpdateSubject(rctx, args["id"].(primitive.ObjectID), args["title"].(string), args["tableId"].(primitive.ObjectID))
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		if !ec.HasError(rctx) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	res := resTmp.(*models.Subject)
-	rctx.Result = res
-	ctx = ec.Tracer.StartFieldChildExecution(ctx)
-	return ec.marshalNSubject2ᚖgithubᚗcomᚋkamilniftalievᚋtableᚑserverᚋapiᚋmodelsᚐSubject(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) _Mutation_deleteSubject(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
-	ctx = ec.Tracer.StartFieldExecution(ctx, field)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-		ec.Tracer.EndFieldExecution(ctx)
-	}()
-	rctx := &graphql.ResolverContext{
-		Object:   "Mutation",
-		Field:    field,
-		Args:     nil,
-		IsMethod: true,
-	}
-	ctx = graphql.WithResolverContext(ctx, rctx)
-	rawArgs := field.ArgumentMap(ec.Variables)
-	args, err := ec.field_Mutation_deleteSubject_args(ctx, rawArgs)
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	rctx.Args = args
-	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Mutation().DeleteSubject(rctx, args["id"].(primitive.ObjectID), args["tableId"].(primitive.ObjectID))
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		if !ec.HasError(rctx) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	res := resTmp.(*models.Subject)
-	rctx.Result = res
-	ctx = ec.Tracer.StartFieldChildExecution(ctx)
-	return ec.marshalNSubject2ᚖgithubᚗcomᚋkamilniftalievᚋtableᚑserverᚋapiᚋmodelsᚐSubject(ctx, field.Selections, res)
-}
-
 func (ec *executionContext) _Mutation_createClass(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
 	ctx = ec.Tracer.StartFieldExecution(ctx, field)
 	defer func() {
@@ -1900,7 +1753,7 @@ func (ec *executionContext) _Mutation_createClass(ctx context.Context, field gra
 	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Mutation().CreateClass(rctx, args["title"].(string), args["shift"].(int), args["tableId"].(primitive.ObjectID))
+		return ec.resolvers.Mutation().CreateClass(rctx, args["number"].(int), args["shift"].(int), args["letter"].(string), args["sector"].(string), args["tableId"].(primitive.ObjectID))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -1944,7 +1797,7 @@ func (ec *executionContext) _Mutation_updateClass(ctx context.Context, field gra
 	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Mutation().UpdateClass(rctx, args["id"].(primitive.ObjectID), args["title"].(string), args["shift"].(int), args["tableId"].(primitive.ObjectID))
+		return ec.resolvers.Mutation().UpdateClass(rctx, args["id"].(primitive.ObjectID), args["number"].(int), args["shift"].(int), args["letter"].(string), args["sector"].(string), args["tableId"].(primitive.ObjectID))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -2302,47 +2155,6 @@ func (ec *executionContext) _Query_table(ctx context.Context, field graphql.Coll
 	rctx.Result = res
 	ctx = ec.Tracer.StartFieldChildExecution(ctx)
 	return ec.marshalOTable2ᚖgithubᚗcomᚋkamilniftalievᚋtableᚑserverᚋapiᚋmodelsᚐTable(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) _Query_subjects(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
-	ctx = ec.Tracer.StartFieldExecution(ctx, field)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-		ec.Tracer.EndFieldExecution(ctx)
-	}()
-	rctx := &graphql.ResolverContext{
-		Object:   "Query",
-		Field:    field,
-		Args:     nil,
-		IsMethod: true,
-	}
-	ctx = graphql.WithResolverContext(ctx, rctx)
-	rawArgs := field.ArgumentMap(ec.Variables)
-	args, err := ec.field_Query_subjects_args(ctx, rawArgs)
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	rctx.Args = args
-	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Query().Subjects(rctx, args["tableId"].(primitive.ObjectID))
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.([]*models.Subject)
-	rctx.Result = res
-	ctx = ec.Tracer.StartFieldChildExecution(ctx)
-	return ec.marshalOSubject2ᚕᚖgithubᚗcomᚋkamilniftalievᚋtableᚑserverᚋapiᚋmodelsᚐSubject(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Query_classes(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
@@ -2759,40 +2571,6 @@ func (ec *executionContext) _Table_lastModified(ctx context.Context, field graph
 	rctx.Result = res
 	ctx = ec.Tracer.StartFieldChildExecution(ctx)
 	return ec.marshalNDateTime2goᚗmongodbᚗorgᚋmongoᚑdriverᚋbsonᚋprimitiveᚐDateTime(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) _Table_subjects(ctx context.Context, field graphql.CollectedField, obj *models.Table) (ret graphql.Marshaler) {
-	ctx = ec.Tracer.StartFieldExecution(ctx, field)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-		ec.Tracer.EndFieldExecution(ctx)
-	}()
-	rctx := &graphql.ResolverContext{
-		Object:   "Table",
-		Field:    field,
-		Args:     nil,
-		IsMethod: false,
-	}
-	ctx = graphql.WithResolverContext(ctx, rctx)
-	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.Subjects, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.([]*models.Subject)
-	rctx.Result = res
-	ctx = ec.Tracer.StartFieldChildExecution(ctx)
-	return ec.marshalOSubject2ᚕᚖgithubᚗcomᚋkamilniftalievᚋtableᚑserverᚋapiᚋmodelsᚐSubject(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Table_subjectsCount(ctx context.Context, field graphql.CollectedField, obj *models.Table) (ret graphql.Marshaler) {
@@ -4862,8 +4640,18 @@ func (ec *executionContext) _Class(ctx context.Context, sel ast.SelectionSet, ob
 			if out.Values[i] == graphql.Null {
 				invalids++
 			}
-		case "title":
-			out.Values[i] = ec._Class_title(ctx, field, obj)
+		case "number":
+			out.Values[i] = ec._Class_number(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "letter":
+			out.Values[i] = ec._Class_letter(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "sector":
+			out.Values[i] = ec._Class_sector(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				invalids++
 			}
@@ -4920,21 +4708,6 @@ func (ec *executionContext) _Mutation(ctx context.Context, sel ast.SelectionSet)
 			}
 		case "duplicateTable":
 			out.Values[i] = ec._Mutation_duplicateTable(ctx, field)
-			if out.Values[i] == graphql.Null {
-				invalids++
-			}
-		case "createSubject":
-			out.Values[i] = ec._Mutation_createSubject(ctx, field)
-			if out.Values[i] == graphql.Null {
-				invalids++
-			}
-		case "updateSubject":
-			out.Values[i] = ec._Mutation_updateSubject(ctx, field)
-			if out.Values[i] == graphql.Null {
-				invalids++
-			}
-		case "deleteSubject":
-			out.Values[i] = ec._Mutation_deleteSubject(ctx, field)
 			if out.Values[i] == graphql.Null {
 				invalids++
 			}
@@ -5027,17 +4800,6 @@ func (ec *executionContext) _Query(ctx context.Context, sel ast.SelectionSet) gr
 					}
 				}()
 				res = ec._Query_table(ctx, field)
-				return res
-			})
-		case "subjects":
-			field := field
-			out.Concurrently(i, func() (res graphql.Marshaler) {
-				defer func() {
-					if r := recover(); r != nil {
-						ec.Error(ctx, ec.Recover(ctx, r))
-					}
-				}()
-				res = ec._Query_subjects(ctx, field)
 				return res
 			})
 		case "classes":
@@ -5145,8 +4907,6 @@ func (ec *executionContext) _Table(ctx context.Context, sel ast.SelectionSet, ob
 			if out.Values[i] == graphql.Null {
 				invalids++
 			}
-		case "subjects":
-			out.Values[i] = ec._Table_subjects(ctx, field, obj)
 		case "subjectsCount":
 			out.Values[i] = ec._Table_subjectsCount(ctx, field, obj)
 		case "teachers":
@@ -5707,20 +5467,6 @@ func (ec *executionContext) marshalNString2ᚖstring(ctx context.Context, sel as
 	return ec.marshalNString2string(ctx, sel, *v)
 }
 
-func (ec *executionContext) marshalNSubject2githubᚗcomᚋkamilniftalievᚋtableᚑserverᚋapiᚋmodelsᚐSubject(ctx context.Context, sel ast.SelectionSet, v models.Subject) graphql.Marshaler {
-	return ec._Subject(ctx, sel, &v)
-}
-
-func (ec *executionContext) marshalNSubject2ᚖgithubᚗcomᚋkamilniftalievᚋtableᚑserverᚋapiᚋmodelsᚐSubject(ctx context.Context, sel ast.SelectionSet, v *models.Subject) graphql.Marshaler {
-	if v == nil {
-		if !ec.HasError(graphql.GetResolverContext(ctx)) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	return ec._Subject(ctx, sel, v)
-}
-
 func (ec *executionContext) marshalNTable2githubᚗcomᚋkamilniftalievᚋtableᚑserverᚋapiᚋmodelsᚐTable(ctx context.Context, sel ast.SelectionSet, v models.Table) graphql.Marshaler {
 	return ec._Table(ctx, sel, &v)
 }
@@ -6250,57 +5996,6 @@ func (ec *executionContext) marshalOString2ᚖstring(ctx context.Context, sel as
 		return graphql.Null
 	}
 	return ec.marshalOString2string(ctx, sel, *v)
-}
-
-func (ec *executionContext) marshalOSubject2githubᚗcomᚋkamilniftalievᚋtableᚑserverᚋapiᚋmodelsᚐSubject(ctx context.Context, sel ast.SelectionSet, v models.Subject) graphql.Marshaler {
-	return ec._Subject(ctx, sel, &v)
-}
-
-func (ec *executionContext) marshalOSubject2ᚕᚖgithubᚗcomᚋkamilniftalievᚋtableᚑserverᚋapiᚋmodelsᚐSubject(ctx context.Context, sel ast.SelectionSet, v []*models.Subject) graphql.Marshaler {
-	if v == nil {
-		return graphql.Null
-	}
-	ret := make(graphql.Array, len(v))
-	var wg sync.WaitGroup
-	isLen1 := len(v) == 1
-	if !isLen1 {
-		wg.Add(len(v))
-	}
-	for i := range v {
-		i := i
-		rctx := &graphql.ResolverContext{
-			Index:  &i,
-			Result: &v[i],
-		}
-		ctx := graphql.WithResolverContext(ctx, rctx)
-		f := func(i int) {
-			defer func() {
-				if r := recover(); r != nil {
-					ec.Error(ctx, ec.Recover(ctx, r))
-					ret = nil
-				}
-			}()
-			if !isLen1 {
-				defer wg.Done()
-			}
-			ret[i] = ec.marshalOSubject2ᚖgithubᚗcomᚋkamilniftalievᚋtableᚑserverᚋapiᚋmodelsᚐSubject(ctx, sel, v[i])
-		}
-		if isLen1 {
-			f(i)
-		} else {
-			go f(i)
-		}
-
-	}
-	wg.Wait()
-	return ret
-}
-
-func (ec *executionContext) marshalOSubject2ᚖgithubᚗcomᚋkamilniftalievᚋtableᚑserverᚋapiᚋmodelsᚐSubject(ctx context.Context, sel ast.SelectionSet, v *models.Subject) graphql.Marshaler {
-	if v == nil {
-		return graphql.Null
-	}
-	return ec._Subject(ctx, sel, v)
 }
 
 func (ec *executionContext) marshalOTable2githubᚗcomᚋkamilniftalievᚋtableᚑserverᚋapiᚋmodelsᚐTable(ctx context.Context, sel ast.SelectionSet, v models.Table) graphql.Marshaler {

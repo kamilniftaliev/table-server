@@ -18,30 +18,21 @@ func Teachers(ctx context.Context, tableID primitive.ObjectID) ([]*models.Teache
 		return nil, auth.Error
 	}
 
-	var user *models.User
+	var table *models.Table
 
 	filter := bson.M{
-		"username":   auth.Username,
-		"tables._id": tableID,
+		"_id": tableID,
 	}
 
-	err := DB.Collection("users").FindOne(ctx, filter).Decode(&user)
+	err := DB.Collection("tables").FindOne(ctx, filter).Decode(&table)
 
-	tableIndex := 0
-
-	for i := 0; i < len(user.Tables); i++ {
-		if user.Tables[i].ID == tableID {
-			tableIndex = i
-		}
-	}
-
-	helpers.SetWorkloadAmountForTeachers(user.Tables[tableIndex].Teachers)
+	helpers.SetWorkloadAmountForTeachers(table.Teachers)
 
 	if err != nil {
 		return nil, err
 	}
 
-	return user.Tables[tableIndex].Teachers, nil
+	return table.Teachers, nil
 }
 
 func CreateTeacher(ctx context.Context, name string, tableID primitive.ObjectID, slug string) (*models.Teacher, error) {
@@ -80,7 +71,7 @@ func CreateTeacher(ctx context.Context, name string, tableID primitive.ObjectID,
 	}
 
 	filter := bson.M{
-		"username":   auth.Username,
+		"username":   auth.UserID,
 		"tables._id": tableID,
 	}
 
@@ -118,7 +109,7 @@ func UpdateTeacher(
 	}
 
 	filter := bson.M{
-		"username":            auth.Username,
+		"username":            auth.UserID,
 		"tables._id":          tableID,
 		"tables.teachers._id": id,
 	}
@@ -168,7 +159,7 @@ func UpdateWorkload(
 	}
 
 	filter := bson.M{
-		"username":   auth.Username,
+		"username":   auth.UserID,
 		"tables._id": tableID,
 	}
 
@@ -220,7 +211,7 @@ func UpdateWorkhour(
 	}
 
 	filter := bson.M{
-		"username":   auth.Username,
+		"username":   auth.UserID,
 		"tables._id": tableID,
 	}
 
@@ -258,16 +249,16 @@ func DeleteTeacher(ctx context.Context, id primitive.ObjectID, tableID primitive
 	}
 
 	filter := bson.M{
-		"username":   auth.Username,
+		"username":   auth.UserID,
 		"tables._id": tableID,
 	}
 
 	update := bson.M{
 		"$pull": bson.M{
-			"tables.0.teachers": bson.M{"_id": id},
+			"tables.$.teachers": bson.M{"_id": id},
 		},
 		"$set": bson.M{
-			"tables.0.lastModified": primitive.NewDateTimeFromTime(time.Now()),
+			"tables.$.lastModified": primitive.NewDateTimeFromTime(time.Now()),
 		},
 	}
 

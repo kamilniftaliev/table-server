@@ -9,6 +9,7 @@ import (
 
 	"github.com/dgrijalva/jwt-go"
 	"github.com/kamilniftaliev/table-server/api/models"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 var ErrorAccessDenied = errors.New("access_denied")
@@ -20,24 +21,24 @@ type contextKey struct {
 var authCtxKey = &contextKey{"auth"}
 
 type UserClaims struct {
-	Username string `json:"username"`
+	UserID primitive.ObjectID `json:"userId"`
 	jwt.StandardClaims
 }
 
 func getAuthFromRequest(r *http.Request) *models.Auth {
 	token := getTokenFromRequest(r)
 
-	username := getUsernameFromToken(token)
+	userId := getUserIDFromToken(token)
 	var authError error = nil
 
-	if username == "" {
+	if userId.IsZero() {
 		authError = ErrorAccessDenied
 	}
 
 	ip, _, _ := net.SplitHostPort(r.RemoteAddr)
 
 	auth := models.Auth{
-		Username:  username,
+		UserID:    userId,
 		IPAddress: ip,
 		Token:     token,
 		Error:     authError,
@@ -70,20 +71,23 @@ func getTokenFromRequest(r *http.Request) string {
 	return tokenString
 }
 
-func getUsernameFromToken(tokenString string) string {
+func getUserIDFromToken(tokenString string) primitive.ObjectID {
 	token, err := JwtDecode(tokenString)
 
+	zero, _ := primitive.ObjectIDFromHex("")
+
 	if err != nil {
-		return ""
+		return zero
 	}
 
 	if claims, ok := token.Claims.(*UserClaims); ok && token.Valid {
 		if claims == nil {
-			return ""
+			return zero
 		}
-		return claims.Username
+
+		return claims.UserID
 	} else {
-		return ""
+		return zero
 	}
 }
 

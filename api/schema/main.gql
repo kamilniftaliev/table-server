@@ -1,7 +1,7 @@
 type Query {
   user: User!
   table(slug: String!): Table
-  subjects(tableId: ID!): [Subject]
+  # subjects(tableId: ID!): [Subject]
   classes(tableId: ID!): [Class]
   teachers(tableId: ID!): [Teacher]
 }
@@ -14,12 +14,25 @@ type Mutation {
   deleteTable(id: ID!): Table!
   duplicateTable(id: ID!): Table!
 
-  createSubject(title: String!, tableId: ID!): Subject!
-  updateSubject(id: ID!, title: String!, tableId: ID!): Subject!
-  deleteSubject(id: ID!, tableId: ID!): Subject!
+  # createSubject(title: String!, tableId: ID!): Subject!
+  # updateSubject(id: ID!, title: String!, tableId: ID!): Subject!
+  # deleteSubject(id: ID!, tableId: ID!): Subject!
 
-  createClass(title: String!, shift: Int!, tableId: ID!): Class!
-  updateClass(id: ID!, title: String!, shift: Int!, tableId: ID!): Class!
+  createClass(
+    number: Int!
+    shift: Int!
+    letter: String!
+    sector: String!
+    tableId: ID!
+  ): Class!
+  updateClass(
+    id: ID!
+    number: Int!
+    shift: Int!
+    letter: String!
+    sector: String!
+    tableId: ID!
+  ): Class!
   deleteClass(id: ID!, tableId: ID!): Class!
 
   createTeacher(name: String!, tableId: ID!, slug: String!): Teacher!

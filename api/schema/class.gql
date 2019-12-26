@@ -1,5 +1,7 @@
 type Class {
   id: ID!
-  title: String!
+  number: Int!
+  letter: String!
+  sector: String!
   shift: Int!
 }
