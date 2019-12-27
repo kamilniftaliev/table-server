@@ -1,7 +1,7 @@
 type Query {
   user: User!
+  subjects: [Subject]
   table(slug: String!): Table
-  # subjects(tableId: ID!): [Subject]
   classes(tableId: ID!): [Class]
   teachers(tableId: ID!): [Teacher]
 }

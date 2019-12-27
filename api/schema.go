@@ -71,6 +71,7 @@ type ComplexityRoot struct {
 
 	Query struct {
 		Classes  func(childComplexity int, tableID primitive.ObjectID) int
+		Subjects func(childComplexity int) int
 		Table    func(childComplexity int, slug string) int
 		Teachers func(childComplexity int, tableID primitive.ObjectID) int
 		User     func(childComplexity int) int
@@ -88,7 +89,6 @@ type ComplexityRoot struct {
 		ID            func(childComplexity int) int
 		LastModified  func(childComplexity int) int
 		Slug          func(childComplexity int) int
-		SubjectsCount func(childComplexity int) int
 		Teachers      func(childComplexity int) int
 		TeachersCount func(childComplexity int) int
 		Title         func(childComplexity int) int
@@ -102,6 +102,10 @@ type ComplexityRoot struct {
 		WorkhoursAmount func(childComplexity int) int
 		Workload        func(childComplexity int) int
 		WorkloadAmount  func(childComplexity int) int
+	}
+
+	Title struct {
+		Ru func(childComplexity int) int
 	}
 
 	Token struct {
@@ -147,6 +151,7 @@ type MutationResolver interface {
 }
 type QueryResolver interface {
 	User(ctx context.Context) (*models.User, error)
+	Subjects(ctx context.Context) ([]*models.Subject, error)
 	Table(ctx context.Context, slug string) (*models.Table, error)
 	Classes(ctx context.Context, tableID primitive.ObjectID) ([]*models.Class, error)
 	Teachers(ctx context.Context, tableID primitive.ObjectID) ([]*models.Teacher, error)
@@ -370,6 +375,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Query.Classes(childComplexity, args["tableId"].(primitive.ObjectID)), true
 
+	case "Query.subjects":
+		if e.complexity.Query.Subjects == nil {
+			break
+		}
+
+		return e.complexity.Query.Subjects(childComplexity), true
+
 	case "Query.table":
 		if e.complexity.Query.Table == nil {
 			break
@@ -457,13 +469,6 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Table.Slug(childComplexity), true
 
-	case "Table.subjectsCount":
-		if e.complexity.Table.SubjectsCount == nil {
-			break
-		}
-
-		return e.complexity.Table.SubjectsCount(childComplexity), true
-
 	case "Table.teachers":
 		if e.complexity.Table.Teachers == nil {
 			break
@@ -533,6 +538,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Teacher.WorkloadAmount(childComplexity), true
+
+	case "Title.ru":
+		if e.complexity.Title.Ru == nil {
+			break
+		}
+
+		return e.complexity.Title.Ru(childComplexity), true
 
 	case "Token.expiresAt":
 		if e.complexity.Token.ExpiresAt == nil {
@@ -697,8 +709,8 @@ var parsedSchema = gqlparser.MustLoadSchema(
 `},
 	&ast.Source{Name: "schema/main.gql", Input: `type Query {
   user: User!
+  subjects: [Subject]
   table(slug: String!): Table
-  # subjects(tableId: ID!): [Subject]
   classes(tableId: ID!): [Class]
   teachers(tableId: ID!): [Teacher]
 }
@@ -754,9 +766,13 @@ type Mutation {
   deleteTeacher(id: ID!, tableId: ID!): Teacher!
 }
 `},
-	&ast.Source{Name: "schema/subject.gql", Input: `type Subject {
+	&ast.Source{Name: "schema/subject.gql", Input: `type Title {
+  ru: String!
+}
+
+type Subject {
   id: ID!
-  title: String!
+  title: Title!
 }
 `},
 	&ast.Source{Name: "schema/table.gql", Input: `scalar DateTime
@@ -767,8 +783,6 @@ type Table {
   slug: String!
   created: DateTime!
   lastModified: DateTime!
-  # subjects: [Subject]
-  subjectsCount: Int
   teachers: [Teacher]
   teachersCount: Int
   classes: [Class]
@@ -2116,6 +2130,40 @@ func (ec *executionContext) _Query_user(ctx context.Context, field graphql.Colle
 	return ec.marshalNUser2ᚖgithubᚗcomᚋkamilniftalievᚋtableᚑserverᚋapiᚋmodelsᚐUser(ctx, field.Selections, res)
 }
 
+func (ec *executionContext) _Query_subjects(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+		ec.Tracer.EndFieldExecution(ctx)
+	}()
+	rctx := &graphql.ResolverContext{
+		Object:   "Query",
+		Field:    field,
+		Args:     nil,
+		IsMethod: true,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Query().Subjects(rctx)
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.([]*models.Subject)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalOSubject2ᚕᚖgithubᚗcomᚋkamilniftalievᚋtableᚑserverᚋapiᚋmodelsᚐSubject(ctx, field.Selections, res)
+}
+
 func (ec *executionContext) _Query_table(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
 	ctx = ec.Tracer.StartFieldExecution(ctx, field)
 	defer func() {
@@ -2382,10 +2430,10 @@ func (ec *executionContext) _Subject_title(ctx context.Context, field graphql.Co
 		}
 		return graphql.Null
 	}
-	res := resTmp.(string)
+	res := resTmp.(models.Title)
 	rctx.Result = res
 	ctx = ec.Tracer.StartFieldChildExecution(ctx)
-	return ec.marshalNString2string(ctx, field.Selections, res)
+	return ec.marshalNTitle2githubᚗcomᚋkamilniftalievᚋtableᚑserverᚋapiᚋmodelsᚐTitle(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Table_id(ctx context.Context, field graphql.CollectedField, obj *models.Table) (ret graphql.Marshaler) {
@@ -2571,40 +2619,6 @@ func (ec *executionContext) _Table_lastModified(ctx context.Context, field graph
 	rctx.Result = res
 	ctx = ec.Tracer.StartFieldChildExecution(ctx)
 	return ec.marshalNDateTime2goᚗmongodbᚗorgᚋmongoᚑdriverᚋbsonᚋprimitiveᚐDateTime(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) _Table_subjectsCount(ctx context.Context, field graphql.CollectedField, obj *models.Table) (ret graphql.Marshaler) {
-	ctx = ec.Tracer.StartFieldExecution(ctx, field)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-		ec.Tracer.EndFieldExecution(ctx)
-	}()
-	rctx := &graphql.ResolverContext{
-		Object:   "Table",
-		Field:    field,
-		Args:     nil,
-		IsMethod: false,
-	}
-	ctx = graphql.WithResolverContext(ctx, rctx)
-	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.SubjectsCount, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.(int)
-	rctx.Result = res
-	ctx = ec.Tracer.StartFieldChildExecution(ctx)
-	return ec.marshalOInt2int(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Table_teachers(ctx context.Context, field graphql.CollectedField, obj *models.Table) (ret graphql.Marshaler) {
@@ -2988,6 +3002,43 @@ func (ec *executionContext) _Teacher_workhoursAmount(ctx context.Context, field 
 	rctx.Result = res
 	ctx = ec.Tracer.StartFieldChildExecution(ctx)
 	return ec.marshalOInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Title_ru(ctx context.Context, field graphql.CollectedField, obj *models.Title) (ret graphql.Marshaler) {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+		ec.Tracer.EndFieldExecution(ctx)
+	}()
+	rctx := &graphql.ResolverContext{
+		Object:   "Title",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Ru, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !ec.HasError(rctx) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Token_token(ctx context.Context, field graphql.CollectedField, obj *models.Token) (ret graphql.Marshaler) {
@@ -4791,6 +4842,17 @@ func (ec *executionContext) _Query(ctx context.Context, sel ast.SelectionSet) gr
 				}
 				return res
 			})
+		case "subjects":
+			field := field
+			out.Concurrently(i, func() (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Query_subjects(ctx, field)
+				return res
+			})
 		case "table":
 			field := field
 			out.Concurrently(i, func() (res graphql.Marshaler) {
@@ -4907,8 +4969,6 @@ func (ec *executionContext) _Table(ctx context.Context, sel ast.SelectionSet, ob
 			if out.Values[i] == graphql.Null {
 				invalids++
 			}
-		case "subjectsCount":
-			out.Values[i] = ec._Table_subjectsCount(ctx, field, obj)
 		case "teachers":
 			out.Values[i] = ec._Table_teachers(ctx, field, obj)
 		case "teachersCount":
@@ -4962,6 +5022,33 @@ func (ec *executionContext) _Teacher(ctx context.Context, sel ast.SelectionSet, 
 			out.Values[i] = ec._Teacher_workhours(ctx, field, obj)
 		case "workhoursAmount":
 			out.Values[i] = ec._Teacher_workhoursAmount(ctx, field, obj)
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch()
+	if invalids > 0 {
+		return graphql.Null
+	}
+	return out
+}
+
+var titleImplementors = []string{"Title"}
+
+func (ec *executionContext) _Title(ctx context.Context, sel ast.SelectionSet, obj *models.Title) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.RequestContext, sel, titleImplementors)
+
+	out := graphql.NewFieldSet(fields)
+	var invalids uint32
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("Title")
+		case "ru":
+			out.Values[i] = ec._Title_ru(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}
@@ -5532,6 +5619,10 @@ func (ec *executionContext) marshalNTeacher2ᚖgithubᚗcomᚋkamilniftalievᚋt
 	return ec._Teacher(ctx, sel, v)
 }
 
+func (ec *executionContext) marshalNTitle2githubᚗcomᚋkamilniftalievᚋtableᚑserverᚋapiᚋmodelsᚐTitle(ctx context.Context, sel ast.SelectionSet, v models.Title) graphql.Marshaler {
+	return ec._Title(ctx, sel, &v)
+}
+
 func (ec *executionContext) marshalNToken2githubᚗcomᚋkamilniftalievᚋtableᚑserverᚋapiᚋmodelsᚐToken(ctx context.Context, sel ast.SelectionSet, v models.Token) graphql.Marshaler {
 	return ec._Token(ctx, sel, &v)
 }
@@ -5996,6 +6087,57 @@ func (ec *executionContext) marshalOString2ᚖstring(ctx context.Context, sel as
 		return graphql.Null
 	}
 	return ec.marshalOString2string(ctx, sel, *v)
+}
+
+func (ec *executionContext) marshalOSubject2githubᚗcomᚋkamilniftalievᚋtableᚑserverᚋapiᚋmodelsᚐSubject(ctx context.Context, sel ast.SelectionSet, v models.Subject) graphql.Marshaler {
+	return ec._Subject(ctx, sel, &v)
+}
+
+func (ec *executionContext) marshalOSubject2ᚕᚖgithubᚗcomᚋkamilniftalievᚋtableᚑserverᚋapiᚋmodelsᚐSubject(ctx context.Context, sel ast.SelectionSet, v []*models.Subject) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	ret := make(graphql.Array, len(v))
+	var wg sync.WaitGroup
+	isLen1 := len(v) == 1
+	if !isLen1 {
+		wg.Add(len(v))
+	}
+	for i := range v {
+		i := i
+		rctx := &graphql.ResolverContext{
+			Index:  &i,
+			Result: &v[i],
+		}
+		ctx := graphql.WithResolverContext(ctx, rctx)
+		f := func(i int) {
+			defer func() {
+				if r := recover(); r != nil {
+					ec.Error(ctx, ec.Recover(ctx, r))
+					ret = nil
+				}
+			}()
+			if !isLen1 {
+				defer wg.Done()
+			}
+			ret[i] = ec.marshalOSubject2ᚖgithubᚗcomᚋkamilniftalievᚋtableᚑserverᚋapiᚋmodelsᚐSubject(ctx, sel, v[i])
+		}
+		if isLen1 {
+			f(i)
+		} else {
+			go f(i)
+		}
+
+	}
+	wg.Wait()
+	return ret
+}
+
+func (ec *executionContext) marshalOSubject2ᚖgithubᚗcomᚋkamilniftalievᚋtableᚑserverᚋapiᚋmodelsᚐSubject(ctx context.Context, sel ast.SelectionSet, v *models.Subject) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	return ec._Subject(ctx, sel, v)
 }
 
 func (ec *executionContext) marshalOTable2githubᚗcomᚋkamilniftalievᚋtableᚑserverᚋapiᚋmodelsᚐTable(ctx context.Context, sel ast.SelectionSet, v models.Table) graphql.Marshaler {

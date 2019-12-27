@@ -13,8 +13,7 @@ type User struct {
 }
 
 type Auth struct {
-	UserID primitive.ObjectID `json:"id" bson:"_id"`
-	// UserObjectID primitive.ObjectID
+	UserID    primitive.ObjectID `json:"id" bson:"_id"`
 	Roles     []string
 	IPAddress string
 	Token     string

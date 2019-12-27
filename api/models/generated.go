@@ -2,6 +2,10 @@
 
 package models
 
+type Title struct {
+	Ru string `json:"ru"`
+}
+
 type Token struct {
 	Token     string `json:"token"`
 	ExpiresAt int    `json:"expiresAt"`

@@ -119,22 +119,14 @@ func Table(ctx context.Context, slug string) (*models.Table, error) {
 
 	cursor, err := DB.Collection("tables").Aggregate(ctx, pipeline)
 
-	// var results []bson.M
-
 	if err = cursor.All(ctx, &tables); err != nil {
 		log.Fatal(err)
 	}
-	// for _, result := range results {
-	// 	fmt.Println(result)
-	// }
-
-	// results.All(ctx, &tables)
 
 	if len(tables) == 0 {
 		return nil, err
 	}
 
-	// log.Println(tables[0].Title)
 	return tables[0], nil
 }
 

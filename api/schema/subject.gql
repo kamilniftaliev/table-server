@@ -1,4 +1,8 @@
+type Title {
+  ru: String!
+}
+
 type Subject {
   id: ID!
-  title: String!
+  title: Title!
 }

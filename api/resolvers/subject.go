@@ -1,37 +1,34 @@
-// package resolvers
+package resolvers
 
-// import (
-// 	"context"
-// 	"time"
+import (
+	"context"
 
-// 	"github.com/kamilniftaliev/table-server/api/helpers"
-// 	"github.com/kamilniftaliev/table-server/api/models"
-// 	"go.mongodb.org/mongo-driver/bson"
-// 	"go.mongodb.org/mongo-driver/bson/primitive"
-// 	"go.mongodb.org/mongo-driver/mongo/options"
-// )
+	"github.com/kamilniftaliev/table-server/api/helpers"
+	"github.com/kamilniftaliev/table-server/api/models"
+	"go.mongodb.org/mongo-driver/bson"
+)
 
-// func Subjects(ctx context.Context, tableID primitive.ObjectID) ([]*models.Subject, error) {
-// 	auth := helpers.GetAuth(ctx)
+func Subjects(ctx context.Context) ([]*models.Subject, error) {
+	auth := helpers.GetAuth(ctx)
 
-// 	if auth.Error != nil {
-// 		return nil, auth.Error
-// 	}
+	if auth.Error != nil {
+		return nil, auth.Error
+	}
 
-// 	var table *models.Table
+	var subjects []*models.Subject
 
-// 	filter := bson.M{
-// 		"_id": tableID,
-// 	}
+	filter := bson.M{}
 
-// 	err := DB.Collection("tables").FindOne(ctx, filter).Decode(&table)
+	results, err := DB.Collection("subjects").Find(ctx, filter)
 
-// 	if err != nil {
-// 		return nil, err
-// 	}
+	if err == nil {
+		results.All(ctx, &subjects)
+	} else {
+		return nil, err
+	}
 
-// 	return table.Subjects, nil
-// }
+	return subjects, nil
+}
 
 // func CreateSubject(ctx context.Context, title string, tableID primitive.ObjectID) (*models.Subject, error) {
 // 	auth := helpers.GetAuth(ctx)

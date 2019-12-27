@@ -45,11 +45,10 @@ func (r *mutationResolver) DuplicateTable(ctx context.Context, id primitive.Obje
 	return resolvers.DuplicateTable(ctx, id)
 }
 
-// // SUBJECT RESOLVERS
+// SUBJECT RESOLVERS
 // func (r *mutationResolver) CreateSubject(
 // 	ctx context.Context,
 // 	title string,
-// 	tableID primitive.ObjectID,
 // ) (*models.Subject, error) {
 // 	return resolvers.CreateSubject(ctx, title, tableID)
 // }
@@ -167,9 +166,9 @@ func (r *queryResolver) User(ctx context.Context) (*models.User, error) {
 	return resolvers.GetUser(ctx)
 }
 
-// func (r *queryResolver) Subjects(ctx context.Context, tableID primitive.ObjectID) ([]*models.Subject, error) {
-// 	return resolvers.Subjects(ctx, tableID)
-// }
+func (r *queryResolver) Subjects(ctx context.Context) ([]*models.Subject, error) {
+	return resolvers.Subjects(ctx)
+}
 
 func (r *queryResolver) Classes(ctx context.Context, tableID primitive.ObjectID) ([]*models.Class, error) {
 	return resolvers.Classes(ctx, tableID)
