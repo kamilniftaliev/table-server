@@ -28,7 +28,7 @@ func MarshalDateTime(dateTime primitive.DateTime) graphql.Marshaler {
 func UnmarshalDateTime(v interface{}) (primitive.DateTime, error) {
 	str, _ := v.(string)
 
-	time, err := time.Parse("02.01.2006 15:04", str)
+	time, err := time.Parse(HUMAN_TIME_FORMAT, str)
 	dateTime := primitive.NewDateTimeFromTime(time)
 
 	return dateTime, err

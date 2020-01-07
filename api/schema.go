@@ -46,17 +46,18 @@ type DirectiveRoot struct {
 
 type ComplexityRoot struct {
 	Class struct {
-		ID     func(childComplexity int) int
-		Letter func(childComplexity int) int
-		Number func(childComplexity int) int
-		Sector func(childComplexity int) int
-		Shift  func(childComplexity int) int
+		ID      func(childComplexity int) int
+		Letter  func(childComplexity int) int
+		Number  func(childComplexity int) int
+		Sector  func(childComplexity int) int
+		Shift   func(childComplexity int) int
+		TableID func(childComplexity int) int
 	}
 
 	Mutation struct {
 		CreateClass    func(childComplexity int, number int, shift int, letter string, sector string, tableID primitive.ObjectID) int
 		CreateTable    func(childComplexity int, title string, slug string) int
-		CreateTeacher  func(childComplexity int, name string, tableID primitive.ObjectID, slug string) int
+		CreateTeacher  func(childComplexity int, tableID primitive.ObjectID, name string, slug string) int
 		DeleteClass    func(childComplexity int, id primitive.ObjectID, tableID primitive.ObjectID) int
 		DeleteTable    func(childComplexity int, id primitive.ObjectID) int
 		DeleteTeacher  func(childComplexity int, id primitive.ObjectID, tableID primitive.ObjectID) int
@@ -64,9 +65,9 @@ type ComplexityRoot struct {
 		SignIn         func(childComplexity int, username string, password string) int
 		UpdateClass    func(childComplexity int, id primitive.ObjectID, number int, shift int, letter string, sector string, tableID primitive.ObjectID) int
 		UpdateTable    func(childComplexity int, title string, slug string, id primitive.ObjectID) int
-		UpdateTeacher  func(childComplexity int, id primitive.ObjectID, name string, tableID primitive.ObjectID, slug string) int
+		UpdateTeacher  func(childComplexity int, id primitive.ObjectID, tableID primitive.ObjectID, name string, slug string) int
 		UpdateWorkhour func(childComplexity int, tableID primitive.ObjectID, teacherID primitive.ObjectID, day string, hour string, value bool) int
-		UpdateWorkload func(childComplexity int, tableID primitive.ObjectID, teacherID primitive.ObjectID, subjectID primitive.ObjectID, classID primitive.ObjectID, hours int, prevHours int) int
+		UpdateWorkload func(childComplexity int, tableID primitive.ObjectID, teacherID primitive.ObjectID, subjectID primitive.ObjectID, classID primitive.ObjectID, hours int) int
 	}
 
 	Query struct {
@@ -95,13 +96,12 @@ type ComplexityRoot struct {
 	}
 
 	Teacher struct {
-		ID              func(childComplexity int) int
-		Name            func(childComplexity int) int
-		Slug            func(childComplexity int) int
-		Workhours       func(childComplexity int) int
-		WorkhoursAmount func(childComplexity int) int
-		Workload        func(childComplexity int) int
-		WorkloadAmount  func(childComplexity int) int
+		ID        func(childComplexity int) int
+		Name      func(childComplexity int) int
+		Slug      func(childComplexity int) int
+		TableID   func(childComplexity int) int
+		Workhours func(childComplexity int) int
+		Workload  func(childComplexity int) int
 	}
 
 	Title struct {
@@ -143,9 +143,9 @@ type MutationResolver interface {
 	CreateClass(ctx context.Context, number int, shift int, letter string, sector string, tableID primitive.ObjectID) (*models.Class, error)
 	UpdateClass(ctx context.Context, id primitive.ObjectID, number int, shift int, letter string, sector string, tableID primitive.ObjectID) (*models.Class, error)
 	DeleteClass(ctx context.Context, id primitive.ObjectID, tableID primitive.ObjectID) (*models.Class, error)
-	CreateTeacher(ctx context.Context, name string, tableID primitive.ObjectID, slug string) (*models.Teacher, error)
-	UpdateTeacher(ctx context.Context, id primitive.ObjectID, name string, tableID primitive.ObjectID, slug string) (*models.Teacher, error)
-	UpdateWorkload(ctx context.Context, tableID primitive.ObjectID, teacherID primitive.ObjectID, subjectID primitive.ObjectID, classID primitive.ObjectID, hours int, prevHours int) (*models.Workload, error)
+	CreateTeacher(ctx context.Context, tableID primitive.ObjectID, name string, slug string) (*models.Teacher, error)
+	UpdateTeacher(ctx context.Context, id primitive.ObjectID, tableID primitive.ObjectID, name string, slug string) (*models.Teacher, error)
+	UpdateWorkload(ctx context.Context, tableID primitive.ObjectID, teacherID primitive.ObjectID, subjectID primitive.ObjectID, classID primitive.ObjectID, hours int) (*models.Workload, error)
 	UpdateWorkhour(ctx context.Context, tableID primitive.ObjectID, teacherID primitive.ObjectID, day string, hour string, value bool) (*models.Workhour, error)
 	DeleteTeacher(ctx context.Context, id primitive.ObjectID, tableID primitive.ObjectID) (*models.Teacher, error)
 }
@@ -207,6 +207,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Class.Shift(childComplexity), true
 
+	case "Class.tableId":
+		if e.complexity.Class.TableID == nil {
+			break
+		}
+
+		return e.complexity.Class.TableID(childComplexity), true
+
 	case "Mutation.createClass":
 		if e.complexity.Mutation.CreateClass == nil {
 			break
@@ -241,7 +248,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Mutation.CreateTeacher(childComplexity, args["name"].(string), args["tableId"].(primitive.ObjectID), args["slug"].(string)), true
+		return e.complexity.Mutation.CreateTeacher(childComplexity, args["tableId"].(primitive.ObjectID), args["name"].(string), args["slug"].(string)), true
 
 	case "Mutation.deleteClass":
 		if e.complexity.Mutation.DeleteClass == nil {
@@ -337,7 +344,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Mutation.UpdateTeacher(childComplexity, args["id"].(primitive.ObjectID), args["name"].(string), args["tableId"].(primitive.ObjectID), args["slug"].(string)), true
+		return e.complexity.Mutation.UpdateTeacher(childComplexity, args["id"].(primitive.ObjectID), args["tableId"].(primitive.ObjectID), args["name"].(string), args["slug"].(string)), true
 
 	case "Mutation.updateWorkhour":
 		if e.complexity.Mutation.UpdateWorkhour == nil {
@@ -361,7 +368,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Mutation.UpdateWorkload(childComplexity, args["tableId"].(primitive.ObjectID), args["teacherId"].(primitive.ObjectID), args["subjectId"].(primitive.ObjectID), args["classId"].(primitive.ObjectID), args["hours"].(int), args["prevHours"].(int)), true
+		return e.complexity.Mutation.UpdateWorkload(childComplexity, args["tableId"].(primitive.ObjectID), args["teacherId"].(primitive.ObjectID), args["subjectId"].(primitive.ObjectID), args["classId"].(primitive.ObjectID), args["hours"].(int)), true
 
 	case "Query.classes":
 		if e.complexity.Query.Classes == nil {
@@ -511,6 +518,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Teacher.Slug(childComplexity), true
 
+	case "Teacher.tableId":
+		if e.complexity.Teacher.TableID == nil {
+			break
+		}
+
+		return e.complexity.Teacher.TableID(childComplexity), true
+
 	case "Teacher.workhours":
 		if e.complexity.Teacher.Workhours == nil {
 			break
@@ -518,26 +532,12 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Teacher.Workhours(childComplexity), true
 
-	case "Teacher.workhoursAmount":
-		if e.complexity.Teacher.WorkhoursAmount == nil {
-			break
-		}
-
-		return e.complexity.Teacher.WorkhoursAmount(childComplexity), true
-
 	case "Teacher.workload":
 		if e.complexity.Teacher.Workload == nil {
 			break
 		}
 
 		return e.complexity.Teacher.Workload(childComplexity), true
-
-	case "Teacher.workloadAmount":
-		if e.complexity.Teacher.WorkloadAmount == nil {
-			break
-		}
-
-		return e.complexity.Teacher.WorkloadAmount(childComplexity), true
 
 	case "Title.ru":
 		if e.complexity.Title.Ru == nil {
@@ -701,6 +701,7 @@ func (ec *executionContext) introspectType(name string) (*introspection.Type, er
 var parsedSchema = gqlparser.MustLoadSchema(
 	&ast.Source{Name: "schema/class.gql", Input: `type Class {
   id: ID!
+  tableId: ID!
   number: Int!
   letter: String!
   sector: String!
@@ -744,15 +745,14 @@ type Mutation {
   ): Class!
   deleteClass(id: ID!, tableId: ID!): Class!
 
-  createTeacher(name: String!, tableId: ID!, slug: String!): Teacher!
-  updateTeacher(id: ID!, name: String!, tableId: ID!, slug: String!): Teacher!
+  createTeacher(tableId: ID!, name: String!, slug: String!): Teacher!
+  updateTeacher(id: ID!, tableId: ID!, name: String!, slug: String!): Teacher!
   updateWorkload(
     tableId: ID!
     teacherId: ID!
     subjectId: ID!
     classId: ID!
     hours: Int!
-    prevHours: Int!
   ): Workload!
 
   updateWorkhour(
@@ -792,23 +792,24 @@ type Table {
 	&ast.Source{Name: "schema/teacher.gql", Input: `type Workhour {
   day: String!
   hour: String!
-  value: Boolean
+  value: Boolean!
 }
 
 type Workload {
   subjectId: ID!
   classId: ID!
-  hours: Int
+  hours: Int!
 }
 
 type Teacher {
   id: ID!
+  tableId: ID!
   name: String!
   slug: String!
   workload: [Workload]
-  workloadAmount: Int
+  # workloadAmount: Int
   workhours: [[Boolean]]
-  workhoursAmount: Int
+  # workhoursAmount: Int
 }
 `},
 	&ast.Source{Name: "schema/user.gql", Input: `type User {
@@ -901,22 +902,22 @@ func (ec *executionContext) field_Mutation_createTable_args(ctx context.Context,
 func (ec *executionContext) field_Mutation_createTeacher_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
 	var err error
 	args := map[string]interface{}{}
-	var arg0 string
-	if tmp, ok := rawArgs["name"]; ok {
-		arg0, err = ec.unmarshalNString2string(ctx, tmp)
-		if err != nil {
-			return nil, err
-		}
-	}
-	args["name"] = arg0
-	var arg1 primitive.ObjectID
+	var arg0 primitive.ObjectID
 	if tmp, ok := rawArgs["tableId"]; ok {
-		arg1, err = ec.unmarshalNID2goᚗmongodbᚗorgᚋmongoᚑdriverᚋbsonᚋprimitiveᚐObjectID(ctx, tmp)
+		arg0, err = ec.unmarshalNID2goᚗmongodbᚗorgᚋmongoᚑdriverᚋbsonᚋprimitiveᚐObjectID(ctx, tmp)
 		if err != nil {
 			return nil, err
 		}
 	}
-	args["tableId"] = arg1
+	args["tableId"] = arg0
+	var arg1 string
+	if tmp, ok := rawArgs["name"]; ok {
+		arg1, err = ec.unmarshalNString2string(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["name"] = arg1
 	var arg2 string
 	if tmp, ok := rawArgs["slug"]; ok {
 		arg2, err = ec.unmarshalNString2string(ctx, tmp)
@@ -1117,22 +1118,22 @@ func (ec *executionContext) field_Mutation_updateTeacher_args(ctx context.Contex
 		}
 	}
 	args["id"] = arg0
-	var arg1 string
-	if tmp, ok := rawArgs["name"]; ok {
-		arg1, err = ec.unmarshalNString2string(ctx, tmp)
-		if err != nil {
-			return nil, err
-		}
-	}
-	args["name"] = arg1
-	var arg2 primitive.ObjectID
+	var arg1 primitive.ObjectID
 	if tmp, ok := rawArgs["tableId"]; ok {
-		arg2, err = ec.unmarshalNID2goᚗmongodbᚗorgᚋmongoᚑdriverᚋbsonᚋprimitiveᚐObjectID(ctx, tmp)
+		arg1, err = ec.unmarshalNID2goᚗmongodbᚗorgᚋmongoᚑdriverᚋbsonᚋprimitiveᚐObjectID(ctx, tmp)
 		if err != nil {
 			return nil, err
 		}
 	}
-	args["tableId"] = arg2
+	args["tableId"] = arg1
+	var arg2 string
+	if tmp, ok := rawArgs["name"]; ok {
+		arg2, err = ec.unmarshalNString2string(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["name"] = arg2
 	var arg3 string
 	if tmp, ok := rawArgs["slug"]; ok {
 		arg3, err = ec.unmarshalNString2string(ctx, tmp)
@@ -1233,14 +1234,6 @@ func (ec *executionContext) field_Mutation_updateWorkload_args(ctx context.Conte
 		}
 	}
 	args["hours"] = arg4
-	var arg5 int
-	if tmp, ok := rawArgs["prevHours"]; ok {
-		arg5, err = ec.unmarshalNInt2int(ctx, tmp)
-		if err != nil {
-			return nil, err
-		}
-	}
-	args["prevHours"] = arg5
 	return args, nil
 }
 
@@ -1356,6 +1349,43 @@ func (ec *executionContext) _Class_id(ctx context.Context, field graphql.Collect
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
 		return obj.ID, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !ec.HasError(rctx) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(primitive.ObjectID)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalNID2goᚗmongodbᚗorgᚋmongoᚑdriverᚋbsonᚋprimitiveᚐObjectID(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Class_tableId(ctx context.Context, field graphql.CollectedField, obj *models.Class) (ret graphql.Marshaler) {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+		ec.Tracer.EndFieldExecution(ctx)
+	}()
+	rctx := &graphql.ResolverContext{
+		Object:   "Class",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.TableID, nil
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -1899,7 +1929,7 @@ func (ec *executionContext) _Mutation_createTeacher(ctx context.Context, field g
 	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Mutation().CreateTeacher(rctx, args["name"].(string), args["tableId"].(primitive.ObjectID), args["slug"].(string))
+		return ec.resolvers.Mutation().CreateTeacher(rctx, args["tableId"].(primitive.ObjectID), args["name"].(string), args["slug"].(string))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -1943,7 +1973,7 @@ func (ec *executionContext) _Mutation_updateTeacher(ctx context.Context, field g
 	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Mutation().UpdateTeacher(rctx, args["id"].(primitive.ObjectID), args["name"].(string), args["tableId"].(primitive.ObjectID), args["slug"].(string))
+		return ec.resolvers.Mutation().UpdateTeacher(rctx, args["id"].(primitive.ObjectID), args["tableId"].(primitive.ObjectID), args["name"].(string), args["slug"].(string))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -1987,7 +2017,7 @@ func (ec *executionContext) _Mutation_updateWorkload(ctx context.Context, field 
 	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Mutation().UpdateWorkload(rctx, args["tableId"].(primitive.ObjectID), args["teacherId"].(primitive.ObjectID), args["subjectId"].(primitive.ObjectID), args["classId"].(primitive.ObjectID), args["hours"].(int), args["prevHours"].(int))
+		return ec.resolvers.Mutation().UpdateWorkload(rctx, args["tableId"].(primitive.ObjectID), args["teacherId"].(primitive.ObjectID), args["subjectId"].(primitive.ObjectID), args["classId"].(primitive.ObjectID), args["hours"].(int))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -2794,6 +2824,43 @@ func (ec *executionContext) _Teacher_id(ctx context.Context, field graphql.Colle
 	return ec.marshalNID2goᚗmongodbᚗorgᚋmongoᚑdriverᚋbsonᚋprimitiveᚐObjectID(ctx, field.Selections, res)
 }
 
+func (ec *executionContext) _Teacher_tableId(ctx context.Context, field graphql.CollectedField, obj *models.Teacher) (ret graphql.Marshaler) {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+		ec.Tracer.EndFieldExecution(ctx)
+	}()
+	rctx := &graphql.ResolverContext{
+		Object:   "Teacher",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.TableID, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !ec.HasError(rctx) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(primitive.ObjectID)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalNID2goᚗmongodbᚗorgᚋmongoᚑdriverᚋbsonᚋprimitiveᚐObjectID(ctx, field.Selections, res)
+}
+
 func (ec *executionContext) _Teacher_name(ctx context.Context, field graphql.CollectedField, obj *models.Teacher) (ret graphql.Marshaler) {
 	ctx = ec.Tracer.StartFieldExecution(ctx, field)
 	defer func() {
@@ -2902,40 +2969,6 @@ func (ec *executionContext) _Teacher_workload(ctx context.Context, field graphql
 	return ec.marshalOWorkload2ᚕᚖgithubᚗcomᚋkamilniftalievᚋtableᚑserverᚋapiᚋmodelsᚐWorkload(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Teacher_workloadAmount(ctx context.Context, field graphql.CollectedField, obj *models.Teacher) (ret graphql.Marshaler) {
-	ctx = ec.Tracer.StartFieldExecution(ctx, field)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-		ec.Tracer.EndFieldExecution(ctx)
-	}()
-	rctx := &graphql.ResolverContext{
-		Object:   "Teacher",
-		Field:    field,
-		Args:     nil,
-		IsMethod: false,
-	}
-	ctx = graphql.WithResolverContext(ctx, rctx)
-	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.WorkloadAmount, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.(int)
-	rctx.Result = res
-	ctx = ec.Tracer.StartFieldChildExecution(ctx)
-	return ec.marshalOInt2int(ctx, field.Selections, res)
-}
-
 func (ec *executionContext) _Teacher_workhours(ctx context.Context, field graphql.CollectedField, obj *models.Teacher) (ret graphql.Marshaler) {
 	ctx = ec.Tracer.StartFieldExecution(ctx, field)
 	defer func() {
@@ -2968,40 +3001,6 @@ func (ec *executionContext) _Teacher_workhours(ctx context.Context, field graphq
 	rctx.Result = res
 	ctx = ec.Tracer.StartFieldChildExecution(ctx)
 	return ec.marshalOBoolean2ᚕᚕbool(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) _Teacher_workhoursAmount(ctx context.Context, field graphql.CollectedField, obj *models.Teacher) (ret graphql.Marshaler) {
-	ctx = ec.Tracer.StartFieldExecution(ctx, field)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-		ec.Tracer.EndFieldExecution(ctx)
-	}()
-	rctx := &graphql.ResolverContext{
-		Object:   "Teacher",
-		Field:    field,
-		Args:     nil,
-		IsMethod: false,
-	}
-	ctx = graphql.WithResolverContext(ctx, rctx)
-	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.WorkhoursAmount, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.(int)
-	rctx.Result = res
-	ctx = ec.Tracer.StartFieldChildExecution(ctx)
-	return ec.marshalOInt2int(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Title_ru(ctx context.Context, field graphql.CollectedField, obj *models.Title) (ret graphql.Marshaler) {
@@ -3331,10 +3330,10 @@ func (ec *executionContext) _Workhour_day(ctx context.Context, field graphql.Col
 		}
 		return graphql.Null
 	}
-	res := resTmp.(*string)
+	res := resTmp.(string)
 	rctx.Result = res
 	ctx = ec.Tracer.StartFieldChildExecution(ctx)
-	return ec.marshalNString2ᚖstring(ctx, field.Selections, res)
+	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Workhour_hour(ctx context.Context, field graphql.CollectedField, obj *models.Workhour) (ret graphql.Marshaler) {
@@ -3368,10 +3367,10 @@ func (ec *executionContext) _Workhour_hour(ctx context.Context, field graphql.Co
 		}
 		return graphql.Null
 	}
-	res := resTmp.(*string)
+	res := resTmp.(string)
 	rctx.Result = res
 	ctx = ec.Tracer.StartFieldChildExecution(ctx)
-	return ec.marshalNString2ᚖstring(ctx, field.Selections, res)
+	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Workhour_value(ctx context.Context, field graphql.CollectedField, obj *models.Workhour) (ret graphql.Marshaler) {
@@ -3400,12 +3399,15 @@ func (ec *executionContext) _Workhour_value(ctx context.Context, field graphql.C
 		return graphql.Null
 	}
 	if resTmp == nil {
+		if !ec.HasError(rctx) {
+			ec.Errorf(ctx, "must not be null")
+		}
 		return graphql.Null
 	}
-	res := resTmp.(*bool)
+	res := resTmp.(bool)
 	rctx.Result = res
 	ctx = ec.Tracer.StartFieldChildExecution(ctx)
-	return ec.marshalOBoolean2ᚖbool(ctx, field.Selections, res)
+	return ec.marshalNBoolean2bool(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Workload_subjectId(ctx context.Context, field graphql.CollectedField, obj *models.Workload) (ret graphql.Marshaler) {
@@ -3508,12 +3510,15 @@ func (ec *executionContext) _Workload_hours(ctx context.Context, field graphql.C
 		return graphql.Null
 	}
 	if resTmp == nil {
+		if !ec.HasError(rctx) {
+			ec.Errorf(ctx, "must not be null")
+		}
 		return graphql.Null
 	}
-	res := resTmp.(*int)
+	res := resTmp.(int)
 	rctx.Result = res
 	ctx = ec.Tracer.StartFieldChildExecution(ctx)
-	return ec.marshalOInt2ᚖint(ctx, field.Selections, res)
+	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) ___Directive_name(ctx context.Context, field graphql.CollectedField, obj *introspection.Directive) (ret graphql.Marshaler) {
@@ -4691,6 +4696,11 @@ func (ec *executionContext) _Class(ctx context.Context, sel ast.SelectionSet, ob
 			if out.Values[i] == graphql.Null {
 				invalids++
 			}
+		case "tableId":
+			out.Values[i] = ec._Class_tableId(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
 		case "number":
 			out.Values[i] = ec._Class_number(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
@@ -5004,6 +5014,11 @@ func (ec *executionContext) _Teacher(ctx context.Context, sel ast.SelectionSet, 
 			if out.Values[i] == graphql.Null {
 				invalids++
 			}
+		case "tableId":
+			out.Values[i] = ec._Teacher_tableId(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
 		case "name":
 			out.Values[i] = ec._Teacher_name(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
@@ -5016,12 +5031,8 @@ func (ec *executionContext) _Teacher(ctx context.Context, sel ast.SelectionSet, 
 			}
 		case "workload":
 			out.Values[i] = ec._Teacher_workload(ctx, field, obj)
-		case "workloadAmount":
-			out.Values[i] = ec._Teacher_workloadAmount(ctx, field, obj)
 		case "workhours":
 			out.Values[i] = ec._Teacher_workhours(ctx, field, obj)
-		case "workhoursAmount":
-			out.Values[i] = ec._Teacher_workhoursAmount(ctx, field, obj)
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}
@@ -5162,6 +5173,9 @@ func (ec *executionContext) _Workhour(ctx context.Context, sel ast.SelectionSet,
 			}
 		case "value":
 			out.Values[i] = ec._Workhour_value(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}
@@ -5196,6 +5210,9 @@ func (ec *executionContext) _Workload(ctx context.Context, sel ast.SelectionSet,
 			}
 		case "hours":
 			out.Values[i] = ec._Workload_hours(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}
@@ -5534,24 +5551,6 @@ func (ec *executionContext) marshalNString2string(ctx context.Context, sel ast.S
 		}
 	}
 	return res
-}
-
-func (ec *executionContext) unmarshalNString2ᚖstring(ctx context.Context, v interface{}) (*string, error) {
-	if v == nil {
-		return nil, nil
-	}
-	res, err := ec.unmarshalNString2string(ctx, v)
-	return &res, err
-}
-
-func (ec *executionContext) marshalNString2ᚖstring(ctx context.Context, sel ast.SelectionSet, v *string) graphql.Marshaler {
-	if v == nil {
-		if !ec.HasError(graphql.GetResolverContext(ctx)) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	return ec.marshalNString2string(ctx, sel, *v)
 }
 
 func (ec *executionContext) marshalNTable2githubᚗcomᚋkamilniftalievᚋtableᚑserverᚋapiᚋmodelsᚐTable(ctx context.Context, sel ast.SelectionSet, v models.Table) graphql.Marshaler {
@@ -6049,21 +6048,6 @@ func (ec *executionContext) unmarshalOInt2int(ctx context.Context, v interface{}
 
 func (ec *executionContext) marshalOInt2int(ctx context.Context, sel ast.SelectionSet, v int) graphql.Marshaler {
 	return graphql.MarshalInt(v)
-}
-
-func (ec *executionContext) unmarshalOInt2ᚖint(ctx context.Context, v interface{}) (*int, error) {
-	if v == nil {
-		return nil, nil
-	}
-	res, err := ec.unmarshalOInt2int(ctx, v)
-	return &res, err
-}
-
-func (ec *executionContext) marshalOInt2ᚖint(ctx context.Context, sel ast.SelectionSet, v *int) graphql.Marshaler {
-	if v == nil {
-		return graphql.Null
-	}
-	return ec.marshalOInt2int(ctx, sel, *v)
 }
 
 func (ec *executionContext) unmarshalOString2string(ctx context.Context, v interface{}) (string, error) {

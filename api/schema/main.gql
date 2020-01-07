@@ -35,15 +35,14 @@ type Mutation {
   ): Class!
   deleteClass(id: ID!, tableId: ID!): Class!
 
-  createTeacher(name: String!, tableId: ID!, slug: String!): Teacher!
-  updateTeacher(id: ID!, name: String!, tableId: ID!, slug: String!): Teacher!
+  createTeacher(tableId: ID!, name: String!, slug: String!): Teacher!
+  updateTeacher(id: ID!, tableId: ID!, name: String!, slug: String!): Teacher!
   updateWorkload(
     tableId: ID!
     teacherId: ID!
     subjectId: ID!
     classId: ID!
     hours: Int!
-    prevHours: Int!
   ): Workload!
 
   updateWorkhour(

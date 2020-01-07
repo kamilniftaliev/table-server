@@ -1,21 +1,22 @@
 type Workhour {
   day: String!
   hour: String!
-  value: Boolean
+  value: Boolean!
 }
 
 type Workload {
   subjectId: ID!
   classId: ID!
-  hours: Int
+  hours: Int!
 }
 
 type Teacher {
   id: ID!
+  tableId: ID!
   name: String!
   slug: String!
   workload: [Workload]
-  workloadAmount: Int
+  # workloadAmount: Int
   workhours: [[Boolean]]
-  workhoursAmount: Int
+  # workhoursAmount: Int
 }

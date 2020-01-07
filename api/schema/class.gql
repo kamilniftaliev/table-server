@@ -1,5 +1,6 @@
 type Class {
   id: ID!
+  tableId: ID!
   number: Int!
   letter: String!
   sector: String!

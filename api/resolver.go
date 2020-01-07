@@ -3,9 +3,10 @@ package api
 import (
 	"context"
 
+	// "github.com/graphql-go/graphql"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"github.com/kamilniftaliev/table-server/api/models"
 	"github.com/kamilniftaliev/table-server/api/resolvers"
-	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 // THIS CODE IS A STARTING POINT ONLY. IT WILL NOT BE UPDATED WITH SCHEMA CHANGES.
@@ -112,47 +113,46 @@ func (r *mutationResolver) DeleteClass(ctx context.Context, id primitive.ObjectI
 // TEACHER RESOLVERS
 func (r *mutationResolver) CreateTeacher(
 	ctx context.Context,
-	name string,
 	tableID primitive.ObjectID,
+	name,
 	slug string,
 ) (*models.Teacher, error) {
-	return resolvers.CreateTeacher(ctx, name, tableID, slug)
+	return resolvers.CreateTeacher(ctx, tableID, name, slug)
 }
 
 func (r *mutationResolver) UpdateTeacher(
 	ctx context.Context,
-	id primitive.ObjectID,
-	name string,
+	id,
 	tableID primitive.ObjectID,
+	name,
 	slug string,
 ) (*models.Teacher, error) {
-	return resolvers.UpdateTeacher(ctx, id, name, tableID, slug)
+	return resolvers.UpdateTeacher(ctx, id, tableID, name, slug)
 }
 
 func (r *mutationResolver) UpdateWorkload(
 	ctx context.Context,
-	tableID primitive.ObjectID,
-	teacherID primitive.ObjectID,
-	subjectID primitive.ObjectID,
+	tableID,
+	teacherID,
+	subjectID,
 	classID primitive.ObjectID,
 	hours int,
-	prevHours int,
 ) (*models.Workload, error) {
-	return resolvers.UpdateWorkload(ctx, tableID, teacherID, subjectID, classID, hours, prevHours)
+	return resolvers.UpdateWorkload(ctx, tableID, teacherID, subjectID, classID, hours)
 }
 
 func (r *mutationResolver) UpdateWorkhour(
 	ctx context.Context,
-	tableID primitive.ObjectID,
+	tableID,
 	teacherID primitive.ObjectID,
-	day string,
+	day,
 	hour string,
 	value bool,
 ) (*models.Workhour, error) {
 	return resolvers.UpdateWorkhour(ctx, tableID, teacherID, day, hour, value)
 }
 
-func (r *mutationResolver) DeleteTeacher(ctx context.Context, id primitive.ObjectID, tableID primitive.ObjectID) (*models.Teacher, error) {
+func (r *mutationResolver) DeleteTeacher(ctx context.Context, id, tableID primitive.ObjectID) (*models.Teacher, error) {
 	return resolvers.DeleteTeacher(ctx, id, tableID)
 }
 

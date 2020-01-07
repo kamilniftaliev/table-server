@@ -15,6 +15,18 @@ func GetDatetimeFromId(id primitive.ObjectID) primitive.DateTime {
 	return primitive.NewDateTimeFromTime(id.Timestamp())
 }
 
+func UpdateLastModifiedTime(tableID primitive.ObjectID) {
+	filter := bson.M{
+		"_id": tableID,
+	}
+
+	update := bson.M{
+		"lastModified": primitive.NewDateTimeFromTime(time.Now()),
+	}
+
+	DB.Collection("tables").UpdateOne(context.Background(), filter, update)
+}
+
 func CreateTable(ctx context.Context, title, slug string) (*models.Table, error) {
 	auth := helpers.GetAuth(ctx)
 

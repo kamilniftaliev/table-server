@@ -2,6 +2,10 @@
 
 package models
 
+import (
+	"go.mongodb.org/mongo-driver/bson/primitive"
+)
+
 type Title struct {
 	Ru string `json:"ru"`
 }
@@ -9,4 +13,16 @@ type Title struct {
 type Token struct {
 	Token     string `json:"token"`
 	ExpiresAt int    `json:"expiresAt"`
+}
+
+type Workhour struct {
+	Day   string `json:"day"`
+	Hour  string `json:"hour"`
+	Value bool   `json:"value"`
+}
+
+type Workload struct {
+	SubjectID primitive.ObjectID `json:"subjectId"`
+	ClassID   primitive.ObjectID `json:"classId"`
+	Hours     int                `json:"hours"`
 }
