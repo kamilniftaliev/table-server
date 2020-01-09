@@ -19,21 +19,21 @@ type Mutation {
   # deleteSubject(id: ID!, tableId: ID!): Subject!
 
   createClass(
-    number: Int!
-    shift: Int!
-    letter: String!
-    sector: String!
     tableId: ID!
+    shift: Int!
+    number: Int!
+    sector: String!
+    letter: String!
   ): Class!
   updateClass(
     id: ID!
-    number: Int!
-    shift: Int!
-    letter: String!
-    sector: String!
     tableId: ID!
+    shift: Int!
+    number: Int!
+    sector: String!
+    letter: String!
   ): Class!
-  deleteClass(id: ID!, tableId: ID!): Class!
+  deleteClass(id: ID!, tableId: ID!): ID
 
   createTeacher(tableId: ID!, name: String!, slug: String!): Teacher!
   updateTeacher(id: ID!, tableId: ID!, name: String!, slug: String!): Teacher!

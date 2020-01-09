@@ -2,13 +2,11 @@ package resolvers
 
 import (
 	"context"
-	"time"
 
 	"github.com/kamilniftaliev/table-server/api/helpers"
 	"github.com/kamilniftaliev/table-server/api/models"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
-	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 func Classes(ctx context.Context, tableID primitive.ObjectID) ([]*models.Class, error) {
@@ -33,11 +31,11 @@ func Classes(ctx context.Context, tableID primitive.ObjectID) ([]*models.Class, 
 
 func CreateClass(
 	ctx context.Context,
-	number,
-	shift int,
-	letter,
-	sector string,
 	tableID primitive.ObjectID,
+	shift,
+	number int,
+	sector,
+	letter string,
 ) (*models.Class, error) {
 	auth := helpers.GetAuth(ctx)
 
@@ -48,39 +46,33 @@ func CreateClass(
 	id := primitive.NewObjectID()
 
 	class := models.Class{
-		ID:     id,
-		Number: number,
-		Letter: letter,
-		Shift:  shift,
+		ID:      id,
+		TableID: tableID,
+		Shift:   shift,
+		Number:  number,
+		Sector:  sector,
+		Letter:  letter,
 	}
 
-	filter := bson.M{
-		"username":   auth.UserID,
-		"tables._id": tableID,
-	}
-
-	update := bson.M{
-		"$push": bson.M{"tables.$.classes": class},
-		"$set":  bson.M{"tables.$.lastModified": primitive.NewDateTimeFromTime(time.Now())},
-	}
-
-	_, err := DB.Collection("users").UpdateOne(ctx, filter, update)
+	_, err := DB.Collection("classes").InsertOne(ctx, class)
 
 	if err != nil {
 		return nil, err
 	}
+
+	UpdateLastModifiedTime(tableID)
 
 	return &class, nil
 }
 
 func UpdateClass(
 	ctx context.Context,
-	id primitive.ObjectID,
-	number,
-	shift int,
-	letter,
-	sector string,
+	id,
 	tableID primitive.ObjectID,
+	shift,
+	number int,
+	sector,
+	letter string,
 ) (*models.Class, error) {
 	auth := helpers.GetAuth(ctx)
 
@@ -89,72 +81,54 @@ func UpdateClass(
 	}
 
 	class := models.Class{
-		ID:     id,
-		Number: number,
-		Letter: letter,
-		Shift:  shift,
-		Sector: sector,
+		ID:      id,
+		TableID: tableID,
+		Shift:   shift,
+		Number:  number,
+		Sector:  sector,
+		Letter:  letter,
 	}
 
 	filter := bson.M{
-		"username":   auth.UserID,
-		"tables._id": tableID,
+		"_id":     id,
+		"tableId": tableID,
 	}
 
 	update := bson.M{
-		"$set": bson.D{
-			{"tables.$.classes.$[class].number", number},
-			{"tables.$.classes.$[class].letter", letter},
-			{"tables.$.classes.$[class].shift", shift},
-			{"tables.$.lastModified", primitive.NewDateTimeFromTime(time.Now())},
+		"$set": bson.M{
+			"number": number,
+			"letter": letter,
+			"shift":  shift,
+			"sector": sector,
 		},
 	}
 
-	arrayFilters := options.ArrayFilters{
-		Filters: []interface{}{bson.M{"class._id": id}},
-	}
-	updateOptions := &options.UpdateOptions{}
-	updateOptions.SetArrayFilters(arrayFilters)
-
-	_, err := DB.Collection("users").UpdateOne(ctx, filter, update, updateOptions)
+	_, err := DB.Collection("classes").UpdateOne(ctx, filter, update)
 
 	if err != nil {
 		return nil, err
 	}
 
+	UpdateLastModifiedTime(tableID)
+
 	return &class, nil
 }
 
-func DeleteClass(ctx context.Context, id primitive.ObjectID, tableID primitive.ObjectID) (*models.Class, error) {
+func DeleteClass(ctx context.Context, id primitive.ObjectID, tableID primitive.ObjectID) (*primitive.ObjectID, error) {
 	auth := helpers.GetAuth(ctx)
 
 	if auth.Error != nil {
 		return nil, auth.Error
 	}
 
-	class := &models.Class{
-		ID: id,
-	}
-
 	filter := bson.M{
-		"username":   auth.UserID,
-		"tables._id": tableID,
+		"_id":     id,
+		"tableId": tableID,
 	}
 
-	update := bson.M{
-		"$pull": bson.M{
-			"tables.$.classes": bson.M{"_id": id},
-		},
-		"$set": bson.M{
-			"tables.$.lastModified": primitive.NewDateTimeFromTime(time.Now()),
-		},
-	}
+	DB.Collection("users").FindOneAndDelete(ctx, filter)
 
-	_, err := DB.Collection("users").UpdateOne(ctx, filter, update)
+	UpdateLastModifiedTime(tableID)
 
-	if err != nil {
-		return nil, err
-	}
-
-	return class, nil
+	return &id, nil
 }

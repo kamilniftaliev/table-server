@@ -16,7 +16,5 @@ type Teacher {
   name: String!
   slug: String!
   workload: [Workload]
-  # workloadAmount: Int
   workhours: [[Boolean]]
-  # workhoursAmount: Int
 }

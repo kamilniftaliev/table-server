@@ -4,9 +4,9 @@ import (
 	"context"
 
 	// "github.com/graphql-go/graphql"
-	"go.mongodb.org/mongo-driver/bson/primitive"
 	"github.com/kamilniftaliev/table-server/api/models"
 	"github.com/kamilniftaliev/table-server/api/resolvers"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 // THIS CODE IS A STARTING POINT ONLY. IT WILL NOT BE UPDATED WITH SCHEMA CHANGES.
@@ -70,43 +70,43 @@ func (r *mutationResolver) DuplicateTable(ctx context.Context, id primitive.Obje
 // CLASS RESOLVERS
 func (r *mutationResolver) CreateClass(
 	ctx context.Context,
-	number,
-	shift int,
-	letter,
-	sector string,
 	tableID primitive.ObjectID,
+	shift,
+	number int,
+	sector,
+	letter string,
 ) (*models.Class, error) {
 	return resolvers.CreateClass(
 		ctx,
-		number,
-		shift,
-		letter,
-		sector,
 		tableID,
+		shift,
+		number,
+		sector,
+		letter,
 	)
 }
 
 func (r *mutationResolver) UpdateClass(
 	ctx context.Context,
-	id primitive.ObjectID,
-	number,
-	shift int,
-	letter,
-	sector string,
+	id,
 	tableID primitive.ObjectID,
+	shift,
+	number int,
+	sector,
+	letter string,
 ) (*models.Class, error) {
 	return resolvers.UpdateClass(
 		ctx,
 		id,
-		number,
-		shift,
-		letter,
-		sector,
 		tableID,
+		shift,
+		number,
+		sector,
+		letter,
 	)
 }
 
-func (r *mutationResolver) DeleteClass(ctx context.Context, id primitive.ObjectID, tableID primitive.ObjectID) (*models.Class, error) {
+func (r *mutationResolver) DeleteClass(ctx context.Context, id primitive.ObjectID, tableID primitive.ObjectID) (*primitive.ObjectID, error) {
 	return resolvers.DeleteClass(ctx, id, tableID)
 }
 
