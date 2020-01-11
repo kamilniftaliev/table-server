@@ -9,8 +9,8 @@ type Table struct {
 	Slug          string
 	Created       primitive.DateTime
 	LastModified  primitive.DateTime `json:"lastModified" bson:"lastModified"`
-	ClassesCount  int                `json:"classesCount" bson:"classesCount,omitempty"`
-	Classes       []*Class
-	TeachersCount int `json:"teachersCount" bson:"teachersCount,omitempty"`
-	Teachers      []*Teacher
+	ClassesCount  int64              `json:"classesCount" bson:"classesCount,omitempty"`
+	Classes       []*Class           `json:"classes" bson:"classes,omitempty"`
+	TeachersCount int64              `json:"teachersCount" bson:"teachersCount,omitempty"`
+	Teachers      []*Teacher         `json:"teachers" bson:"teachers,omitempty"`
 }

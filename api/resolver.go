@@ -152,7 +152,7 @@ func (r *mutationResolver) UpdateWorkhour(
 	return resolvers.UpdateWorkhour(ctx, tableID, teacherID, day, hour, value)
 }
 
-func (r *mutationResolver) DeleteTeacher(ctx context.Context, id, tableID primitive.ObjectID) (*models.Teacher, error) {
+func (r *mutationResolver) DeleteTeacher(ctx context.Context, id, tableID primitive.ObjectID) (*primitive.ObjectID, error) {
 	return resolvers.DeleteTeacher(ctx, id, tableID)
 }
 

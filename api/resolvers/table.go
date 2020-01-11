@@ -39,19 +39,14 @@ func CreateTable(ctx context.Context, title, slug string) (*models.Table, error)
 
 	table := models.Table{
 		ID:           id,
+		UserID:       auth.UserID,
 		Title:        title,
 		Slug:         slug,
 		Created:      dateTime,
 		LastModified: dateTime,
-		// Subjects:     []*models.Subject{},
-		Classes:  []*models.Class{},
-		Teachers: []*models.Teacher{},
 	}
 
-	filter := bson.M{"username": auth.UserID}
-	update := bson.M{"$push": bson.M{"tables": table}}
-
-	_, err := DB.Collection("users").UpdateOne(ctx, filter, update)
+	_, err := DB.Collection("tables").InsertOne(ctx, table)
 
 	if err != nil {
 		return nil, err
@@ -79,23 +74,19 @@ func UpdateTable(ctx context.Context, title, slug string, id primitive.ObjectID)
 	}
 
 	filter := bson.M{
-		"username":   auth.UserID,
-		"tables._id": id,
+		"_id":    id,
+		"userId": auth.UserID,
 	}
 
 	update := bson.M{
-		"$set": bson.D{
-			{"tables.$.title", title},
-			{"tables.$.slug", slug},
-			{"tables.$.lastModified", curTime},
+		"$set": bson.M{
+			"title":        title,
+			"slug":         slug,
+			"lastModified": curTime,
 		},
 	}
 
-	_, err := DB.Collection("users").UpdateOne(ctx, filter, update)
-
-	if err != nil {
-		return nil, err
-	}
+	DB.Collection("tables").UpdateOne(ctx, filter, update)
 
 	return &table, nil
 }
@@ -107,7 +98,6 @@ func Table(ctx context.Context, slug string) (*models.Table, error) {
 		return nil, auth.Error
 	}
 
-	// var table *models.Table
 	var tables []*models.Table
 
 	pipeline := []bson.M{
@@ -153,33 +143,18 @@ func DeleteTable(ctx context.Context, id primitive.ObjectID) (*models.Table, err
 		ID: id,
 	}
 
-	filter := bson.M{"username": auth.UserID}
-
-	update := bson.D{
-		{"$pull", bson.D{
-			{"tables", bson.D{
-				{"_id", id},
-			}},
-		}},
+	filter := bson.M{
+		"_id":    id,
+		"userId": auth.UserID,
 	}
 
-	_, err := DB.Collection("users").UpdateOne(ctx, filter, update)
+	tableIDFilter := bson.M{"tableId": id}
 
-	if err != nil {
-		return nil, err
-	}
+	DB.Collection("tables").DeleteOne(ctx, filter)
+	DB.Collection("teachers").DeleteMany(ctx, tableIDFilter)
+	DB.Collection("classes").DeleteMany(ctx, tableIDFilter)
 
 	return table, nil
-}
-
-func findTableById(tables []*models.Table, id primitive.ObjectID) *models.Table {
-	for i := 0; i < len(tables); i++ {
-		if tables[i].ID == id {
-			return tables[i]
-		}
-	}
-
-	return nil
 }
 
 func DuplicateTable(ctx context.Context, id primitive.ObjectID) (*models.Table, error) {
@@ -189,37 +164,88 @@ func DuplicateTable(ctx context.Context, id primitive.ObjectID) (*models.Table, 
 		return nil, auth.Error
 	}
 
-	usersCollection := DB.Collection("users")
+	tablesCollection := DB.Collection("tables")
+	teachersCollection := DB.Collection("teachers")
+	classesCollection := DB.Collection("classes")
 
-	var user *models.User
+	var table *models.Table
+	var teachers []*models.Teacher
+	var classes []*models.Class
 
-	filter := bson.M{"username": auth.UserID}
+	filter := bson.M{
+		"_id":    id,
+		"userId": auth.UserID,
+	}
 
-	usersCollection.FindOne(ctx, filter).Decode(&user)
+	tablesCollection.FindOne(ctx, filter).Decode(&table)
 
-	originalTable := findTableById(user.Tables, id)
-
-	newTitle := originalTable.Title + " (Copy)"
+	newTitle := table.Title + " Copy"
 	newID := primitive.NewObjectID()
 	dateTime := GetDatetimeFromId(newID)
 
 	newTable := models.Table{
-		ID:    newID,
-		Title: newTitle,
-		Slug:  originalTable.Slug + "_copy",
-		// Subjects:     originalTable.Subjects,
-		Teachers:     originalTable.Teachers,
-		Classes:      originalTable.Classes,
+		ID:           newID,
+		Title:        newTitle,
+		UserID:       auth.UserID,
+		Slug:         table.Slug + "_copy",
 		Created:      dateTime,
 		LastModified: dateTime,
 	}
 
-	update := bson.M{"$push": bson.M{"tables": newTable}}
-
-	_, err := usersCollection.UpdateOne(ctx, filter, update)
+	_, err := tablesCollection.InsertOne(ctx, newTable)
 
 	if err != nil {
 		return nil, err
+	}
+
+	tableIDFilter := bson.M{"tableId": id}
+
+	// TEACHERS DUPLICATION
+	teachersResults, teachersErr := teachersCollection.Find(ctx, tableIDFilter)
+
+	if teachersErr != nil {
+		return nil, teachersErr
+	}
+
+	teachersResults.All(ctx, &teachers)
+	for i := 0; i < len(teachers); i++ {
+		teachers[i].ID = primitive.NewObjectID()
+		teachers[i].TableID = newID
+	}
+
+	var teachersDocs []interface{}
+	for _, t := range teachers {
+		teachersDocs = append(teachersDocs, t)
+	}
+
+	_, teachersInsertError := teachersCollection.InsertMany(ctx, teachersDocs)
+
+	if teachersInsertError != nil {
+		return nil, teachersInsertError
+	}
+
+	// Classes DUPLICATION
+	classesResults, classesErr := classesCollection.Find(ctx, tableIDFilter)
+
+	if classesErr != nil {
+		return nil, classesErr
+	}
+
+	classesResults.All(ctx, &classes)
+	for i := 0; i < len(classes); i++ {
+		classes[i].ID = primitive.NewObjectID()
+		classes[i].TableID = newID
+	}
+
+	var classesDocs []interface{}
+	for _, t := range classes {
+		classesDocs = append(classesDocs, t)
+	}
+
+	_, classesInsertError := classesCollection.InsertMany(ctx, classesDocs)
+
+	if classesInsertError != nil {
+		return nil, classesInsertError
 	}
 
 	return &newTable, nil

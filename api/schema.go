@@ -147,7 +147,7 @@ type MutationResolver interface {
 	UpdateTeacher(ctx context.Context, id primitive.ObjectID, tableID primitive.ObjectID, name string, slug string) (*models.Teacher, error)
 	UpdateWorkload(ctx context.Context, tableID primitive.ObjectID, teacherID primitive.ObjectID, subjectID primitive.ObjectID, classID primitive.ObjectID, hours int) (*models.Workload, error)
 	UpdateWorkhour(ctx context.Context, tableID primitive.ObjectID, teacherID primitive.ObjectID, day string, hour string, value bool) (*models.Workhour, error)
-	DeleteTeacher(ctx context.Context, id primitive.ObjectID, tableID primitive.ObjectID) (*models.Teacher, error)
+	DeleteTeacher(ctx context.Context, id primitive.ObjectID, tableID primitive.ObjectID) (*primitive.ObjectID, error)
 }
 type QueryResolver interface {
 	User(ctx context.Context) (*models.User, error)
@@ -763,7 +763,7 @@ type Mutation {
     value: Boolean!
   ): Workhour!
 
-  deleteTeacher(id: ID!, tableId: ID!): Teacher!
+  deleteTeacher(id: ID!, tableId: ID!): ID
 }
 `},
 	&ast.Source{Name: "schema/subject.gql", Input: `type Title {
@@ -783,6 +783,7 @@ type Table {
   slug: String!
   created: DateTime!
   lastModified: DateTime!
+  # subjects: [Subject]
   teachers: [Teacher]
   teachersCount: Int
   classes: [Class]
@@ -2107,15 +2108,12 @@ func (ec *executionContext) _Mutation_deleteTeacher(ctx context.Context, field g
 		return graphql.Null
 	}
 	if resTmp == nil {
-		if !ec.HasError(rctx) {
-			ec.Errorf(ctx, "must not be null")
-		}
 		return graphql.Null
 	}
-	res := resTmp.(*models.Teacher)
+	res := resTmp.(*primitive.ObjectID)
 	rctx.Result = res
 	ctx = ec.Tracer.StartFieldChildExecution(ctx)
-	return ec.marshalNTeacher2ᚖgithubᚗcomᚋkamilniftalievᚋtableᚑserverᚋapiᚋmodelsᚐTeacher(ctx, field.Selections, res)
+	return ec.marshalOID2ᚖgoᚗmongodbᚗorgᚋmongoᚑdriverᚋbsonᚋprimitiveᚐObjectID(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Query_user(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
@@ -2708,10 +2706,10 @@ func (ec *executionContext) _Table_teachersCount(ctx context.Context, field grap
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.(int)
+	res := resTmp.(int64)
 	rctx.Result = res
 	ctx = ec.Tracer.StartFieldChildExecution(ctx)
-	return ec.marshalOInt2int(ctx, field.Selections, res)
+	return ec.marshalOInt2int64(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Table_classes(ctx context.Context, field graphql.CollectedField, obj *models.Table) (ret graphql.Marshaler) {
@@ -2776,10 +2774,10 @@ func (ec *executionContext) _Table_classesCount(ctx context.Context, field graph
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.(int)
+	res := resTmp.(int64)
 	rctx.Result = res
 	ctx = ec.Tracer.StartFieldChildExecution(ctx)
-	return ec.marshalOInt2int(ctx, field.Selections, res)
+	return ec.marshalOInt2int64(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Teacher_id(ctx context.Context, field graphql.CollectedField, obj *models.Teacher) (ret graphql.Marshaler) {
@@ -4801,9 +4799,6 @@ func (ec *executionContext) _Mutation(ctx context.Context, sel ast.SelectionSet)
 			}
 		case "deleteTeacher":
 			out.Values[i] = ec._Mutation_deleteTeacher(ctx, field)
-			if out.Values[i] == graphql.Null {
-				invalids++
-			}
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}
@@ -6057,12 +6052,12 @@ func (ec *executionContext) marshalOID2ᚖgoᚗmongodbᚗorgᚋmongoᚑdriverᚋ
 	return ec.marshalOID2goᚗmongodbᚗorgᚋmongoᚑdriverᚋbsonᚋprimitiveᚐObjectID(ctx, sel, *v)
 }
 
-func (ec *executionContext) unmarshalOInt2int(ctx context.Context, v interface{}) (int, error) {
-	return graphql.UnmarshalInt(v)
+func (ec *executionContext) unmarshalOInt2int64(ctx context.Context, v interface{}) (int64, error) {
+	return graphql.UnmarshalInt64(v)
 }
 
-func (ec *executionContext) marshalOInt2int(ctx context.Context, sel ast.SelectionSet, v int) graphql.Marshaler {
-	return graphql.MarshalInt(v)
+func (ec *executionContext) marshalOInt2int64(ctx context.Context, sel ast.SelectionSet, v int64) graphql.Marshaler {
+	return graphql.MarshalInt64(v)
 }
 
 func (ec *executionContext) unmarshalOString2string(ctx context.Context, v interface{}) (string, error) {

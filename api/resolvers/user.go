@@ -48,23 +48,32 @@ func GetUser(ctx context.Context) (*models.User, error) {
 		return nil, auth.Error
 	}
 
-	usersCollection := DB.Collection("users")
-
 	var user *models.User
+	var tables []*models.Table
 
 	filter := bson.M{"_id": auth.UserID}
 
-	err := usersCollection.FindOne(ctx, filter).Decode(&user)
+	err := DB.Collection("users").FindOne(ctx, filter).Decode(&user)
 
-	// log.Println(user.Tables)
-
-	if len(user.Tables) > 0 {
-		for i := 0; i < len(user.Tables); i++ {
-			// user.Tables[i].SubjectsCount = len(user.Tables[i].Subjects)
-			user.Tables[i].TeachersCount = len(user.Tables[i].Teachers)
-			user.Tables[i].ClassesCount = len(user.Tables[i].Classes)
-		}
+	userTableFilter := bson.M{
+		"userId": auth.UserID,
 	}
+
+	results, err := DB.Collection("tables").Find(ctx, userTableFilter)
+
+	results.All(ctx, &tables)
+
+	for i := 0; i < len(tables); i++ {
+		tableStatsFilter := bson.M{"tableId": tables[i].ID}
+
+		teachersCount, _ := DB.Collection("teachers").CountDocuments(ctx, tableStatsFilter)
+		classesCount, _ := DB.Collection("classes").CountDocuments(ctx, tableStatsFilter)
+
+		tables[i].TeachersCount = teachersCount
+		tables[i].ClassesCount = classesCount
+	}
+
+	user.Tables = tables
 
 	if err != nil {
 		log.Fatal(err)

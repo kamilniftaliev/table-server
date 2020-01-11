@@ -126,7 +126,7 @@ func DeleteClass(ctx context.Context, id primitive.ObjectID, tableID primitive.O
 		"tableId": tableID,
 	}
 
-	DB.Collection("users").FindOneAndDelete(ctx, filter)
+	DB.Collection("classes").DeleteOne(ctx, filter)
 
 	UpdateLastModifiedTime(tableID)
 

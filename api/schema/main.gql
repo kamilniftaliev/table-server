@@ -53,5 +53,5 @@ type Mutation {
     value: Boolean!
   ): Workhour!
 
-  deleteTeacher(id: ID!, tableId: ID!): Teacher!
+  deleteTeacher(id: ID!, tableId: ID!): ID
 }

@@ -227,15 +227,11 @@ func UpdateWorkhour(
 	return &workhour, nil
 }
 
-func DeleteTeacher(ctx context.Context, id, tableID primitive.ObjectID) (*models.Teacher, error) {
+func DeleteTeacher(ctx context.Context, id, tableID primitive.ObjectID) (*primitive.ObjectID, error) {
 	auth := helpers.GetAuth(ctx)
 
 	if auth.Error != nil {
 		return nil, auth.Error
-	}
-
-	teacher := &models.Teacher{
-		ID: id,
 	}
 
 	filter := bson.M{
@@ -243,9 +239,9 @@ func DeleteTeacher(ctx context.Context, id, tableID primitive.ObjectID) (*models
 		"tableId": tableID,
 	}
 
-	DB.Collection("teachers").FindOneAndDelete(ctx, filter)
+	DB.Collection("teachers").DeleteOne(ctx, filter)
 
 	UpdateLastModifiedTime(tableID)
 
-	return teacher, nil
+	return &id, nil
 }
