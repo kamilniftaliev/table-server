@@ -48,8 +48,10 @@ type Mutation {
   updateWorkhour(
     tableId: ID!
     teacherId: ID!
-    day: String!
-    hour: String!
+    day: Int!
+    hour: Int!
+    everyHour: Boolean!
+    everyDay: Boolean!
     value: Boolean!
   ): Workhour!
 

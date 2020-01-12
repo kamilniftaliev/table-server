@@ -146,10 +146,12 @@ func (r *mutationResolver) UpdateWorkhour(
 	tableID,
 	teacherID primitive.ObjectID,
 	day,
-	hour string,
+	hour int,
+	everyHour,
+	everyDay,
 	value bool,
 ) (*models.Workhour, error) {
-	return resolvers.UpdateWorkhour(ctx, tableID, teacherID, day, hour, value)
+	return resolvers.UpdateWorkhour(ctx, tableID, teacherID, day, hour, everyHour, everyDay, value)
 }
 
 func (r *mutationResolver) DeleteTeacher(ctx context.Context, id, tableID primitive.ObjectID) (*primitive.ObjectID, error) {

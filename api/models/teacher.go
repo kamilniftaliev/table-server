@@ -9,4 +9,9 @@ type Teacher struct {
 	Slug      string
 	Workload  []*Workload
 	Workhours [][]bool
+
+	Subjects        int `json:"subjects" bson:"subjects, omitempty"`
+	Classes         int `json:"classes" bson:"classes, omitempty"`
+	WorkhoursAmount int `json:"workhoursAmount" bson:"workhoursAmount, omitempty"`
+	WorkloadAmount  int `json:"workloadAmount" bson:"workloadAmount, omitempty"`
 }

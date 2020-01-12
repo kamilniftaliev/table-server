@@ -192,7 +192,9 @@ func UpdateWorkhour(
 	tableID,
 	teacherID primitive.ObjectID,
 	day,
-	hour string,
+	hour int,
+	everyHour,
+	everyDay,
 	value bool,
 ) (*models.Workhour, error) {
 	auth := helpers.GetAuth(ctx)
@@ -201,10 +203,15 @@ func UpdateWorkhour(
 		return nil, auth.Error
 	}
 
+	stringDay := strconv.Itoa(day)
+	stringHour := strconv.Itoa(hour)
+
 	workhour := models.Workhour{
-		Day:   day,
-		Hour:  hour,
-		Value: value,
+		Day:       day,
+		Hour:      hour,
+		Value:     value,
+		EveryHour: everyHour,
+		EveryDay:  everyDay,
 	}
 
 	filter := bson.M{
@@ -213,7 +220,17 @@ func UpdateWorkhour(
 	}
 
 	update := bson.M{
-		"$set": bson.M{"workhours." + day + "." + hour: value},
+		"$set": bson.M{"workhours." + stringDay + "." + stringHour: value},
+	}
+
+	// Switch every day of given hour
+	if everyDay {
+		update["$set"] = bson.M{"workhours.$[]." + stringHour: value}
+	}
+
+	// Switch every hour of given day
+	if everyHour {
+		update["$set"] = bson.M{"workhours." + stringDay + ".$[]": value}
 	}
 
 	_, err := DB.Collection("teachers").UpdateOne(ctx, filter, update)

@@ -9,4 +9,8 @@ type Class struct {
 	Letter  string
 	Shift   int
 	Sector  string
+
+	Teachers int `json:"teachers" bson:"teachers, omitempty"`
+	Subjects int `json:"subjects" bson:"subjects, omitempty"`
+	Lessons  int `json:"lessons" bson:"lessons, omitempty"`
 }

@@ -5,4 +5,8 @@ type Class {
   letter: String!
   sector: String!
   shift: Int!
+
+  teachers: Int
+  subjects: Int
+  lessons: Int
 }

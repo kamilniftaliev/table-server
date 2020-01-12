@@ -16,9 +16,11 @@ type Token struct {
 }
 
 type Workhour struct {
-	Day   string `json:"day"`
-	Hour  string `json:"hour"`
-	Value bool   `json:"value"`
+	Day       int  `json:"day"`
+	Hour      int  `json:"hour"`
+	Value     bool `json:"value"`
+	EveryHour bool `json:"everyHour"`
+	EveryDay  bool `json:"everyDay"`
 }
 
 type Workload struct {
