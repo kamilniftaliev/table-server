@@ -230,7 +230,29 @@ func UpdateWorkhour(
 
 	// Switch every hour of given day
 	if everyHour {
-		update["$set"] = bson.M{"workhours." + stringDay + ".$[]": value}
+		if hour == 0 {
+			update["$set"] = bson.M{
+				"workhours." + stringDay + ".0": value,
+				"workhours." + stringDay + ".1": value,
+				"workhours." + stringDay + ".2": value,
+				"workhours." + stringDay + ".3": value,
+				"workhours." + stringDay + ".4": value,
+				"workhours." + stringDay + ".5": value,
+				"workhours." + stringDay + ".6": value,
+				"workhours." + stringDay + ".7": value,
+			}
+		} else {
+			update["$set"] = bson.M{
+				"workhours." + stringDay + ".8":  value,
+				"workhours." + stringDay + ".9":  value,
+				"workhours." + stringDay + ".10": value,
+				"workhours." + stringDay + ".11": value,
+				"workhours." + stringDay + ".12": value,
+				"workhours." + stringDay + ".13": value,
+				"workhours." + stringDay + ".14": value,
+				"workhours." + stringDay + ".15": value,
+			}
+		}
 	}
 
 	_, err := DB.Collection("teachers").UpdateOne(ctx, filter, update)
