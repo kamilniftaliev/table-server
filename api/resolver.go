@@ -38,7 +38,7 @@ func (r *mutationResolver) UpdateTable(ctx context.Context, title, slug string, 
 	return resolvers.UpdateTable(ctx, title, slug, id)
 }
 
-func (r *mutationResolver) DeleteTable(ctx context.Context, id primitive.ObjectID) (*models.Table, error) {
+func (r *mutationResolver) DeleteTable(ctx context.Context, id primitive.ObjectID) (*primitive.ObjectID, error) {
 	return resolvers.DeleteTable(ctx, id)
 }
 

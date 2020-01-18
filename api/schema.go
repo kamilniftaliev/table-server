@@ -147,7 +147,7 @@ type MutationResolver interface {
 	SignIn(ctx context.Context, username string, password string) (*models.Token, error)
 	CreateTable(ctx context.Context, title string, slug string) (*models.Table, error)
 	UpdateTable(ctx context.Context, title string, slug string, id primitive.ObjectID) (*models.Table, error)
-	DeleteTable(ctx context.Context, id primitive.ObjectID) (*models.Table, error)
+	DeleteTable(ctx context.Context, id primitive.ObjectID) (*primitive.ObjectID, error)
 	DuplicateTable(ctx context.Context, id primitive.ObjectID) (*models.Table, error)
 	CreateClass(ctx context.Context, tableID primitive.ObjectID, shift int, number int, sector string, letter string) (*models.Class, error)
 	UpdateClass(ctx context.Context, id primitive.ObjectID, tableID primitive.ObjectID, shift int, number int, sector string, letter string) (*models.Class, error)
@@ -797,8 +797,8 @@ type Mutation {
 
   createTable(title: String!, slug: String!): Table!
   updateTable(title: String!, slug: String!, id: ID!): Table!
-  deleteTable(id: ID!): Table!
-  duplicateTable(id: ID!): Table!
+  deleteTable(id: ID!): ID
+  duplicateTable(id: ID!): Table
 
   # createSubject(title: String!, tableId: ID!): Subject!
   # updateSubject(id: ID!, title: String!, tableId: ID!): Subject!
@@ -1918,15 +1918,12 @@ func (ec *executionContext) _Mutation_deleteTable(ctx context.Context, field gra
 		return graphql.Null
 	}
 	if resTmp == nil {
-		if !ec.HasError(rctx) {
-			ec.Errorf(ctx, "must not be null")
-		}
 		return graphql.Null
 	}
-	res := resTmp.(*models.Table)
+	res := resTmp.(*primitive.ObjectID)
 	rctx.Result = res
 	ctx = ec.Tracer.StartFieldChildExecution(ctx)
-	return ec.marshalNTable2ᚖgithubᚗcomᚋkamilniftalievᚋtableᚑserverᚋapiᚋmodelsᚐTable(ctx, field.Selections, res)
+	return ec.marshalOID2ᚖgoᚗmongodbᚗorgᚋmongoᚑdriverᚋbsonᚋprimitiveᚐObjectID(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Mutation_duplicateTable(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
@@ -1962,15 +1959,12 @@ func (ec *executionContext) _Mutation_duplicateTable(ctx context.Context, field 
 		return graphql.Null
 	}
 	if resTmp == nil {
-		if !ec.HasError(rctx) {
-			ec.Errorf(ctx, "must not be null")
-		}
 		return graphql.Null
 	}
 	res := resTmp.(*models.Table)
 	rctx.Result = res
 	ctx = ec.Tracer.StartFieldChildExecution(ctx)
-	return ec.marshalNTable2ᚖgithubᚗcomᚋkamilniftalievᚋtableᚑserverᚋapiᚋmodelsᚐTable(ctx, field.Selections, res)
+	return ec.marshalOTable2ᚖgithubᚗcomᚋkamilniftalievᚋtableᚑserverᚋapiᚋmodelsᚐTable(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Mutation_createClass(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
@@ -5176,14 +5170,8 @@ func (ec *executionContext) _Mutation(ctx context.Context, sel ast.SelectionSet)
 			}
 		case "deleteTable":
 			out.Values[i] = ec._Mutation_deleteTable(ctx, field)
-			if out.Values[i] == graphql.Null {
-				invalids++
-			}
 		case "duplicateTable":
 			out.Values[i] = ec._Mutation_duplicateTable(ctx, field)
-			if out.Values[i] == graphql.Null {
-				invalids++
-			}
 		case "createClass":
 			out.Values[i] = ec._Mutation_createClass(ctx, field)
 			if out.Values[i] == graphql.Null {

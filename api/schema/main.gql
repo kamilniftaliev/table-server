@@ -11,8 +11,8 @@ type Mutation {
 
   createTable(title: String!, slug: String!): Table!
   updateTable(title: String!, slug: String!, id: ID!): Table!
-  deleteTable(id: ID!): Table!
-  duplicateTable(id: ID!): Table!
+  deleteTable(id: ID!): ID
+  duplicateTable(id: ID!): Table
 
   # createSubject(title: String!, tableId: ID!): Subject!
   # updateSubject(id: ID!, title: String!, tableId: ID!): Subject!

@@ -132,15 +132,11 @@ func Table(ctx context.Context, slug string) (*models.Table, error) {
 	return tables[0], nil
 }
 
-func DeleteTable(ctx context.Context, id primitive.ObjectID) (*models.Table, error) {
+func DeleteTable(ctx context.Context, id primitive.ObjectID) (*primitive.ObjectID, error) {
 	auth := helpers.GetAuth(ctx)
 
 	if auth.Error != nil {
 		return nil, auth.Error
-	}
-
-	table := &models.Table{
-		ID: id,
 	}
 
 	filter := bson.M{
@@ -154,7 +150,7 @@ func DeleteTable(ctx context.Context, id primitive.ObjectID) (*models.Table, err
 	DB.Collection("teachers").DeleteMany(ctx, tableIDFilter)
 	DB.Collection("classes").DeleteMany(ctx, tableIDFilter)
 
-	return table, nil
+	return &id, nil
 }
 
 func DuplicateTable(ctx context.Context, id primitive.ObjectID) (*models.Table, error) {
