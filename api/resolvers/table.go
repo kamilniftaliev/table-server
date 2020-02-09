@@ -176,11 +176,11 @@ func DuplicateTable(ctx context.Context, id primitive.ObjectID) (*models.Table, 
 	tablesCollection.FindOne(ctx, filter).Decode(&table)
 
 	newTitle := table.Title + " Copy"
-	newID := primitive.NewObjectID()
-	dateTime := GetDatetimeFromId(newID)
+	newTableID := primitive.NewObjectID()
+	dateTime := GetDatetimeFromId(newTableID)
 
 	newTable := models.Table{
-		ID:           newID,
+		ID:           newTableID,
 		Title:        newTitle,
 		UserID:       auth.UserID,
 		Slug:         table.Slug + "_copy",
@@ -206,18 +206,7 @@ func DuplicateTable(ctx context.Context, id primitive.ObjectID) (*models.Table, 
 	teachersResults.All(ctx, &teachers)
 	for i := 0; i < len(teachers); i++ {
 		teachers[i].ID = primitive.NewObjectID()
-		teachers[i].TableID = newID
-	}
-
-	var teachersDocs []interface{}
-	for _, t := range teachers {
-		teachersDocs = append(teachersDocs, t)
-	}
-
-	_, teachersInsertError := teachersCollection.InsertMany(ctx, teachersDocs)
-
-	if teachersInsertError != nil {
-		return nil, teachersInsertError
+		teachers[i].TableID = newTableID
 	}
 
 	// Classes DUPLICATION
@@ -229,8 +218,18 @@ func DuplicateTable(ctx context.Context, id primitive.ObjectID) (*models.Table, 
 
 	classesResults.All(ctx, &classes)
 	for i := 0; i < len(classes); i++ {
-		classes[i].ID = primitive.NewObjectID()
-		classes[i].TableID = newID
+		oldClassID := classes[i].ID
+		newClassID := primitive.NewObjectID()
+		classes[i].ID = newClassID
+		classes[i].TableID = newTableID
+
+		for j := 0; j < len(teachers); j++ {
+			for k := 0; k < len(teachers[j].Workload); k++ {
+				if teachers[j].Workload[k].ClassID == oldClassID {
+					teachers[j].Workload[k].ClassID = newClassID
+				}
+			}
+		}
 	}
 
 	var classesDocs []interface{}
@@ -242,6 +241,18 @@ func DuplicateTable(ctx context.Context, id primitive.ObjectID) (*models.Table, 
 
 	if classesInsertError != nil {
 		return nil, classesInsertError
+	}
+
+	// INSERT TEACHERS
+	var teachersDocs []interface{}
+	for _, t := range teachers {
+		teachersDocs = append(teachersDocs, t)
+	}
+
+	_, teachersInsertError := teachersCollection.InsertMany(ctx, teachersDocs)
+
+	if teachersInsertError != nil {
+		return nil, teachersInsertError
 	}
 
 	return &newTable, nil
