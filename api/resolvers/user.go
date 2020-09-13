@@ -51,9 +51,15 @@ func GetUser(ctx context.Context) (*models.User, error) {
 	var user *models.User
 	var tables []*models.Table
 
+	// log.Fatal(auth.UserID)
+
 	filter := bson.M{"_id": auth.UserID}
 
 	err := DB.Collection("users").FindOne(ctx, filter).Decode(&user)
+
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	userTableFilter := bson.M{
 		"userId": auth.UserID,
