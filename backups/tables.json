@@ -103,4 +103,19 @@
   "lastModified": {
     "$date": "2020-02-09T21:23:37Z"
   }
+},{
+  "_id": {
+    "$oid": "5f5e6ac257a8efdfda1bd60e"
+  },
+  "userId": {
+    "$oid": "5d90889298f24b2634cb225d"
+  },
+  "title": "Rus sektoru 2020",
+  "slug": "rus_sektoru_2020",
+  "created": {
+    "$date": "2020-09-13T18:53:54Z"
+  },
+  "lastModified": {
+    "$date": "2020-09-13T18:54:51.804Z"
+  }
 }]

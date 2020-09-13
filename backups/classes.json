@@ -4299,4 +4299,103 @@
   "letter": "ç",
   "shift": 1,
   "sector": "az"
+},{
+  "_id": {
+    "$oid": "5f5e6ac257a8efdfda1bd651"
+  },
+  "tableId": {
+    "$oid": "5f5e6ac257a8efdfda1bd60e"
+  },
+  "number": 5,
+  "letter": "ə",
+  "shift": 1,
+  "sector": "ru"
+},{
+  "_id": {
+    "$oid": "5f5e6ac257a8efdfda1bd652"
+  },
+  "tableId": {
+    "$oid": "5f5e6ac257a8efdfda1bd60e"
+  },
+  "number": 6,
+  "letter": "d",
+  "shift": 1,
+  "sector": "ru"
+},{
+  "_id": {
+    "$oid": "5f5e6ac257a8efdfda1bd653"
+  },
+  "tableId": {
+    "$oid": "5f5e6ac257a8efdfda1bd60e"
+  },
+  "number": 8,
+  "letter": "e",
+  "shift": 1,
+  "sector": "ru"
+},{
+  "_id": {
+    "$oid": "5f5e6ac257a8efdfda1bd654"
+  },
+  "tableId": {
+    "$oid": "5f5e6ac257a8efdfda1bd60e"
+  },
+  "number": 9,
+  "letter": "e",
+  "shift": 1,
+  "sector": "ru"
+},{
+  "_id": {
+    "$oid": "5f5e6ac257a8efdfda1bd655"
+  },
+  "tableId": {
+    "$oid": "5f5e6ac257a8efdfda1bd60e"
+  },
+  "number": 10,
+  "letter": "e",
+  "shift": 1,
+  "sector": "ru"
+},{
+  "_id": {
+    "$oid": "5f5e6ac257a8efdfda1bd656"
+  },
+  "tableId": {
+    "$oid": "5f5e6ac257a8efdfda1bd60e"
+  },
+  "number": 11,
+  "letter": "d",
+  "shift": 1,
+  "sector": "ru"
+},{
+  "_id": {
+    "$oid": "5f5e6ac257a8efdfda1bd657"
+  },
+  "tableId": {
+    "$oid": "5f5e6ac257a8efdfda1bd60e"
+  },
+  "number": 5,
+  "letter": "e",
+  "shift": 1,
+  "sector": "ru"
+},{
+  "_id": {
+    "$oid": "5f5e6ac257a8efdfda1bd673"
+  },
+  "tableId": {
+    "$oid": "5f5e6ac257a8efdfda1bd60e"
+  },
+  "number": 7,
+  "letter": "d",
+  "shift": 1,
+  "sector": "ru"
+},{
+  "_id": {
+    "$oid": "5f5e6c3157a8efdfda1bd674"
+  },
+  "tableId": {
+    "$oid": "5f5e6ac257a8efdfda1bd60e"
+  },
+  "number": 6,
+  "letter": "e",
+  "shift": 1,
+  "sector": "ru"
 }]
