@@ -1,36 +1,4302 @@
-{"_id":{"$oid":"5da63a69fca6d418fdb1528c"},"number":{"$numberInt":"5"},"letter":"ə","shift":{"$numberInt":"1"},"sector":"ru","tableId":{"$oid":"5e038fdc72fe973214c12cb8"}}
-{"_id":{"$oid":"5da63a6ffca6d418fdb1528d"},"number":{"$numberInt":"6"},"letter":"d","shift":{"$numberInt":"1"},"sector":"ru","tableId":{"$oid":"5e038fdc72fe973214c12cb8"}}
-{"_id":{"$oid":"5da63a72fca6d418fdb1528e"},"number":{"$numberInt":"7"},"letter":"e","shift":{"$numberInt":"1"},"sector":"ru","tableId":{"$oid":"5da63a72fca6d418fdb1528e"}}
-{"_id":{"$oid":"5da63a78fca6d418fdb15290"},"number":{"$numberInt":"8"},"letter":"e","shift":{"$numberInt":"1"},"sector":"ru","tableId":{"$oid":"5e038fdc72fe973214c12cb8"}}
-{"_id":{"$oid":"5da63a7dfca6d418fdb15291"},"number":{"$numberInt":"9"},"letter":"e","shift":{"$numberInt":"1"},"sector":"ru","tableId":{"$oid":"5e038fdc72fe973214c12cb8"}}
-{"_id":{"$oid":"5da63a81fca6d418fdb15292"},"number":{"$numberInt":"10"},"letter":"d","shift":{"$numberInt":"1"},"sector":"ru","tableId":{"$oid":"5e038fdc72fe973214c12cb8"}}
-{"_id":{"$oid":"5da63a85fca6d418fdb15293"},"number":{"$numberInt":"11"},"letter":"c","shift":{"$numberInt":"1"},"sector":"ru","tableId":{"$oid":"5e038fdc72fe973214c12cb8"}}
-{"_id":{"$oid":"5da744215b090ad18bf2c010"},"number":{"$numberInt":"5"},"letter":"e","shift":{"$numberInt":"1"},"sector":"ru","tableId":{"$oid":"5e038fdc72fe973214c12cb8"}}
-{"_id":{"$oid":"5defd73d2ee1e2b53929fed3"},"number":{"$numberInt":"1"},"letter":"e","shift":{"$numberInt":"1"},"sector":"ru","tableId":{"$oid":"5e038fdc72fe973214c12cb8"}}
-{"_id":{"$oid":"5defd7412ee1e2b53929fed4"},"number":{"$numberInt":"1"},"letter":"ə","shift":{"$numberInt":"1"},"sector":"ru","tableId":{"$oid":"5e038fdc72fe973214c12cb8"}}
-{"_id":{"$oid":"5defd74e2ee1e2b53929fed5"},"number":{"$numberInt":"2"},"letter":"d","shift":{"$numberInt":"2"},"sector":"ru","tableId":{"$oid":"5e038fdc72fe973214c12cb8"}}
-{"_id":{"$oid":"5defd7542ee1e2b53929fed6"},"number":{"$numberInt":"2"},"letter":"e","shift":{"$numberInt":"1"},"sector":"ru","tableId":{"$oid":"5e038fdc72fe973214c12cb8"}}
-{"_id":{"$oid":"5defd75b2ee1e2b53929fed7"},"number":{"$numberInt":"3"},"letter":"e","shift":{"$numberInt":"1"},"sector":"ru","tableId":{"$oid":"5e038fdc72fe973214c12cb8"}}
-{"_id":{"$oid":"5defd75f2ee1e2b53929fed8"},"number":{"$numberInt":"3"},"letter":"ə","shift":{"$numberInt":"2"},"sector":"ru","tableId":{"$oid":"5e038fdc72fe973214c12cb8"}}
-{"_id":{"$oid":"5defd7672ee1e2b53929fed9"},"number":{"$numberInt":"4"},"letter":"e","shift":{"$numberInt":"1"},"sector":"ru","tableId":{"$oid":"5e038fdc72fe973214c12cb8"}}
-{"_id":{"$oid":"5defd76c2ee1e2b53929feda"},"number":{"$numberInt":"4"},"letter":"ə","shift":{"$numberInt":"2"},"sector":"ru","tableId":{"$oid":"5e038fdc72fe973214c12cb8"}}
-{"_id":{"$oid":"5e023371f908f9a51350bc17"},"number":{"$numberInt":"1"},"letter":"a","shift":{"$numberInt":"1"},"sector":"az","tableId":{"$oid":"5e038fdc72fe973214c12cb8"}}
-{"_id":{"$oid":"5e023376f908f9a51350bc18"},"number":{"$numberInt":"1"},"letter":"b","shift":{"$numberInt":"1"},"sector":"az","tableId":{"$oid":"5e038fdc72fe973214c12cb8"}}
-{"_id":{"$oid":"5e02337df908f9a51350bc19"},"number":{"$numberInt":"1"},"letter":"c","shift":{"$numberInt":"1"},"sector":"az","tableId":{"$oid":"5e038fdc72fe973214c12cb8"}}
-{"_id":{"$oid":"5e023383f908f9a51350bc1a"},"number":{"$numberInt":"1"},"letter":"ç","shift":{"$numberInt":"1"},"sector":"az","tableId":{"$oid":"5e038fdc72fe973214c12cb8"}}
-{"_id":{"$oid":"5e023388f908f9a51350bc1b"},"number":{"$numberInt":"1"},"letter":"d","shift":{"$numberInt":"1"},"sector":"az","tableId":{"$oid":"5e038fdc72fe973214c12cb8"}}
-{"_id":{"$oid":"5e023390f908f9a51350bc1c"},"number":{"$numberInt":"2"},"letter":"a","shift":{"$numberInt":"2"},"sector":"az","tableId":{"$oid":"5e038fdc72fe973214c12cb8"}}
-{"_id":{"$oid":"5e023394f908f9a51350bc1d"},"number":{"$numberInt":"2"},"letter":"b","shift":{"$numberInt":"1"},"sector":"az","tableId":{"$oid":"5e038fdc72fe973214c12cb8"}}
-{"_id":{"$oid":"5e023398f908f9a51350bc1e"},"number":{"$numberInt":"2"},"letter":"c","shift":{"$numberInt":"2"},"sector":"az","tableId":{"$oid":"5e038fdc72fe973214c12cb8"}}
-{"_id":{"$oid":"5e02339cf908f9a51350bc1f"},"number":{"$numberInt":"2"},"letter":"ç","shift":{"$numberInt":"1"},"sector":"az","tableId":{"$oid":"5e038fdc72fe973214c12cb8"}}
-{"_id":{"$oid":"5e0233a4f908f9a51350bc20"},"number":{"$numberInt":"3"},"letter":"a","shift":{"$numberInt":"1"},"sector":"az","tableId":{"$oid":"5e038fdc72fe973214c12cb8"}}
-{"_id":{"$oid":"5e0233a8f908f9a51350bc21"},"number":{"$numberInt":"3"},"letter":"b","shift":{"$numberInt":"1"},"sector":"az","tableId":{"$oid":"5e038fdc72fe973214c12cb8"}}
-{"_id":{"$oid":"5e0233adf908f9a51350bc22"},"number":{"$numberInt":"3"},"letter":"c","shift":{"$numberInt":"1"},"sector":"az","tableId":{"$oid":"5e038fdc72fe973214c12cb8"}}
-{"_id":{"$oid":"5e0233b2f908f9a51350bc23"},"number":{"$numberInt":"3"},"letter":"ç","shift":{"$numberInt":"1"},"sector":"az","tableId":{"$oid":"5e038fdc72fe973214c12cb8"}}
-{"_id":{"$oid":"5e0233b7f908f9a51350bc24"},"number":{"$numberInt":"3"},"letter":"d","shift":{"$numberInt":"1"},"sector":"az","tableId":{"$oid":"5e038fdc72fe973214c12cb8"}}
-{"_id":{"$oid":"5e0233bcf908f9a51350bc25"},"number":{"$numberInt":"4"},"letter":"a","shift":{"$numberInt":"1"},"sector":"az","tableId":{"$oid":"5e038fdc72fe973214c12cb8"}}
-{"_id":{"$oid":"5e0233c2f908f9a51350bc26"},"number":{"$numberInt":"4"},"letter":"b","shift":{"$numberInt":"1"},"sector":"az","tableId":{"$oid":"5e038fdc72fe973214c12cb8"}}
-{"_id":{"$oid":"5e0233c7f908f9a51350bc27"},"number":{"$numberInt":"4"},"letter":"c","shift":{"$numberInt":"1"},"sector":"az","tableId":{"$oid":"5e038fdc72fe973214c12cb8"}}
-{"_id":{"$oid":"5e0233cbf908f9a51350bc28"},"number":{"$numberInt":"4"},"letter":"ç","shift":{"$numberInt":"1"},"sector":"az","tableId":{"$oid":"5e038fdc72fe973214c12cb8"}}
-{"_id":{"$oid":"5e0233cff908f9a51350bc29"},"number":{"$numberInt":"4"},"letter":"d","shift":{"$numberInt":"2"},"sector":"az","tableId":{"$oid":"5e038fdc72fe973214c12cb8"}}
-{"_id":{"$oid":"5e3b1d85a94ae2e639b2a870"},"tableId":{"$oid":"5e038fdc72fe973214c12cb8"},"number":{"$numberInt":"7"},"letter":"e","shift":{"$numberInt":"1"},"sector":"ru","teachers":{"$numberInt":"0"},"subjects":{"$numberInt":"0"},"lessons":{"$numberInt":"0"}}
+[{
+  "_id": {
+    "$oid": "5da63a69fca6d418fdb1528c"
+  },
+  "number": 5,
+  "letter": "e",
+  "shift": 1,
+  "sector": "ru",
+  "tableId": {
+    "$oid": "5e038fdc72fe973214c12cb8"
+  }
+},{
+  "_id": {
+    "$oid": "5da63a6ffca6d418fdb1528d"
+  },
+  "number": 6,
+  "letter": "d",
+  "shift": 1,
+  "sector": "ru",
+  "tableId": {
+    "$oid": "5e038fdc72fe973214c12cb8"
+  }
+},{
+  "_id": {
+    "$oid": "5da63a72fca6d418fdb1528e"
+  },
+  "number": 7,
+  "letter": "e",
+  "shift": 1,
+  "sector": "ru",
+  "tableId": {
+    "$oid": "5da63a72fca6d418fdb1528e"
+  }
+},{
+  "_id": {
+    "$oid": "5da63a78fca6d418fdb15290"
+  },
+  "number": 8,
+  "letter": "e",
+  "shift": 1,
+  "sector": "ru",
+  "tableId": {
+    "$oid": "5e038fdc72fe973214c12cb8"
+  }
+},{
+  "_id": {
+    "$oid": "5da63a7dfca6d418fdb15291"
+  },
+  "number": 9,
+  "letter": "e",
+  "shift": 1,
+  "sector": "ru",
+  "tableId": {
+    "$oid": "5e038fdc72fe973214c12cb8"
+  }
+},{
+  "_id": {
+    "$oid": "5da63a81fca6d418fdb15292"
+  },
+  "number": 10,
+  "letter": "d",
+  "shift": 1,
+  "sector": "ru",
+  "tableId": {
+    "$oid": "5e038fdc72fe973214c12cb8"
+  }
+},{
+  "_id": {
+    "$oid": "5da63a85fca6d418fdb15293"
+  },
+  "number": 11,
+  "letter": "c",
+  "shift": 1,
+  "sector": "ru",
+  "tableId": {
+    "$oid": "5e038fdc72fe973214c12cb8"
+  }
+},{
+  "_id": {
+    "$oid": "5da744215b090ad18bf2c010"
+  },
+  "number": 5,
+  "letter": "d",
+  "shift": 1,
+  "sector": "ru",
+  "tableId": {
+    "$oid": "5e038fdc72fe973214c12cb8"
+  }
+},{
+  "_id": {
+    "$oid": "5defd73d2ee1e2b53929fed3"
+  },
+  "number": 1,
+  "letter": "e",
+  "shift": 1,
+  "sector": "ru",
+  "tableId": {
+    "$oid": "5e038fdc72fe973214c12cb8"
+  }
+},{
+  "_id": {
+    "$oid": "5defd7412ee1e2b53929fed4"
+  },
+  "number": 1,
+  "letter": "ə",
+  "shift": 1,
+  "sector": "ru",
+  "tableId": {
+    "$oid": "5e038fdc72fe973214c12cb8"
+  }
+},{
+  "_id": {
+    "$oid": "5defd74e2ee1e2b53929fed5"
+  },
+  "number": 2,
+  "letter": "d",
+  "shift": 2,
+  "sector": "ru",
+  "tableId": {
+    "$oid": "5e038fdc72fe973214c12cb8"
+  }
+},{
+  "_id": {
+    "$oid": "5defd7542ee1e2b53929fed6"
+  },
+  "number": 2,
+  "letter": "e",
+  "shift": 1,
+  "sector": "ru",
+  "tableId": {
+    "$oid": "5e038fdc72fe973214c12cb8"
+  }
+},{
+  "_id": {
+    "$oid": "5defd75b2ee1e2b53929fed7"
+  },
+  "number": 3,
+  "letter": "e",
+  "shift": 1,
+  "sector": "ru",
+  "tableId": {
+    "$oid": "5e038fdc72fe973214c12cb8"
+  }
+},{
+  "_id": {
+    "$oid": "5defd75f2ee1e2b53929fed8"
+  },
+  "number": 3,
+  "letter": "ə",
+  "shift": 2,
+  "sector": "ru",
+  "tableId": {
+    "$oid": "5e038fdc72fe973214c12cb8"
+  }
+},{
+  "_id": {
+    "$oid": "5defd7672ee1e2b53929fed9"
+  },
+  "number": 4,
+  "letter": "e",
+  "shift": 1,
+  "sector": "ru",
+  "tableId": {
+    "$oid": "5e038fdc72fe973214c12cb8"
+  }
+},{
+  "_id": {
+    "$oid": "5defd76c2ee1e2b53929feda"
+  },
+  "number": 4,
+  "letter": "ə",
+  "shift": 2,
+  "sector": "ru",
+  "tableId": {
+    "$oid": "5e038fdc72fe973214c12cb8"
+  }
+},{
+  "_id": {
+    "$oid": "5e023371f908f9a51350bc17"
+  },
+  "number": 1,
+  "letter": "a",
+  "shift": 1,
+  "sector": "az",
+  "tableId": {
+    "$oid": "5e038fdc72fe973214c12cb8"
+  }
+},{
+  "_id": {
+    "$oid": "5e023376f908f9a51350bc18"
+  },
+  "number": 1,
+  "letter": "b",
+  "shift": 1,
+  "sector": "az",
+  "tableId": {
+    "$oid": "5e038fdc72fe973214c12cb8"
+  }
+},{
+  "_id": {
+    "$oid": "5e02337df908f9a51350bc19"
+  },
+  "number": 1,
+  "letter": "c",
+  "shift": 1,
+  "sector": "az",
+  "tableId": {
+    "$oid": "5e038fdc72fe973214c12cb8"
+  }
+},{
+  "_id": {
+    "$oid": "5e023383f908f9a51350bc1a"
+  },
+  "number": 1,
+  "letter": "ç",
+  "shift": 1,
+  "sector": "az",
+  "tableId": {
+    "$oid": "5e038fdc72fe973214c12cb8"
+  }
+},{
+  "_id": {
+    "$oid": "5e023388f908f9a51350bc1b"
+  },
+  "number": 1,
+  "letter": "d",
+  "shift": 1,
+  "sector": "az",
+  "tableId": {
+    "$oid": "5e038fdc72fe973214c12cb8"
+  }
+},{
+  "_id": {
+    "$oid": "5e023390f908f9a51350bc1c"
+  },
+  "number": 2,
+  "letter": "a",
+  "shift": 2,
+  "sector": "az",
+  "tableId": {
+    "$oid": "5e038fdc72fe973214c12cb8"
+  }
+},{
+  "_id": {
+    "$oid": "5e023394f908f9a51350bc1d"
+  },
+  "number": 2,
+  "letter": "b",
+  "shift": 1,
+  "sector": "az",
+  "tableId": {
+    "$oid": "5e038fdc72fe973214c12cb8"
+  }
+},{
+  "_id": {
+    "$oid": "5e023398f908f9a51350bc1e"
+  },
+  "number": 2,
+  "letter": "c",
+  "shift": 2,
+  "sector": "az",
+  "tableId": {
+    "$oid": "5e038fdc72fe973214c12cb8"
+  }
+},{
+  "_id": {
+    "$oid": "5e02339cf908f9a51350bc1f"
+  },
+  "number": 2,
+  "letter": "ç",
+  "shift": 1,
+  "sector": "az",
+  "tableId": {
+    "$oid": "5e038fdc72fe973214c12cb8"
+  }
+},{
+  "_id": {
+    "$oid": "5e0233a4f908f9a51350bc20"
+  },
+  "number": 3,
+  "letter": "a",
+  "shift": 1,
+  "sector": "az",
+  "tableId": {
+    "$oid": "5e038fdc72fe973214c12cb8"
+  }
+},{
+  "_id": {
+    "$oid": "5e0233a8f908f9a51350bc21"
+  },
+  "number": 3,
+  "letter": "b",
+  "shift": 1,
+  "sector": "az",
+  "tableId": {
+    "$oid": "5e038fdc72fe973214c12cb8"
+  }
+},{
+  "_id": {
+    "$oid": "5e0233adf908f9a51350bc22"
+  },
+  "number": 3,
+  "letter": "c",
+  "shift": 1,
+  "sector": "az",
+  "tableId": {
+    "$oid": "5e038fdc72fe973214c12cb8"
+  }
+},{
+  "_id": {
+    "$oid": "5e0233b2f908f9a51350bc23"
+  },
+  "number": 3,
+  "letter": "ç",
+  "shift": 1,
+  "sector": "az",
+  "tableId": {
+    "$oid": "5e038fdc72fe973214c12cb8"
+  }
+},{
+  "_id": {
+    "$oid": "5e0233b7f908f9a51350bc24"
+  },
+  "number": 3,
+  "letter": "d",
+  "shift": 1,
+  "sector": "az",
+  "tableId": {
+    "$oid": "5e038fdc72fe973214c12cb8"
+  }
+},{
+  "_id": {
+    "$oid": "5e0233bcf908f9a51350bc25"
+  },
+  "number": 4,
+  "letter": "a",
+  "shift": 1,
+  "sector": "az",
+  "tableId": {
+    "$oid": "5e038fdc72fe973214c12cb8"
+  }
+},{
+  "_id": {
+    "$oid": "5e0233c2f908f9a51350bc26"
+  },
+  "number": 4,
+  "letter": "b",
+  "shift": 1,
+  "sector": "az",
+  "tableId": {
+    "$oid": "5e038fdc72fe973214c12cb8"
+  }
+},{
+  "_id": {
+    "$oid": "5e0233c7f908f9a51350bc27"
+  },
+  "number": 4,
+  "letter": "c",
+  "shift": 1,
+  "sector": "az",
+  "tableId": {
+    "$oid": "5e038fdc72fe973214c12cb8"
+  }
+},{
+  "_id": {
+    "$oid": "5e0233cbf908f9a51350bc28"
+  },
+  "number": 4,
+  "letter": "ç",
+  "shift": 1,
+  "sector": "az",
+  "tableId": {
+    "$oid": "5e038fdc72fe973214c12cb8"
+  }
+},{
+  "_id": {
+    "$oid": "5e0233cff908f9a51350bc29"
+  },
+  "number": 4,
+  "letter": "d",
+  "shift": 2,
+  "sector": "az",
+  "tableId": {
+    "$oid": "5e038fdc72fe973214c12cb8"
+  }
+},{
+  "_id": {
+    "$oid": "5e3b1d85a94ae2e639b2a870"
+  },
+  "tableId": {
+    "$oid": "5e038fdc72fe973214c12cb8"
+  },
+  "number": 7,
+  "letter": "e",
+  "shift": 1,
+  "sector": "ru"
+},{
+  "_id": {
+    "$oid": "5e3fc67ea885db526ecffa1b"
+  },
+  "tableId": {
+    "$oid": "5e3fc67ea885db526ecff9d8"
+  },
+  "number": 5,
+  "letter": "ə",
+  "shift": 1,
+  "sector": "ru"
+},{
+  "_id": {
+    "$oid": "5e3fc67ea885db526ecffa1c"
+  },
+  "tableId": {
+    "$oid": "5e3fc67ea885db526ecff9d8"
+  },
+  "number": 6,
+  "letter": "d",
+  "shift": 1,
+  "sector": "ru"
+},{
+  "_id": {
+    "$oid": "5e3fc67ea885db526ecffa1d"
+  },
+  "tableId": {
+    "$oid": "5e3fc67ea885db526ecff9d8"
+  },
+  "number": 8,
+  "letter": "e",
+  "shift": 1,
+  "sector": "ru"
+},{
+  "_id": {
+    "$oid": "5e3fc67ea885db526ecffa1e"
+  },
+  "tableId": {
+    "$oid": "5e3fc67ea885db526ecff9d8"
+  },
+  "number": 9,
+  "letter": "e",
+  "shift": 1,
+  "sector": "ru"
+},{
+  "_id": {
+    "$oid": "5e3fc67ea885db526ecffa1f"
+  },
+  "tableId": {
+    "$oid": "5e3fc67ea885db526ecff9d8"
+  },
+  "number": 10,
+  "letter": "d",
+  "shift": 1,
+  "sector": "ru"
+},{
+  "_id": {
+    "$oid": "5e3fc67ea885db526ecffa20"
+  },
+  "tableId": {
+    "$oid": "5e3fc67ea885db526ecff9d8"
+  },
+  "number": 11,
+  "letter": "c",
+  "shift": 1,
+  "sector": "ru"
+},{
+  "_id": {
+    "$oid": "5e3fc67ea885db526ecffa21"
+  },
+  "tableId": {
+    "$oid": "5e3fc67ea885db526ecff9d8"
+  },
+  "number": 5,
+  "letter": "e",
+  "shift": 1,
+  "sector": "ru"
+},{
+  "_id": {
+    "$oid": "5e3fc67ea885db526ecffa22"
+  },
+  "tableId": {
+    "$oid": "5e3fc67ea885db526ecff9d8"
+  },
+  "number": 1,
+  "letter": "e",
+  "shift": 1,
+  "sector": "ru"
+},{
+  "_id": {
+    "$oid": "5e3fc67ea885db526ecffa23"
+  },
+  "tableId": {
+    "$oid": "5e3fc67ea885db526ecff9d8"
+  },
+  "number": 1,
+  "letter": "ə",
+  "shift": 1,
+  "sector": "ru"
+},{
+  "_id": {
+    "$oid": "5e3fc67ea885db526ecffa24"
+  },
+  "tableId": {
+    "$oid": "5e3fc67ea885db526ecff9d8"
+  },
+  "number": 2,
+  "letter": "d",
+  "shift": 2,
+  "sector": "ru"
+},{
+  "_id": {
+    "$oid": "5e3fc67ea885db526ecffa25"
+  },
+  "tableId": {
+    "$oid": "5e3fc67ea885db526ecff9d8"
+  },
+  "number": 2,
+  "letter": "e",
+  "shift": 1,
+  "sector": "ru"
+},{
+  "_id": {
+    "$oid": "5e3fc67ea885db526ecffa26"
+  },
+  "tableId": {
+    "$oid": "5e3fc67ea885db526ecff9d8"
+  },
+  "number": 3,
+  "letter": "e",
+  "shift": 1,
+  "sector": "ru"
+},{
+  "_id": {
+    "$oid": "5e3fc67ea885db526ecffa27"
+  },
+  "tableId": {
+    "$oid": "5e3fc67ea885db526ecff9d8"
+  },
+  "number": 3,
+  "letter": "ə",
+  "shift": 2,
+  "sector": "ru"
+},{
+  "_id": {
+    "$oid": "5e3fc67ea885db526ecffa28"
+  },
+  "tableId": {
+    "$oid": "5e3fc67ea885db526ecff9d8"
+  },
+  "number": 4,
+  "letter": "e",
+  "shift": 1,
+  "sector": "ru"
+},{
+  "_id": {
+    "$oid": "5e3fc67ea885db526ecffa29"
+  },
+  "tableId": {
+    "$oid": "5e3fc67ea885db526ecff9d8"
+  },
+  "number": 4,
+  "letter": "ə",
+  "shift": 2,
+  "sector": "ru"
+},{
+  "_id": {
+    "$oid": "5e3fc67ea885db526ecffa2a"
+  },
+  "tableId": {
+    "$oid": "5e3fc67ea885db526ecff9d8"
+  },
+  "number": 1,
+  "letter": "a",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e3fc67ea885db526ecffa2b"
+  },
+  "tableId": {
+    "$oid": "5e3fc67ea885db526ecff9d8"
+  },
+  "number": 1,
+  "letter": "b",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e3fc67ea885db526ecffa2c"
+  },
+  "tableId": {
+    "$oid": "5e3fc67ea885db526ecff9d8"
+  },
+  "number": 1,
+  "letter": "c",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e3fc67ea885db526ecffa2d"
+  },
+  "tableId": {
+    "$oid": "5e3fc67ea885db526ecff9d8"
+  },
+  "number": 1,
+  "letter": "ç",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e3fc67ea885db526ecffa2e"
+  },
+  "tableId": {
+    "$oid": "5e3fc67ea885db526ecff9d8"
+  },
+  "number": 1,
+  "letter": "d",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e3fc67ea885db526ecffa2f"
+  },
+  "tableId": {
+    "$oid": "5e3fc67ea885db526ecff9d8"
+  },
+  "number": 2,
+  "letter": "a",
+  "shift": 2,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e3fc67ea885db526ecffa30"
+  },
+  "tableId": {
+    "$oid": "5e3fc67ea885db526ecff9d8"
+  },
+  "number": 2,
+  "letter": "b",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e3fc67ea885db526ecffa31"
+  },
+  "tableId": {
+    "$oid": "5e3fc67ea885db526ecff9d8"
+  },
+  "number": 2,
+  "letter": "c",
+  "shift": 2,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e3fc67ea885db526ecffa32"
+  },
+  "tableId": {
+    "$oid": "5e3fc67ea885db526ecff9d8"
+  },
+  "number": 2,
+  "letter": "ç",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e3fc67ea885db526ecffa33"
+  },
+  "tableId": {
+    "$oid": "5e3fc67ea885db526ecff9d8"
+  },
+  "number": 3,
+  "letter": "a",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e3fc67ea885db526ecffa34"
+  },
+  "tableId": {
+    "$oid": "5e3fc67ea885db526ecff9d8"
+  },
+  "number": 3,
+  "letter": "b",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e3fc67ea885db526ecffa35"
+  },
+  "tableId": {
+    "$oid": "5e3fc67ea885db526ecff9d8"
+  },
+  "number": 3,
+  "letter": "c",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e3fc67ea885db526ecffa36"
+  },
+  "tableId": {
+    "$oid": "5e3fc67ea885db526ecff9d8"
+  },
+  "number": 3,
+  "letter": "ç",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e3fc67ea885db526ecffa37"
+  },
+  "tableId": {
+    "$oid": "5e3fc67ea885db526ecff9d8"
+  },
+  "number": 3,
+  "letter": "d",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e3fc67ea885db526ecffa38"
+  },
+  "tableId": {
+    "$oid": "5e3fc67ea885db526ecff9d8"
+  },
+  "number": 4,
+  "letter": "a",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e3fc67ea885db526ecffa39"
+  },
+  "tableId": {
+    "$oid": "5e3fc67ea885db526ecff9d8"
+  },
+  "number": 4,
+  "letter": "b",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e3fc67ea885db526ecffa3a"
+  },
+  "tableId": {
+    "$oid": "5e3fc67ea885db526ecff9d8"
+  },
+  "number": 4,
+  "letter": "c",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e3fc67ea885db526ecffa3b"
+  },
+  "tableId": {
+    "$oid": "5e3fc67ea885db526ecff9d8"
+  },
+  "number": 4,
+  "letter": "ç",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e3fc67ea885db526ecffa3c"
+  },
+  "tableId": {
+    "$oid": "5e3fc67ea885db526ecff9d8"
+  },
+  "number": 4,
+  "letter": "d",
+  "shift": 2,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e3fc67ea885db526ecffa3d"
+  },
+  "tableId": {
+    "$oid": "5e3fc67ea885db526ecff9d8"
+  },
+  "number": 7,
+  "letter": "e",
+  "shift": 1,
+  "sector": "ru"
+},{
+  "_id": {
+    "$oid": "5e3fc6fda885db526ecffa81"
+  },
+  "tableId": {
+    "$oid": "5e3fc6fda885db526ecffa3e"
+  },
+  "number": 5,
+  "letter": "ə",
+  "shift": 1,
+  "sector": "ru"
+},{
+  "_id": {
+    "$oid": "5e3fc6fda885db526ecffa82"
+  },
+  "tableId": {
+    "$oid": "5e3fc6fda885db526ecffa3e"
+  },
+  "number": 6,
+  "letter": "d",
+  "shift": 1,
+  "sector": "ru"
+},{
+  "_id": {
+    "$oid": "5e3fc6fda885db526ecffa83"
+  },
+  "tableId": {
+    "$oid": "5e3fc6fda885db526ecffa3e"
+  },
+  "number": 8,
+  "letter": "e",
+  "shift": 1,
+  "sector": "ru"
+},{
+  "_id": {
+    "$oid": "5e3fc6fda885db526ecffa84"
+  },
+  "tableId": {
+    "$oid": "5e3fc6fda885db526ecffa3e"
+  },
+  "number": 9,
+  "letter": "e",
+  "shift": 1,
+  "sector": "ru"
+},{
+  "_id": {
+    "$oid": "5e3fc6fda885db526ecffa85"
+  },
+  "tableId": {
+    "$oid": "5e3fc6fda885db526ecffa3e"
+  },
+  "number": 10,
+  "letter": "d",
+  "shift": 1,
+  "sector": "ru"
+},{
+  "_id": {
+    "$oid": "5e3fc6fda885db526ecffa86"
+  },
+  "tableId": {
+    "$oid": "5e3fc6fda885db526ecffa3e"
+  },
+  "number": 11,
+  "letter": "c",
+  "shift": 1,
+  "sector": "ru"
+},{
+  "_id": {
+    "$oid": "5e3fc6fda885db526ecffa87"
+  },
+  "tableId": {
+    "$oid": "5e3fc6fda885db526ecffa3e"
+  },
+  "number": 5,
+  "letter": "e",
+  "shift": 1,
+  "sector": "ru"
+},{
+  "_id": {
+    "$oid": "5e3fc6fda885db526ecffa88"
+  },
+  "tableId": {
+    "$oid": "5e3fc6fda885db526ecffa3e"
+  },
+  "number": 1,
+  "letter": "e",
+  "shift": 1,
+  "sector": "ru"
+},{
+  "_id": {
+    "$oid": "5e3fc6fda885db526ecffa89"
+  },
+  "tableId": {
+    "$oid": "5e3fc6fda885db526ecffa3e"
+  },
+  "number": 1,
+  "letter": "ə",
+  "shift": 1,
+  "sector": "ru"
+},{
+  "_id": {
+    "$oid": "5e3fc6fda885db526ecffa8a"
+  },
+  "tableId": {
+    "$oid": "5e3fc6fda885db526ecffa3e"
+  },
+  "number": 2,
+  "letter": "d",
+  "shift": 2,
+  "sector": "ru"
+},{
+  "_id": {
+    "$oid": "5e3fc6fda885db526ecffa8b"
+  },
+  "tableId": {
+    "$oid": "5e3fc6fda885db526ecffa3e"
+  },
+  "number": 2,
+  "letter": "e",
+  "shift": 1,
+  "sector": "ru"
+},{
+  "_id": {
+    "$oid": "5e3fc6fda885db526ecffa8c"
+  },
+  "tableId": {
+    "$oid": "5e3fc6fda885db526ecffa3e"
+  },
+  "number": 3,
+  "letter": "e",
+  "shift": 1,
+  "sector": "ru"
+},{
+  "_id": {
+    "$oid": "5e3fc6fda885db526ecffa8d"
+  },
+  "tableId": {
+    "$oid": "5e3fc6fda885db526ecffa3e"
+  },
+  "number": 3,
+  "letter": "ə",
+  "shift": 2,
+  "sector": "ru"
+},{
+  "_id": {
+    "$oid": "5e3fc6fda885db526ecffa8e"
+  },
+  "tableId": {
+    "$oid": "5e3fc6fda885db526ecffa3e"
+  },
+  "number": 4,
+  "letter": "e",
+  "shift": 1,
+  "sector": "ru"
+},{
+  "_id": {
+    "$oid": "5e3fc6fda885db526ecffa8f"
+  },
+  "tableId": {
+    "$oid": "5e3fc6fda885db526ecffa3e"
+  },
+  "number": 4,
+  "letter": "ə",
+  "shift": 2,
+  "sector": "ru"
+},{
+  "_id": {
+    "$oid": "5e3fc6fda885db526ecffa90"
+  },
+  "tableId": {
+    "$oid": "5e3fc6fda885db526ecffa3e"
+  },
+  "number": 1,
+  "letter": "a",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e3fc6fda885db526ecffa91"
+  },
+  "tableId": {
+    "$oid": "5e3fc6fda885db526ecffa3e"
+  },
+  "number": 1,
+  "letter": "b",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e3fc6fda885db526ecffa92"
+  },
+  "tableId": {
+    "$oid": "5e3fc6fda885db526ecffa3e"
+  },
+  "number": 1,
+  "letter": "c",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e3fc6fda885db526ecffa93"
+  },
+  "tableId": {
+    "$oid": "5e3fc6fda885db526ecffa3e"
+  },
+  "number": 1,
+  "letter": "ç",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e3fc6fda885db526ecffa94"
+  },
+  "tableId": {
+    "$oid": "5e3fc6fda885db526ecffa3e"
+  },
+  "number": 1,
+  "letter": "d",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e3fc6fda885db526ecffa95"
+  },
+  "tableId": {
+    "$oid": "5e3fc6fda885db526ecffa3e"
+  },
+  "number": 2,
+  "letter": "a",
+  "shift": 2,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e3fc6fda885db526ecffa96"
+  },
+  "tableId": {
+    "$oid": "5e3fc6fda885db526ecffa3e"
+  },
+  "number": 2,
+  "letter": "b",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e3fc6fda885db526ecffa97"
+  },
+  "tableId": {
+    "$oid": "5e3fc6fda885db526ecffa3e"
+  },
+  "number": 2,
+  "letter": "c",
+  "shift": 2,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e3fc6fda885db526ecffa98"
+  },
+  "tableId": {
+    "$oid": "5e3fc6fda885db526ecffa3e"
+  },
+  "number": 2,
+  "letter": "ç",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e3fc6fda885db526ecffa99"
+  },
+  "tableId": {
+    "$oid": "5e3fc6fda885db526ecffa3e"
+  },
+  "number": 3,
+  "letter": "a",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e3fc6fda885db526ecffa9a"
+  },
+  "tableId": {
+    "$oid": "5e3fc6fda885db526ecffa3e"
+  },
+  "number": 3,
+  "letter": "b",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e3fc6fda885db526ecffa9b"
+  },
+  "tableId": {
+    "$oid": "5e3fc6fda885db526ecffa3e"
+  },
+  "number": 3,
+  "letter": "c",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e3fc6fda885db526ecffa9c"
+  },
+  "tableId": {
+    "$oid": "5e3fc6fda885db526ecffa3e"
+  },
+  "number": 3,
+  "letter": "ç",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e3fc6fda885db526ecffa9d"
+  },
+  "tableId": {
+    "$oid": "5e3fc6fda885db526ecffa3e"
+  },
+  "number": 3,
+  "letter": "d",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e3fc6fda885db526ecffa9e"
+  },
+  "tableId": {
+    "$oid": "5e3fc6fda885db526ecffa3e"
+  },
+  "number": 4,
+  "letter": "a",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e3fc6fda885db526ecffa9f"
+  },
+  "tableId": {
+    "$oid": "5e3fc6fda885db526ecffa3e"
+  },
+  "number": 4,
+  "letter": "b",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e3fc6fda885db526ecffaa0"
+  },
+  "tableId": {
+    "$oid": "5e3fc6fda885db526ecffa3e"
+  },
+  "number": 4,
+  "letter": "c",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e3fc6fda885db526ecffaa1"
+  },
+  "tableId": {
+    "$oid": "5e3fc6fda885db526ecffa3e"
+  },
+  "number": 4,
+  "letter": "ç",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e3fc6fda885db526ecffaa2"
+  },
+  "tableId": {
+    "$oid": "5e3fc6fda885db526ecffa3e"
+  },
+  "number": 4,
+  "letter": "d",
+  "shift": 2,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e3fc6fda885db526ecffaa3"
+  },
+  "tableId": {
+    "$oid": "5e3fc6fda885db526ecffa3e"
+  },
+  "number": 7,
+  "letter": "e",
+  "shift": 1,
+  "sector": "ru"
+},{
+  "_id": {
+    "$oid": "5e3fd6d2a885db526ecfface"
+  },
+  "tableId": {
+    "$oid": "5e038fdc72fe973214c12cb8"
+  },
+  "number": 5,
+  "letter": "a",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e3fd781a885db526ecffacf"
+  },
+  "tableId": {
+    "$oid": "5e038fdc72fe973214c12cb8"
+  },
+  "number": 5,
+  "letter": "b",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e3fd83ca885db526ecffad0"
+  },
+  "tableId": {
+    "$oid": "5e038fdc72fe973214c12cb8"
+  },
+  "number": 5,
+  "letter": "c",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e3fd875a885db526ecffad1"
+  },
+  "tableId": {
+    "$oid": "5e038fdc72fe973214c12cb8"
+  },
+  "number": 5,
+  "letter": "ç",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e3fd8b4a885db526ecffad3"
+  },
+  "tableId": {
+    "$oid": "5e038fdc72fe973214c12cb8"
+  },
+  "number": 6,
+  "letter": "a",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e3fd8d8a885db526ecffad4"
+  },
+  "tableId": {
+    "$oid": "5e038fdc72fe973214c12cb8"
+  },
+  "number": 6,
+  "letter": "b",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e3fd8e8a885db526ecffad5"
+  },
+  "tableId": {
+    "$oid": "5e038fdc72fe973214c12cb8"
+  },
+  "number": 6,
+  "letter": "c",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e3fd8f2a885db526ecffad6"
+  },
+  "tableId": {
+    "$oid": "5e038fdc72fe973214c12cb8"
+  },
+  "number": 7,
+  "letter": "a",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e3fd8fea885db526ecffad7"
+  },
+  "tableId": {
+    "$oid": "5e038fdc72fe973214c12cb8"
+  },
+  "number": 7,
+  "letter": "b",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e3fd90da885db526ecffad8"
+  },
+  "tableId": {
+    "$oid": "5e038fdc72fe973214c12cb8"
+  },
+  "number": 7,
+  "letter": "c",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e3fd933a885db526ecffad9"
+  },
+  "tableId": {
+    "$oid": "5e038fdc72fe973214c12cb8"
+  },
+  "number": 7,
+  "letter": "ç",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e3fd941a885db526ecffada"
+  },
+  "tableId": {
+    "$oid": "5e038fdc72fe973214c12cb8"
+  },
+  "number": 7,
+  "letter": "d",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e3fd953a885db526ecffadb"
+  },
+  "tableId": {
+    "$oid": "5e038fdc72fe973214c12cb8"
+  },
+  "number": 8,
+  "letter": "a",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e3fd95aa885db526ecffadc"
+  },
+  "tableId": {
+    "$oid": "5e038fdc72fe973214c12cb8"
+  },
+  "number": 8,
+  "letter": "b",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e3fd960a885db526ecffadd"
+  },
+  "tableId": {
+    "$oid": "5e038fdc72fe973214c12cb8"
+  },
+  "number": 8,
+  "letter": "c",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e3fd96ba885db526ecffade"
+  },
+  "tableId": {
+    "$oid": "5e038fdc72fe973214c12cb8"
+  },
+  "number": 8,
+  "letter": "ç",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e3fd986a885db526ecffadf"
+  },
+  "tableId": {
+    "$oid": "5e038fdc72fe973214c12cb8"
+  },
+  "number": 8,
+  "letter": "x",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e3fd994a885db526ecffae0"
+  },
+  "tableId": {
+    "$oid": "5e038fdc72fe973214c12cb8"
+  },
+  "number": 9,
+  "letter": "a",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e3fd99ea885db526ecffae1"
+  },
+  "tableId": {
+    "$oid": "5e038fdc72fe973214c12cb8"
+  },
+  "number": 9,
+  "letter": "b",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e3fd9a4a885db526ecffae2"
+  },
+  "tableId": {
+    "$oid": "5e038fdc72fe973214c12cb8"
+  },
+  "number": 9,
+  "letter": "c",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e3fd9aaa885db526ecffae3"
+  },
+  "tableId": {
+    "$oid": "5e038fdc72fe973214c12cb8"
+  },
+  "number": 9,
+  "letter": "ç",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e3fd9b5a885db526ecffae4"
+  },
+  "tableId": {
+    "$oid": "5e038fdc72fe973214c12cb8"
+  },
+  "number": 9,
+  "letter": "x",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e3fd9d0a885db526ecffae6"
+  },
+  "tableId": {
+    "$oid": "5e038fdc72fe973214c12cb8"
+  },
+  "number": 10,
+  "letter": "a",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e3fd9d6a885db526ecffae7"
+  },
+  "tableId": {
+    "$oid": "5e038fdc72fe973214c12cb8"
+  },
+  "number": 10,
+  "letter": "b",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e3fd9e8a885db526ecffae8"
+  },
+  "tableId": {
+    "$oid": "5e038fdc72fe973214c12cb8"
+  },
+  "number": 10,
+  "letter": "c",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e3fd9f0a885db526ecffae9"
+  },
+  "tableId": {
+    "$oid": "5e038fdc72fe973214c12cb8"
+  },
+  "number": 10,
+  "letter": "ç",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e3fd9faa885db526ecffaea"
+  },
+  "tableId": {
+    "$oid": "5e038fdc72fe973214c12cb8"
+  },
+  "number": 11,
+  "letter": "a",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e3fda01a885db526ecffaeb"
+  },
+  "tableId": {
+    "$oid": "5e038fdc72fe973214c12cb8"
+  },
+  "number": 11,
+  "letter": "b",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e400a53a885db526ecffb59"
+  },
+  "tableId": {
+    "$oid": "5e400a53a885db526ecffaec"
+  },
+  "number": 5,
+  "letter": "ə",
+  "shift": 1,
+  "sector": "ru"
+},{
+  "_id": {
+    "$oid": "5e400a53a885db526ecffb5a"
+  },
+  "tableId": {
+    "$oid": "5e400a53a885db526ecffaec"
+  },
+  "number": 6,
+  "letter": "d",
+  "shift": 1,
+  "sector": "ru"
+},{
+  "_id": {
+    "$oid": "5e400a53a885db526ecffb5b"
+  },
+  "tableId": {
+    "$oid": "5e400a53a885db526ecffaec"
+  },
+  "number": 8,
+  "letter": "e",
+  "shift": 1,
+  "sector": "ru"
+},{
+  "_id": {
+    "$oid": "5e400a53a885db526ecffb5c"
+  },
+  "tableId": {
+    "$oid": "5e400a53a885db526ecffaec"
+  },
+  "number": 9,
+  "letter": "e",
+  "shift": 1,
+  "sector": "ru"
+},{
+  "_id": {
+    "$oid": "5e400a53a885db526ecffb5d"
+  },
+  "tableId": {
+    "$oid": "5e400a53a885db526ecffaec"
+  },
+  "number": 10,
+  "letter": "d",
+  "shift": 1,
+  "sector": "ru"
+},{
+  "_id": {
+    "$oid": "5e400a53a885db526ecffb5e"
+  },
+  "tableId": {
+    "$oid": "5e400a53a885db526ecffaec"
+  },
+  "number": 11,
+  "letter": "c",
+  "shift": 1,
+  "sector": "ru"
+},{
+  "_id": {
+    "$oid": "5e400a53a885db526ecffb5f"
+  },
+  "tableId": {
+    "$oid": "5e400a53a885db526ecffaec"
+  },
+  "number": 5,
+  "letter": "e",
+  "shift": 1,
+  "sector": "ru"
+},{
+  "_id": {
+    "$oid": "5e400a53a885db526ecffb60"
+  },
+  "tableId": {
+    "$oid": "5e400a53a885db526ecffaec"
+  },
+  "number": 1,
+  "letter": "e",
+  "shift": 1,
+  "sector": "ru"
+},{
+  "_id": {
+    "$oid": "5e400a53a885db526ecffb61"
+  },
+  "tableId": {
+    "$oid": "5e400a53a885db526ecffaec"
+  },
+  "number": 1,
+  "letter": "ə",
+  "shift": 1,
+  "sector": "ru"
+},{
+  "_id": {
+    "$oid": "5e400a53a885db526ecffb62"
+  },
+  "tableId": {
+    "$oid": "5e400a53a885db526ecffaec"
+  },
+  "number": 2,
+  "letter": "d",
+  "shift": 2,
+  "sector": "ru"
+},{
+  "_id": {
+    "$oid": "5e400a53a885db526ecffb63"
+  },
+  "tableId": {
+    "$oid": "5e400a53a885db526ecffaec"
+  },
+  "number": 2,
+  "letter": "e",
+  "shift": 1,
+  "sector": "ru"
+},{
+  "_id": {
+    "$oid": "5e400a53a885db526ecffb64"
+  },
+  "tableId": {
+    "$oid": "5e400a53a885db526ecffaec"
+  },
+  "number": 3,
+  "letter": "e",
+  "shift": 1,
+  "sector": "ru"
+},{
+  "_id": {
+    "$oid": "5e400a53a885db526ecffb65"
+  },
+  "tableId": {
+    "$oid": "5e400a53a885db526ecffaec"
+  },
+  "number": 3,
+  "letter": "ə",
+  "shift": 2,
+  "sector": "ru"
+},{
+  "_id": {
+    "$oid": "5e400a53a885db526ecffb66"
+  },
+  "tableId": {
+    "$oid": "5e400a53a885db526ecffaec"
+  },
+  "number": 4,
+  "letter": "e",
+  "shift": 1,
+  "sector": "ru"
+},{
+  "_id": {
+    "$oid": "5e400a53a885db526ecffb67"
+  },
+  "tableId": {
+    "$oid": "5e400a53a885db526ecffaec"
+  },
+  "number": 4,
+  "letter": "ə",
+  "shift": 2,
+  "sector": "ru"
+},{
+  "_id": {
+    "$oid": "5e400a53a885db526ecffb68"
+  },
+  "tableId": {
+    "$oid": "5e400a53a885db526ecffaec"
+  },
+  "number": 1,
+  "letter": "a",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e400a53a885db526ecffb69"
+  },
+  "tableId": {
+    "$oid": "5e400a53a885db526ecffaec"
+  },
+  "number": 1,
+  "letter": "b",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e400a53a885db526ecffb6a"
+  },
+  "tableId": {
+    "$oid": "5e400a53a885db526ecffaec"
+  },
+  "number": 1,
+  "letter": "c",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e400a53a885db526ecffb6b"
+  },
+  "tableId": {
+    "$oid": "5e400a53a885db526ecffaec"
+  },
+  "number": 1,
+  "letter": "ç",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e400a53a885db526ecffb6c"
+  },
+  "tableId": {
+    "$oid": "5e400a53a885db526ecffaec"
+  },
+  "number": 1,
+  "letter": "d",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e400a53a885db526ecffb6d"
+  },
+  "tableId": {
+    "$oid": "5e400a53a885db526ecffaec"
+  },
+  "number": 2,
+  "letter": "a",
+  "shift": 2,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e400a53a885db526ecffb6e"
+  },
+  "tableId": {
+    "$oid": "5e400a53a885db526ecffaec"
+  },
+  "number": 2,
+  "letter": "b",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e400a53a885db526ecffb6f"
+  },
+  "tableId": {
+    "$oid": "5e400a53a885db526ecffaec"
+  },
+  "number": 2,
+  "letter": "c",
+  "shift": 2,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e400a53a885db526ecffb70"
+  },
+  "tableId": {
+    "$oid": "5e400a53a885db526ecffaec"
+  },
+  "number": 2,
+  "letter": "ç",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e400a53a885db526ecffb71"
+  },
+  "tableId": {
+    "$oid": "5e400a53a885db526ecffaec"
+  },
+  "number": 3,
+  "letter": "a",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e400a53a885db526ecffb72"
+  },
+  "tableId": {
+    "$oid": "5e400a53a885db526ecffaec"
+  },
+  "number": 3,
+  "letter": "b",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e400a53a885db526ecffb73"
+  },
+  "tableId": {
+    "$oid": "5e400a53a885db526ecffaec"
+  },
+  "number": 3,
+  "letter": "c",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e400a53a885db526ecffb74"
+  },
+  "tableId": {
+    "$oid": "5e400a53a885db526ecffaec"
+  },
+  "number": 3,
+  "letter": "ç",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e400a53a885db526ecffb75"
+  },
+  "tableId": {
+    "$oid": "5e400a53a885db526ecffaec"
+  },
+  "number": 3,
+  "letter": "d",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e400a53a885db526ecffb76"
+  },
+  "tableId": {
+    "$oid": "5e400a53a885db526ecffaec"
+  },
+  "number": 4,
+  "letter": "a",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e400a53a885db526ecffb77"
+  },
+  "tableId": {
+    "$oid": "5e400a53a885db526ecffaec"
+  },
+  "number": 4,
+  "letter": "b",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e400a53a885db526ecffb78"
+  },
+  "tableId": {
+    "$oid": "5e400a53a885db526ecffaec"
+  },
+  "number": 4,
+  "letter": "c",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e400a53a885db526ecffb79"
+  },
+  "tableId": {
+    "$oid": "5e400a53a885db526ecffaec"
+  },
+  "number": 4,
+  "letter": "ç",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e400a53a885db526ecffb7a"
+  },
+  "tableId": {
+    "$oid": "5e400a53a885db526ecffaec"
+  },
+  "number": 4,
+  "letter": "d",
+  "shift": 2,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e400a53a885db526ecffb7b"
+  },
+  "tableId": {
+    "$oid": "5e400a53a885db526ecffaec"
+  },
+  "number": 7,
+  "letter": "e",
+  "shift": 1,
+  "sector": "ru"
+},{
+  "_id": {
+    "$oid": "5e400a53a885db526ecffb7c"
+  },
+  "tableId": {
+    "$oid": "5e400a53a885db526ecffaec"
+  },
+  "number": 5,
+  "letter": "a",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e400a53a885db526ecffb7d"
+  },
+  "tableId": {
+    "$oid": "5e400a53a885db526ecffaec"
+  },
+  "number": 5,
+  "letter": "b",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e400a53a885db526ecffb7e"
+  },
+  "tableId": {
+    "$oid": "5e400a53a885db526ecffaec"
+  },
+  "number": 5,
+  "letter": "c",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e400a53a885db526ecffb7f"
+  },
+  "tableId": {
+    "$oid": "5e400a53a885db526ecffaec"
+  },
+  "number": 5,
+  "letter": "ç",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e400a53a885db526ecffb80"
+  },
+  "tableId": {
+    "$oid": "5e400a53a885db526ecffaec"
+  },
+  "number": 5,
+  "letter": "d",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e400a53a885db526ecffb81"
+  },
+  "tableId": {
+    "$oid": "5e400a53a885db526ecffaec"
+  },
+  "number": 6,
+  "letter": "a",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e400a53a885db526ecffb82"
+  },
+  "tableId": {
+    "$oid": "5e400a53a885db526ecffaec"
+  },
+  "number": 6,
+  "letter": "b",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e400a53a885db526ecffb83"
+  },
+  "tableId": {
+    "$oid": "5e400a53a885db526ecffaec"
+  },
+  "number": 6,
+  "letter": "c",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e400a53a885db526ecffb84"
+  },
+  "tableId": {
+    "$oid": "5e400a53a885db526ecffaec"
+  },
+  "number": 7,
+  "letter": "a",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e400a53a885db526ecffb85"
+  },
+  "tableId": {
+    "$oid": "5e400a53a885db526ecffaec"
+  },
+  "number": 7,
+  "letter": "b",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e400a53a885db526ecffb86"
+  },
+  "tableId": {
+    "$oid": "5e400a53a885db526ecffaec"
+  },
+  "number": 7,
+  "letter": "c",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e400a53a885db526ecffb87"
+  },
+  "tableId": {
+    "$oid": "5e400a53a885db526ecffaec"
+  },
+  "number": 7,
+  "letter": "ç",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e400a53a885db526ecffb88"
+  },
+  "tableId": {
+    "$oid": "5e400a53a885db526ecffaec"
+  },
+  "number": 7,
+  "letter": "d",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e400a53a885db526ecffb89"
+  },
+  "tableId": {
+    "$oid": "5e400a53a885db526ecffaec"
+  },
+  "number": 8,
+  "letter": "a",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e400a53a885db526ecffb8a"
+  },
+  "tableId": {
+    "$oid": "5e400a53a885db526ecffaec"
+  },
+  "number": 8,
+  "letter": "b",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e400a53a885db526ecffb8b"
+  },
+  "tableId": {
+    "$oid": "5e400a53a885db526ecffaec"
+  },
+  "number": 8,
+  "letter": "c",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e400a53a885db526ecffb8c"
+  },
+  "tableId": {
+    "$oid": "5e400a53a885db526ecffaec"
+  },
+  "number": 8,
+  "letter": "ç",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e400a53a885db526ecffb8d"
+  },
+  "tableId": {
+    "$oid": "5e400a53a885db526ecffaec"
+  },
+  "number": 8,
+  "letter": "d",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e400a53a885db526ecffb8e"
+  },
+  "tableId": {
+    "$oid": "5e400a53a885db526ecffaec"
+  },
+  "number": 9,
+  "letter": "a",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e400a53a885db526ecffb8f"
+  },
+  "tableId": {
+    "$oid": "5e400a53a885db526ecffaec"
+  },
+  "number": 9,
+  "letter": "b",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e400a53a885db526ecffb90"
+  },
+  "tableId": {
+    "$oid": "5e400a53a885db526ecffaec"
+  },
+  "number": 9,
+  "letter": "c",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e400a53a885db526ecffb91"
+  },
+  "tableId": {
+    "$oid": "5e400a53a885db526ecffaec"
+  },
+  "number": 9,
+  "letter": "ç",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e400a53a885db526ecffb92"
+  },
+  "tableId": {
+    "$oid": "5e400a53a885db526ecffaec"
+  },
+  "number": 9,
+  "letter": "d",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e400a53a885db526ecffb93"
+  },
+  "tableId": {
+    "$oid": "5e400a53a885db526ecffaec"
+  },
+  "number": 10,
+  "letter": "a",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e400a53a885db526ecffb94"
+  },
+  "tableId": {
+    "$oid": "5e400a53a885db526ecffaec"
+  },
+  "number": 10,
+  "letter": "b",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e400a53a885db526ecffb95"
+  },
+  "tableId": {
+    "$oid": "5e400a53a885db526ecffaec"
+  },
+  "number": 10,
+  "letter": "c",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e400a53a885db526ecffb96"
+  },
+  "tableId": {
+    "$oid": "5e400a53a885db526ecffaec"
+  },
+  "number": 10,
+  "letter": "ç",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e400a53a885db526ecffb97"
+  },
+  "tableId": {
+    "$oid": "5e400a53a885db526ecffaec"
+  },
+  "number": 11,
+  "letter": "a",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e400a53a885db526ecffb98"
+  },
+  "tableId": {
+    "$oid": "5e400a53a885db526ecffaec"
+  },
+  "number": 11,
+  "letter": "b",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e40146da885db526ecffb9a"
+  },
+  "tableId": {
+    "$oid": "5e038fdc72fe973214c12cb8"
+  },
+  "number": 6,
+  "letter": "ç",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e401e7ba885db526ecffc07"
+  },
+  "tableId": {
+    "$oid": "5e401e7ba885db526ecffb9b"
+  },
+  "number": 5,
+  "letter": "e",
+  "shift": 1,
+  "sector": "ru"
+},{
+  "_id": {
+    "$oid": "5e401e7ba885db526ecffc08"
+  },
+  "tableId": {
+    "$oid": "5e401e7ba885db526ecffb9b"
+  },
+  "number": 6,
+  "letter": "d",
+  "shift": 1,
+  "sector": "ru"
+},{
+  "_id": {
+    "$oid": "5e401e7ba885db526ecffc09"
+  },
+  "tableId": {
+    "$oid": "5e401e7ba885db526ecffb9b"
+  },
+  "number": 8,
+  "letter": "e",
+  "shift": 1,
+  "sector": "ru"
+},{
+  "_id": {
+    "$oid": "5e401e7ba885db526ecffc0a"
+  },
+  "tableId": {
+    "$oid": "5e401e7ba885db526ecffb9b"
+  },
+  "number": 9,
+  "letter": "e",
+  "shift": 1,
+  "sector": "ru"
+},{
+  "_id": {
+    "$oid": "5e401e7ba885db526ecffc0b"
+  },
+  "tableId": {
+    "$oid": "5e401e7ba885db526ecffb9b"
+  },
+  "number": 10,
+  "letter": "d",
+  "shift": 1,
+  "sector": "ru"
+},{
+  "_id": {
+    "$oid": "5e401e7ba885db526ecffc0c"
+  },
+  "tableId": {
+    "$oid": "5e401e7ba885db526ecffb9b"
+  },
+  "number": 11,
+  "letter": "c",
+  "shift": 1,
+  "sector": "ru"
+},{
+  "_id": {
+    "$oid": "5e401e7ba885db526ecffc0d"
+  },
+  "tableId": {
+    "$oid": "5e401e7ba885db526ecffb9b"
+  },
+  "number": 5,
+  "letter": "d",
+  "shift": 1,
+  "sector": "ru"
+},{
+  "_id": {
+    "$oid": "5e401e7ba885db526ecffc0e"
+  },
+  "tableId": {
+    "$oid": "5e401e7ba885db526ecffb9b"
+  },
+  "number": 1,
+  "letter": "e",
+  "shift": 1,
+  "sector": "ru"
+},{
+  "_id": {
+    "$oid": "5e401e7ba885db526ecffc0f"
+  },
+  "tableId": {
+    "$oid": "5e401e7ba885db526ecffb9b"
+  },
+  "number": 1,
+  "letter": "ə",
+  "shift": 1,
+  "sector": "ru"
+},{
+  "_id": {
+    "$oid": "5e401e7ba885db526ecffc10"
+  },
+  "tableId": {
+    "$oid": "5e401e7ba885db526ecffb9b"
+  },
+  "number": 2,
+  "letter": "d",
+  "shift": 2,
+  "sector": "ru"
+},{
+  "_id": {
+    "$oid": "5e401e7ba885db526ecffc11"
+  },
+  "tableId": {
+    "$oid": "5e401e7ba885db526ecffb9b"
+  },
+  "number": 2,
+  "letter": "e",
+  "shift": 1,
+  "sector": "ru"
+},{
+  "_id": {
+    "$oid": "5e401e7ba885db526ecffc12"
+  },
+  "tableId": {
+    "$oid": "5e401e7ba885db526ecffb9b"
+  },
+  "number": 3,
+  "letter": "e",
+  "shift": 1,
+  "sector": "ru"
+},{
+  "_id": {
+    "$oid": "5e401e7ba885db526ecffc13"
+  },
+  "tableId": {
+    "$oid": "5e401e7ba885db526ecffb9b"
+  },
+  "number": 3,
+  "letter": "ə",
+  "shift": 2,
+  "sector": "ru"
+},{
+  "_id": {
+    "$oid": "5e401e7ba885db526ecffc14"
+  },
+  "tableId": {
+    "$oid": "5e401e7ba885db526ecffb9b"
+  },
+  "number": 4,
+  "letter": "e",
+  "shift": 1,
+  "sector": "ru"
+},{
+  "_id": {
+    "$oid": "5e401e7ba885db526ecffc15"
+  },
+  "tableId": {
+    "$oid": "5e401e7ba885db526ecffb9b"
+  },
+  "number": 4,
+  "letter": "ə",
+  "shift": 2,
+  "sector": "ru"
+},{
+  "_id": {
+    "$oid": "5e401e7ba885db526ecffc16"
+  },
+  "tableId": {
+    "$oid": "5e401e7ba885db526ecffb9b"
+  },
+  "number": 1,
+  "letter": "a",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e401e7ba885db526ecffc17"
+  },
+  "tableId": {
+    "$oid": "5e401e7ba885db526ecffb9b"
+  },
+  "number": 1,
+  "letter": "b",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e401e7ba885db526ecffc18"
+  },
+  "tableId": {
+    "$oid": "5e401e7ba885db526ecffb9b"
+  },
+  "number": 1,
+  "letter": "c",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e401e7ba885db526ecffc19"
+  },
+  "tableId": {
+    "$oid": "5e401e7ba885db526ecffb9b"
+  },
+  "number": 1,
+  "letter": "ç",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e401e7ba885db526ecffc1a"
+  },
+  "tableId": {
+    "$oid": "5e401e7ba885db526ecffb9b"
+  },
+  "number": 1,
+  "letter": "d",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e401e7ba885db526ecffc1b"
+  },
+  "tableId": {
+    "$oid": "5e401e7ba885db526ecffb9b"
+  },
+  "number": 2,
+  "letter": "a",
+  "shift": 2,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e401e7ba885db526ecffc1c"
+  },
+  "tableId": {
+    "$oid": "5e401e7ba885db526ecffb9b"
+  },
+  "number": 2,
+  "letter": "b",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e401e7ba885db526ecffc1d"
+  },
+  "tableId": {
+    "$oid": "5e401e7ba885db526ecffb9b"
+  },
+  "number": 2,
+  "letter": "c",
+  "shift": 2,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e401e7ba885db526ecffc1e"
+  },
+  "tableId": {
+    "$oid": "5e401e7ba885db526ecffb9b"
+  },
+  "number": 2,
+  "letter": "ç",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e401e7ba885db526ecffc1f"
+  },
+  "tableId": {
+    "$oid": "5e401e7ba885db526ecffb9b"
+  },
+  "number": 3,
+  "letter": "a",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e401e7ba885db526ecffc20"
+  },
+  "tableId": {
+    "$oid": "5e401e7ba885db526ecffb9b"
+  },
+  "number": 3,
+  "letter": "b",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e401e7ba885db526ecffc21"
+  },
+  "tableId": {
+    "$oid": "5e401e7ba885db526ecffb9b"
+  },
+  "number": 3,
+  "letter": "c",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e401e7ba885db526ecffc22"
+  },
+  "tableId": {
+    "$oid": "5e401e7ba885db526ecffb9b"
+  },
+  "number": 3,
+  "letter": "ç",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e401e7ba885db526ecffc23"
+  },
+  "tableId": {
+    "$oid": "5e401e7ba885db526ecffb9b"
+  },
+  "number": 3,
+  "letter": "d",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e401e7ba885db526ecffc24"
+  },
+  "tableId": {
+    "$oid": "5e401e7ba885db526ecffb9b"
+  },
+  "number": 4,
+  "letter": "a",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e401e7ba885db526ecffc25"
+  },
+  "tableId": {
+    "$oid": "5e401e7ba885db526ecffb9b"
+  },
+  "number": 4,
+  "letter": "b",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e401e7ba885db526ecffc26"
+  },
+  "tableId": {
+    "$oid": "5e401e7ba885db526ecffb9b"
+  },
+  "number": 4,
+  "letter": "c",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e401e7ba885db526ecffc27"
+  },
+  "tableId": {
+    "$oid": "5e401e7ba885db526ecffb9b"
+  },
+  "number": 4,
+  "letter": "ç",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e401e7ba885db526ecffc28"
+  },
+  "tableId": {
+    "$oid": "5e401e7ba885db526ecffb9b"
+  },
+  "number": 4,
+  "letter": "d",
+  "shift": 2,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e401e7ba885db526ecffc29"
+  },
+  "tableId": {
+    "$oid": "5e401e7ba885db526ecffb9b"
+  },
+  "number": 7,
+  "letter": "e",
+  "shift": 1,
+  "sector": "ru"
+},{
+  "_id": {
+    "$oid": "5e401e7ba885db526ecffc2a"
+  },
+  "tableId": {
+    "$oid": "5e401e7ba885db526ecffb9b"
+  },
+  "number": 5,
+  "letter": "a",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e401e7ba885db526ecffc2b"
+  },
+  "tableId": {
+    "$oid": "5e401e7ba885db526ecffb9b"
+  },
+  "number": 5,
+  "letter": "b",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e401e7ba885db526ecffc2c"
+  },
+  "tableId": {
+    "$oid": "5e401e7ba885db526ecffb9b"
+  },
+  "number": 5,
+  "letter": "c",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e401e7ba885db526ecffc2d"
+  },
+  "tableId": {
+    "$oid": "5e401e7ba885db526ecffb9b"
+  },
+  "number": 5,
+  "letter": "ç",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e401e7ba885db526ecffc2e"
+  },
+  "tableId": {
+    "$oid": "5e401e7ba885db526ecffb9b"
+  },
+  "number": 6,
+  "letter": "a",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e401e7ba885db526ecffc2f"
+  },
+  "tableId": {
+    "$oid": "5e401e7ba885db526ecffb9b"
+  },
+  "number": 6,
+  "letter": "b",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e401e7ba885db526ecffc30"
+  },
+  "tableId": {
+    "$oid": "5e401e7ba885db526ecffb9b"
+  },
+  "number": 6,
+  "letter": "c",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e401e7ba885db526ecffc31"
+  },
+  "tableId": {
+    "$oid": "5e401e7ba885db526ecffb9b"
+  },
+  "number": 7,
+  "letter": "a",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e401e7ba885db526ecffc32"
+  },
+  "tableId": {
+    "$oid": "5e401e7ba885db526ecffb9b"
+  },
+  "number": 7,
+  "letter": "b",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e401e7ba885db526ecffc33"
+  },
+  "tableId": {
+    "$oid": "5e401e7ba885db526ecffb9b"
+  },
+  "number": 7,
+  "letter": "c",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e401e7ba885db526ecffc34"
+  },
+  "tableId": {
+    "$oid": "5e401e7ba885db526ecffb9b"
+  },
+  "number": 7,
+  "letter": "ç",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e401e7ba885db526ecffc35"
+  },
+  "tableId": {
+    "$oid": "5e401e7ba885db526ecffb9b"
+  },
+  "number": 7,
+  "letter": "d",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e401e7ba885db526ecffc36"
+  },
+  "tableId": {
+    "$oid": "5e401e7ba885db526ecffb9b"
+  },
+  "number": 8,
+  "letter": "a",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e401e7ba885db526ecffc37"
+  },
+  "tableId": {
+    "$oid": "5e401e7ba885db526ecffb9b"
+  },
+  "number": 8,
+  "letter": "b",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e401e7ba885db526ecffc38"
+  },
+  "tableId": {
+    "$oid": "5e401e7ba885db526ecffb9b"
+  },
+  "number": 8,
+  "letter": "c",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e401e7ba885db526ecffc39"
+  },
+  "tableId": {
+    "$oid": "5e401e7ba885db526ecffb9b"
+  },
+  "number": 8,
+  "letter": "ç",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e401e7ba885db526ecffc3a"
+  },
+  "tableId": {
+    "$oid": "5e401e7ba885db526ecffb9b"
+  },
+  "number": 8,
+  "letter": "x",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e401e7ba885db526ecffc3b"
+  },
+  "tableId": {
+    "$oid": "5e401e7ba885db526ecffb9b"
+  },
+  "number": 9,
+  "letter": "a",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e401e7ba885db526ecffc3c"
+  },
+  "tableId": {
+    "$oid": "5e401e7ba885db526ecffb9b"
+  },
+  "number": 9,
+  "letter": "b",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e401e7ba885db526ecffc3d"
+  },
+  "tableId": {
+    "$oid": "5e401e7ba885db526ecffb9b"
+  },
+  "number": 9,
+  "letter": "c",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e401e7ba885db526ecffc3e"
+  },
+  "tableId": {
+    "$oid": "5e401e7ba885db526ecffb9b"
+  },
+  "number": 9,
+  "letter": "ç",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e401e7ba885db526ecffc3f"
+  },
+  "tableId": {
+    "$oid": "5e401e7ba885db526ecffb9b"
+  },
+  "number": 9,
+  "letter": "x",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e401e7ba885db526ecffc40"
+  },
+  "tableId": {
+    "$oid": "5e401e7ba885db526ecffb9b"
+  },
+  "number": 10,
+  "letter": "a",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e401e7ba885db526ecffc41"
+  },
+  "tableId": {
+    "$oid": "5e401e7ba885db526ecffb9b"
+  },
+  "number": 10,
+  "letter": "b",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e401e7ba885db526ecffc42"
+  },
+  "tableId": {
+    "$oid": "5e401e7ba885db526ecffb9b"
+  },
+  "number": 10,
+  "letter": "c",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e401e7ba885db526ecffc43"
+  },
+  "tableId": {
+    "$oid": "5e401e7ba885db526ecffb9b"
+  },
+  "number": 10,
+  "letter": "ç",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e401e7ba885db526ecffc44"
+  },
+  "tableId": {
+    "$oid": "5e401e7ba885db526ecffb9b"
+  },
+  "number": 11,
+  "letter": "a",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e401e7ba885db526ecffc45"
+  },
+  "tableId": {
+    "$oid": "5e401e7ba885db526ecffb9b"
+  },
+  "number": 11,
+  "letter": "b",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e401e7ba885db526ecffc46"
+  },
+  "tableId": {
+    "$oid": "5e401e7ba885db526ecffb9b"
+  },
+  "number": 6,
+  "letter": "ç",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e406a54a885db526ecffcb1"
+  },
+  "tableId": {
+    "$oid": "5e406a54a885db526ecffc47"
+  },
+  "number": 5,
+  "letter": "e",
+  "shift": 1,
+  "sector": "ru"
+},{
+  "_id": {
+    "$oid": "5e406a54a885db526ecffcb2"
+  },
+  "tableId": {
+    "$oid": "5e406a54a885db526ecffc47"
+  },
+  "number": 6,
+  "letter": "d",
+  "shift": 1,
+  "sector": "ru"
+},{
+  "_id": {
+    "$oid": "5e406a54a885db526ecffcb3"
+  },
+  "tableId": {
+    "$oid": "5e406a54a885db526ecffc47"
+  },
+  "number": 8,
+  "letter": "e",
+  "shift": 1,
+  "sector": "ru"
+},{
+  "_id": {
+    "$oid": "5e406a54a885db526ecffcb4"
+  },
+  "tableId": {
+    "$oid": "5e406a54a885db526ecffc47"
+  },
+  "number": 9,
+  "letter": "e",
+  "shift": 1,
+  "sector": "ru"
+},{
+  "_id": {
+    "$oid": "5e406a54a885db526ecffcb5"
+  },
+  "tableId": {
+    "$oid": "5e406a54a885db526ecffc47"
+  },
+  "number": 10,
+  "letter": "d",
+  "shift": 1,
+  "sector": "ru"
+},{
+  "_id": {
+    "$oid": "5e406a54a885db526ecffcb6"
+  },
+  "tableId": {
+    "$oid": "5e406a54a885db526ecffc47"
+  },
+  "number": 11,
+  "letter": "c",
+  "shift": 1,
+  "sector": "ru"
+},{
+  "_id": {
+    "$oid": "5e406a54a885db526ecffcb7"
+  },
+  "tableId": {
+    "$oid": "5e406a54a885db526ecffc47"
+  },
+  "number": 5,
+  "letter": "d",
+  "shift": 1,
+  "sector": "ru"
+},{
+  "_id": {
+    "$oid": "5e406a54a885db526ecffcb8"
+  },
+  "tableId": {
+    "$oid": "5e406a54a885db526ecffc47"
+  },
+  "number": 1,
+  "letter": "e",
+  "shift": 1,
+  "sector": "ru"
+},{
+  "_id": {
+    "$oid": "5e406a54a885db526ecffcb9"
+  },
+  "tableId": {
+    "$oid": "5e406a54a885db526ecffc47"
+  },
+  "number": 1,
+  "letter": "ə",
+  "shift": 1,
+  "sector": "ru"
+},{
+  "_id": {
+    "$oid": "5e406a54a885db526ecffcba"
+  },
+  "tableId": {
+    "$oid": "5e406a54a885db526ecffc47"
+  },
+  "number": 2,
+  "letter": "d",
+  "shift": 2,
+  "sector": "ru"
+},{
+  "_id": {
+    "$oid": "5e406a54a885db526ecffcbb"
+  },
+  "tableId": {
+    "$oid": "5e406a54a885db526ecffc47"
+  },
+  "number": 2,
+  "letter": "e",
+  "shift": 1,
+  "sector": "ru"
+},{
+  "_id": {
+    "$oid": "5e406a54a885db526ecffcbc"
+  },
+  "tableId": {
+    "$oid": "5e406a54a885db526ecffc47"
+  },
+  "number": 3,
+  "letter": "e",
+  "shift": 1,
+  "sector": "ru"
+},{
+  "_id": {
+    "$oid": "5e406a54a885db526ecffcbd"
+  },
+  "tableId": {
+    "$oid": "5e406a54a885db526ecffc47"
+  },
+  "number": 3,
+  "letter": "ə",
+  "shift": 2,
+  "sector": "ru"
+},{
+  "_id": {
+    "$oid": "5e406a54a885db526ecffcbe"
+  },
+  "tableId": {
+    "$oid": "5e406a54a885db526ecffc47"
+  },
+  "number": 4,
+  "letter": "e",
+  "shift": 1,
+  "sector": "ru"
+},{
+  "_id": {
+    "$oid": "5e406a54a885db526ecffcbf"
+  },
+  "tableId": {
+    "$oid": "5e406a54a885db526ecffc47"
+  },
+  "number": 4,
+  "letter": "ə",
+  "shift": 2,
+  "sector": "ru"
+},{
+  "_id": {
+    "$oid": "5e406a54a885db526ecffcc0"
+  },
+  "tableId": {
+    "$oid": "5e406a54a885db526ecffc47"
+  },
+  "number": 1,
+  "letter": "a",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e406a54a885db526ecffcc1"
+  },
+  "tableId": {
+    "$oid": "5e406a54a885db526ecffc47"
+  },
+  "number": 1,
+  "letter": "b",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e406a54a885db526ecffcc2"
+  },
+  "tableId": {
+    "$oid": "5e406a54a885db526ecffc47"
+  },
+  "number": 1,
+  "letter": "c",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e406a54a885db526ecffcc3"
+  },
+  "tableId": {
+    "$oid": "5e406a54a885db526ecffc47"
+  },
+  "number": 1,
+  "letter": "ç",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e406a54a885db526ecffcc4"
+  },
+  "tableId": {
+    "$oid": "5e406a54a885db526ecffc47"
+  },
+  "number": 1,
+  "letter": "d",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e406a54a885db526ecffcc5"
+  },
+  "tableId": {
+    "$oid": "5e406a54a885db526ecffc47"
+  },
+  "number": 2,
+  "letter": "a",
+  "shift": 2,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e406a54a885db526ecffcc6"
+  },
+  "tableId": {
+    "$oid": "5e406a54a885db526ecffc47"
+  },
+  "number": 2,
+  "letter": "b",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e406a54a885db526ecffcc7"
+  },
+  "tableId": {
+    "$oid": "5e406a54a885db526ecffc47"
+  },
+  "number": 2,
+  "letter": "c",
+  "shift": 2,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e406a54a885db526ecffcc8"
+  },
+  "tableId": {
+    "$oid": "5e406a54a885db526ecffc47"
+  },
+  "number": 2,
+  "letter": "ç",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e406a54a885db526ecffcc9"
+  },
+  "tableId": {
+    "$oid": "5e406a54a885db526ecffc47"
+  },
+  "number": 3,
+  "letter": "a",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e406a54a885db526ecffcca"
+  },
+  "tableId": {
+    "$oid": "5e406a54a885db526ecffc47"
+  },
+  "number": 3,
+  "letter": "b",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e406a54a885db526ecffccb"
+  },
+  "tableId": {
+    "$oid": "5e406a54a885db526ecffc47"
+  },
+  "number": 3,
+  "letter": "c",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e406a54a885db526ecffccc"
+  },
+  "tableId": {
+    "$oid": "5e406a54a885db526ecffc47"
+  },
+  "number": 3,
+  "letter": "ç",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e406a54a885db526ecffccd"
+  },
+  "tableId": {
+    "$oid": "5e406a54a885db526ecffc47"
+  },
+  "number": 3,
+  "letter": "d",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e406a54a885db526ecffcce"
+  },
+  "tableId": {
+    "$oid": "5e406a54a885db526ecffc47"
+  },
+  "number": 4,
+  "letter": "a",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e406a54a885db526ecffccf"
+  },
+  "tableId": {
+    "$oid": "5e406a54a885db526ecffc47"
+  },
+  "number": 4,
+  "letter": "b",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e406a54a885db526ecffcd0"
+  },
+  "tableId": {
+    "$oid": "5e406a54a885db526ecffc47"
+  },
+  "number": 4,
+  "letter": "c",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e406a54a885db526ecffcd1"
+  },
+  "tableId": {
+    "$oid": "5e406a54a885db526ecffc47"
+  },
+  "number": 4,
+  "letter": "ç",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e406a54a885db526ecffcd2"
+  },
+  "tableId": {
+    "$oid": "5e406a54a885db526ecffc47"
+  },
+  "number": 4,
+  "letter": "d",
+  "shift": 2,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e406a54a885db526ecffcd3"
+  },
+  "tableId": {
+    "$oid": "5e406a54a885db526ecffc47"
+  },
+  "number": 7,
+  "letter": "e",
+  "shift": 1,
+  "sector": "ru"
+},{
+  "_id": {
+    "$oid": "5e406a54a885db526ecffcd4"
+  },
+  "tableId": {
+    "$oid": "5e406a54a885db526ecffc47"
+  },
+  "number": 5,
+  "letter": "a",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e406a54a885db526ecffcd5"
+  },
+  "tableId": {
+    "$oid": "5e406a54a885db526ecffc47"
+  },
+  "number": 5,
+  "letter": "b",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e406a54a885db526ecffcd6"
+  },
+  "tableId": {
+    "$oid": "5e406a54a885db526ecffc47"
+  },
+  "number": 5,
+  "letter": "c",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e406a54a885db526ecffcd7"
+  },
+  "tableId": {
+    "$oid": "5e406a54a885db526ecffc47"
+  },
+  "number": 5,
+  "letter": "ç",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e406a54a885db526ecffcd8"
+  },
+  "tableId": {
+    "$oid": "5e406a54a885db526ecffc47"
+  },
+  "number": 6,
+  "letter": "a",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e406a54a885db526ecffcd9"
+  },
+  "tableId": {
+    "$oid": "5e406a54a885db526ecffc47"
+  },
+  "number": 6,
+  "letter": "b",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e406a54a885db526ecffcda"
+  },
+  "tableId": {
+    "$oid": "5e406a54a885db526ecffc47"
+  },
+  "number": 6,
+  "letter": "c",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e406a54a885db526ecffcdb"
+  },
+  "tableId": {
+    "$oid": "5e406a54a885db526ecffc47"
+  },
+  "number": 7,
+  "letter": "a",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e406a54a885db526ecffcdc"
+  },
+  "tableId": {
+    "$oid": "5e406a54a885db526ecffc47"
+  },
+  "number": 7,
+  "letter": "b",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e406a54a885db526ecffcdd"
+  },
+  "tableId": {
+    "$oid": "5e406a54a885db526ecffc47"
+  },
+  "number": 7,
+  "letter": "c",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e406a54a885db526ecffcde"
+  },
+  "tableId": {
+    "$oid": "5e406a54a885db526ecffc47"
+  },
+  "number": 7,
+  "letter": "ç",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e406a54a885db526ecffcdf"
+  },
+  "tableId": {
+    "$oid": "5e406a54a885db526ecffc47"
+  },
+  "number": 7,
+  "letter": "d",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e406a54a885db526ecffce0"
+  },
+  "tableId": {
+    "$oid": "5e406a54a885db526ecffc47"
+  },
+  "number": 8,
+  "letter": "a",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e406a54a885db526ecffce1"
+  },
+  "tableId": {
+    "$oid": "5e406a54a885db526ecffc47"
+  },
+  "number": 8,
+  "letter": "b",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e406a54a885db526ecffce2"
+  },
+  "tableId": {
+    "$oid": "5e406a54a885db526ecffc47"
+  },
+  "number": 8,
+  "letter": "c",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e406a54a885db526ecffce3"
+  },
+  "tableId": {
+    "$oid": "5e406a54a885db526ecffc47"
+  },
+  "number": 8,
+  "letter": "ç",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e406a54a885db526ecffce4"
+  },
+  "tableId": {
+    "$oid": "5e406a54a885db526ecffc47"
+  },
+  "number": 8,
+  "letter": "x",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e406a54a885db526ecffce5"
+  },
+  "tableId": {
+    "$oid": "5e406a54a885db526ecffc47"
+  },
+  "number": 9,
+  "letter": "a",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e406a54a885db526ecffce6"
+  },
+  "tableId": {
+    "$oid": "5e406a54a885db526ecffc47"
+  },
+  "number": 9,
+  "letter": "b",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e406a54a885db526ecffce7"
+  },
+  "tableId": {
+    "$oid": "5e406a54a885db526ecffc47"
+  },
+  "number": 9,
+  "letter": "c",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e406a54a885db526ecffce8"
+  },
+  "tableId": {
+    "$oid": "5e406a54a885db526ecffc47"
+  },
+  "number": 9,
+  "letter": "ç",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e406a54a885db526ecffce9"
+  },
+  "tableId": {
+    "$oid": "5e406a54a885db526ecffc47"
+  },
+  "number": 9,
+  "letter": "x",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e406a54a885db526ecffcea"
+  },
+  "tableId": {
+    "$oid": "5e406a54a885db526ecffc47"
+  },
+  "number": 10,
+  "letter": "a",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e406a54a885db526ecffceb"
+  },
+  "tableId": {
+    "$oid": "5e406a54a885db526ecffc47"
+  },
+  "number": 10,
+  "letter": "b",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e406a54a885db526ecffcec"
+  },
+  "tableId": {
+    "$oid": "5e406a54a885db526ecffc47"
+  },
+  "number": 10,
+  "letter": "c",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e406a54a885db526ecffced"
+  },
+  "tableId": {
+    "$oid": "5e406a54a885db526ecffc47"
+  },
+  "number": 10,
+  "letter": "ç",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e406a54a885db526ecffcee"
+  },
+  "tableId": {
+    "$oid": "5e406a54a885db526ecffc47"
+  },
+  "number": 11,
+  "letter": "a",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e406a54a885db526ecffcef"
+  },
+  "tableId": {
+    "$oid": "5e406a54a885db526ecffc47"
+  },
+  "number": 11,
+  "letter": "b",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e406a54a885db526ecffcf0"
+  },
+  "tableId": {
+    "$oid": "5e406a54a885db526ecffc47"
+  },
+  "number": 6,
+  "letter": "ç",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e407859a885db526ecffd5b"
+  },
+  "tableId": {
+    "$oid": "5e407859a885db526ecffcf1"
+  },
+  "number": 5,
+  "letter": "e",
+  "shift": 1,
+  "sector": "ru"
+},{
+  "_id": {
+    "$oid": "5e407859a885db526ecffd5c"
+  },
+  "tableId": {
+    "$oid": "5e407859a885db526ecffcf1"
+  },
+  "number": 6,
+  "letter": "d",
+  "shift": 1,
+  "sector": "ru"
+},{
+  "_id": {
+    "$oid": "5e407859a885db526ecffd5d"
+  },
+  "tableId": {
+    "$oid": "5e407859a885db526ecffcf1"
+  },
+  "number": 8,
+  "letter": "e",
+  "shift": 1,
+  "sector": "ru"
+},{
+  "_id": {
+    "$oid": "5e407859a885db526ecffd5e"
+  },
+  "tableId": {
+    "$oid": "5e407859a885db526ecffcf1"
+  },
+  "number": 9,
+  "letter": "e",
+  "shift": 1,
+  "sector": "ru"
+},{
+  "_id": {
+    "$oid": "5e407859a885db526ecffd5f"
+  },
+  "tableId": {
+    "$oid": "5e407859a885db526ecffcf1"
+  },
+  "number": 10,
+  "letter": "d",
+  "shift": 1,
+  "sector": "ru"
+},{
+  "_id": {
+    "$oid": "5e407859a885db526ecffd60"
+  },
+  "tableId": {
+    "$oid": "5e407859a885db526ecffcf1"
+  },
+  "number": 11,
+  "letter": "c",
+  "shift": 1,
+  "sector": "ru"
+},{
+  "_id": {
+    "$oid": "5e407859a885db526ecffd61"
+  },
+  "tableId": {
+    "$oid": "5e407859a885db526ecffcf1"
+  },
+  "number": 5,
+  "letter": "d",
+  "shift": 1,
+  "sector": "ru"
+},{
+  "_id": {
+    "$oid": "5e407859a885db526ecffd62"
+  },
+  "tableId": {
+    "$oid": "5e407859a885db526ecffcf1"
+  },
+  "number": 1,
+  "letter": "e",
+  "shift": 1,
+  "sector": "ru"
+},{
+  "_id": {
+    "$oid": "5e407859a885db526ecffd63"
+  },
+  "tableId": {
+    "$oid": "5e407859a885db526ecffcf1"
+  },
+  "number": 1,
+  "letter": "ə",
+  "shift": 1,
+  "sector": "ru"
+},{
+  "_id": {
+    "$oid": "5e407859a885db526ecffd64"
+  },
+  "tableId": {
+    "$oid": "5e407859a885db526ecffcf1"
+  },
+  "number": 2,
+  "letter": "d",
+  "shift": 2,
+  "sector": "ru"
+},{
+  "_id": {
+    "$oid": "5e407859a885db526ecffd65"
+  },
+  "tableId": {
+    "$oid": "5e407859a885db526ecffcf1"
+  },
+  "number": 2,
+  "letter": "e",
+  "shift": 1,
+  "sector": "ru"
+},{
+  "_id": {
+    "$oid": "5e407859a885db526ecffd66"
+  },
+  "tableId": {
+    "$oid": "5e407859a885db526ecffcf1"
+  },
+  "number": 3,
+  "letter": "e",
+  "shift": 1,
+  "sector": "ru"
+},{
+  "_id": {
+    "$oid": "5e407859a885db526ecffd67"
+  },
+  "tableId": {
+    "$oid": "5e407859a885db526ecffcf1"
+  },
+  "number": 3,
+  "letter": "ə",
+  "shift": 2,
+  "sector": "ru"
+},{
+  "_id": {
+    "$oid": "5e407859a885db526ecffd68"
+  },
+  "tableId": {
+    "$oid": "5e407859a885db526ecffcf1"
+  },
+  "number": 4,
+  "letter": "e",
+  "shift": 1,
+  "sector": "ru"
+},{
+  "_id": {
+    "$oid": "5e407859a885db526ecffd69"
+  },
+  "tableId": {
+    "$oid": "5e407859a885db526ecffcf1"
+  },
+  "number": 4,
+  "letter": "ə",
+  "shift": 2,
+  "sector": "ru"
+},{
+  "_id": {
+    "$oid": "5e407859a885db526ecffd6a"
+  },
+  "tableId": {
+    "$oid": "5e407859a885db526ecffcf1"
+  },
+  "number": 1,
+  "letter": "a",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e407859a885db526ecffd6b"
+  },
+  "tableId": {
+    "$oid": "5e407859a885db526ecffcf1"
+  },
+  "number": 1,
+  "letter": "b",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e407859a885db526ecffd6c"
+  },
+  "tableId": {
+    "$oid": "5e407859a885db526ecffcf1"
+  },
+  "number": 1,
+  "letter": "c",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e407859a885db526ecffd6d"
+  },
+  "tableId": {
+    "$oid": "5e407859a885db526ecffcf1"
+  },
+  "number": 1,
+  "letter": "ç",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e407859a885db526ecffd6e"
+  },
+  "tableId": {
+    "$oid": "5e407859a885db526ecffcf1"
+  },
+  "number": 1,
+  "letter": "d",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e407859a885db526ecffd6f"
+  },
+  "tableId": {
+    "$oid": "5e407859a885db526ecffcf1"
+  },
+  "number": 2,
+  "letter": "a",
+  "shift": 2,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e407859a885db526ecffd70"
+  },
+  "tableId": {
+    "$oid": "5e407859a885db526ecffcf1"
+  },
+  "number": 2,
+  "letter": "b",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e407859a885db526ecffd71"
+  },
+  "tableId": {
+    "$oid": "5e407859a885db526ecffcf1"
+  },
+  "number": 2,
+  "letter": "c",
+  "shift": 2,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e407859a885db526ecffd72"
+  },
+  "tableId": {
+    "$oid": "5e407859a885db526ecffcf1"
+  },
+  "number": 2,
+  "letter": "ç",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e407859a885db526ecffd73"
+  },
+  "tableId": {
+    "$oid": "5e407859a885db526ecffcf1"
+  },
+  "number": 3,
+  "letter": "a",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e407859a885db526ecffd74"
+  },
+  "tableId": {
+    "$oid": "5e407859a885db526ecffcf1"
+  },
+  "number": 3,
+  "letter": "b",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e407859a885db526ecffd75"
+  },
+  "tableId": {
+    "$oid": "5e407859a885db526ecffcf1"
+  },
+  "number": 3,
+  "letter": "c",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e407859a885db526ecffd76"
+  },
+  "tableId": {
+    "$oid": "5e407859a885db526ecffcf1"
+  },
+  "number": 3,
+  "letter": "ç",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e407859a885db526ecffd77"
+  },
+  "tableId": {
+    "$oid": "5e407859a885db526ecffcf1"
+  },
+  "number": 3,
+  "letter": "d",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e407859a885db526ecffd78"
+  },
+  "tableId": {
+    "$oid": "5e407859a885db526ecffcf1"
+  },
+  "number": 4,
+  "letter": "a",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e407859a885db526ecffd79"
+  },
+  "tableId": {
+    "$oid": "5e407859a885db526ecffcf1"
+  },
+  "number": 4,
+  "letter": "b",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e407859a885db526ecffd7a"
+  },
+  "tableId": {
+    "$oid": "5e407859a885db526ecffcf1"
+  },
+  "number": 4,
+  "letter": "c",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e407859a885db526ecffd7b"
+  },
+  "tableId": {
+    "$oid": "5e407859a885db526ecffcf1"
+  },
+  "number": 4,
+  "letter": "ç",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e407859a885db526ecffd7c"
+  },
+  "tableId": {
+    "$oid": "5e407859a885db526ecffcf1"
+  },
+  "number": 4,
+  "letter": "d",
+  "shift": 2,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e407859a885db526ecffd7d"
+  },
+  "tableId": {
+    "$oid": "5e407859a885db526ecffcf1"
+  },
+  "number": 7,
+  "letter": "e",
+  "shift": 1,
+  "sector": "ru"
+},{
+  "_id": {
+    "$oid": "5e407859a885db526ecffd7e"
+  },
+  "tableId": {
+    "$oid": "5e407859a885db526ecffcf1"
+  },
+  "number": 5,
+  "letter": "a",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e407859a885db526ecffd7f"
+  },
+  "tableId": {
+    "$oid": "5e407859a885db526ecffcf1"
+  },
+  "number": 5,
+  "letter": "b",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e407859a885db526ecffd80"
+  },
+  "tableId": {
+    "$oid": "5e407859a885db526ecffcf1"
+  },
+  "number": 5,
+  "letter": "c",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e407859a885db526ecffd81"
+  },
+  "tableId": {
+    "$oid": "5e407859a885db526ecffcf1"
+  },
+  "number": 5,
+  "letter": "ç",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e407859a885db526ecffd82"
+  },
+  "tableId": {
+    "$oid": "5e407859a885db526ecffcf1"
+  },
+  "number": 6,
+  "letter": "a",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e407859a885db526ecffd83"
+  },
+  "tableId": {
+    "$oid": "5e407859a885db526ecffcf1"
+  },
+  "number": 6,
+  "letter": "b",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e407859a885db526ecffd84"
+  },
+  "tableId": {
+    "$oid": "5e407859a885db526ecffcf1"
+  },
+  "number": 6,
+  "letter": "c",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e407859a885db526ecffd85"
+  },
+  "tableId": {
+    "$oid": "5e407859a885db526ecffcf1"
+  },
+  "number": 7,
+  "letter": "a",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e407859a885db526ecffd86"
+  },
+  "tableId": {
+    "$oid": "5e407859a885db526ecffcf1"
+  },
+  "number": 7,
+  "letter": "b",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e407859a885db526ecffd87"
+  },
+  "tableId": {
+    "$oid": "5e407859a885db526ecffcf1"
+  },
+  "number": 7,
+  "letter": "c",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e407859a885db526ecffd88"
+  },
+  "tableId": {
+    "$oid": "5e407859a885db526ecffcf1"
+  },
+  "number": 7,
+  "letter": "ç",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e407859a885db526ecffd89"
+  },
+  "tableId": {
+    "$oid": "5e407859a885db526ecffcf1"
+  },
+  "number": 7,
+  "letter": "d",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e407859a885db526ecffd8a"
+  },
+  "tableId": {
+    "$oid": "5e407859a885db526ecffcf1"
+  },
+  "number": 8,
+  "letter": "a",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e407859a885db526ecffd8b"
+  },
+  "tableId": {
+    "$oid": "5e407859a885db526ecffcf1"
+  },
+  "number": 8,
+  "letter": "b",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e407859a885db526ecffd8c"
+  },
+  "tableId": {
+    "$oid": "5e407859a885db526ecffcf1"
+  },
+  "number": 8,
+  "letter": "c",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e407859a885db526ecffd8d"
+  },
+  "tableId": {
+    "$oid": "5e407859a885db526ecffcf1"
+  },
+  "number": 8,
+  "letter": "ç",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e407859a885db526ecffd8e"
+  },
+  "tableId": {
+    "$oid": "5e407859a885db526ecffcf1"
+  },
+  "number": 8,
+  "letter": "x",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e407859a885db526ecffd8f"
+  },
+  "tableId": {
+    "$oid": "5e407859a885db526ecffcf1"
+  },
+  "number": 9,
+  "letter": "a",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e407859a885db526ecffd90"
+  },
+  "tableId": {
+    "$oid": "5e407859a885db526ecffcf1"
+  },
+  "number": 9,
+  "letter": "b",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e407859a885db526ecffd91"
+  },
+  "tableId": {
+    "$oid": "5e407859a885db526ecffcf1"
+  },
+  "number": 9,
+  "letter": "c",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e407859a885db526ecffd92"
+  },
+  "tableId": {
+    "$oid": "5e407859a885db526ecffcf1"
+  },
+  "number": 9,
+  "letter": "ç",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e407859a885db526ecffd93"
+  },
+  "tableId": {
+    "$oid": "5e407859a885db526ecffcf1"
+  },
+  "number": 9,
+  "letter": "x",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e407859a885db526ecffd94"
+  },
+  "tableId": {
+    "$oid": "5e407859a885db526ecffcf1"
+  },
+  "number": 10,
+  "letter": "a",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e407859a885db526ecffd95"
+  },
+  "tableId": {
+    "$oid": "5e407859a885db526ecffcf1"
+  },
+  "number": 10,
+  "letter": "b",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e407859a885db526ecffd96"
+  },
+  "tableId": {
+    "$oid": "5e407859a885db526ecffcf1"
+  },
+  "number": 10,
+  "letter": "c",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e407859a885db526ecffd97"
+  },
+  "tableId": {
+    "$oid": "5e407859a885db526ecffcf1"
+  },
+  "number": 10,
+  "letter": "ç",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e407859a885db526ecffd98"
+  },
+  "tableId": {
+    "$oid": "5e407859a885db526ecffcf1"
+  },
+  "number": 11,
+  "letter": "a",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e407859a885db526ecffd99"
+  },
+  "tableId": {
+    "$oid": "5e407859a885db526ecffcf1"
+  },
+  "number": 11,
+  "letter": "b",
+  "shift": 1,
+  "sector": "az"
+},{
+  "_id": {
+    "$oid": "5e407859a885db526ecffd9a"
+  },
+  "tableId": {
+    "$oid": "5e407859a885db526ecffcf1"
+  },
+  "number": 6,
+  "letter": "ç",
+  "shift": 1,
+  "sector": "az"
+}]
